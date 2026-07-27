@@ -1,0 +1,80 @@
+# Practical Terraform for Azure Operations Teams
+
+Lab guide for the 3-day course.
+
+Across the week you work as part of **Summit Retail's cloud operations team**,
+taking their Orders platform from a resource group somebody clicked into
+existence to a multi-environment, module-composed, secret-safe,
+pipeline-delivered Terraform repository, with a legacy environment imported
+along the way.
+
+**The labs are cumulative.** From Lab 3 on, each one starts from the repository
+the previous lab produced. Labs 1 and 9 add a pre-seeded environment.
+
+## Before you start
+
+Work through the [setup guide](labs/setup/index.md). It takes about fifteen
+minutes and prevents most of the problems people hit later in the week.
+
+- Visual Studio Code, with the **HashiCorp Terraform** and **GitHub Pull Requests** extensions
+- Terraform 1.15.x (`terraform version`)
+- Azure CLI, signed in with `az login`, pointed at the class subscription
+- Git configured with your name and email, and access to the class GitHub organization
+- A 4-character student suffix, picked in the setup guide and used all week
+
+## Day 1: Mindset, source control, first Terraform, provisioning Azure
+
+| Lab | What you build |
+|---|---|
+| [Lab 1: From click-ops to infrastructure as code](labs/lab-01-portal-vs-iac/index.md) | The same resource group two ways: clicked, then described in code |
+| [Lab 2: Git and pull requests in VS Code](labs/lab-02-git-and-github/index.md) | The branch, commit, push, review, merge loop. Plus your own copy of the Orders repository |
+| [Lab 3: Your first Terraform configuration](labs/lab-03-first-config/index.md) | Resource group, virtual network, subnet, and the full `init` to `apply` lifecycle |
+| [Lab 4: A realistic environment](labs/lab-04-realistic-environment/index.md) | NSG, Linux VM, storage, consistent tags, and your first variable |
+
+## Day 2: State, multi-environment repo, variables, modules, secrets
+
+| Lab | What you build |
+|---|---|
+| [Lab 5: Remote state and a multi-environment repository](labs/lab-05-remote-state/index.md) | State in Azure Storage with locking, and separate `dev` and `prod` directories |
+| [Lab 6: Variables, locals, outputs, and expressions](labs/lab-06-variables/index.md) | One configuration driven by per-environment values, and `for_each` |
+| [Lab 7: Consuming modules across repositories](labs/lab-07-modules/index.md) | Production built entirely from Summit's shared, version-pinned modules |
+| [Lab 8: Secrets with Azure Key Vault](labs/lab-08-key-vault/index.md) | The VM password out of your shell and into a vault |
+
+## Day 3: Brownfield import, CI/CD, day-2 operations
+
+| Lab | What you build |
+|---|---|
+| [Lab 9: Importing existing Azure infrastructure](labs/lab-09-brownfield-import/index.md) | A hand-built legacy environment brought under Terraform with nothing destroyed |
+| [Lab 10: CI/CD with GitHub Actions](labs/lab-10-github-actions/index.md) | Plan on pull request, apply on merge, and a `main` branch that enforces review |
+| [Lab 11: Troubleshooting and drift](labs/lab-11-troubleshooting-drift/index.md) | Four faults from four layers of the stack, then real drift from a portal change |
+| [Lab 12: Refactoring with `moved`, and proving it all works](labs/lab-12-refactor-and-recap/index.md) | Dev rebuilt on shared modules with zero destroys, then destroyed and rebuilt from a file |
+
+## Repositories you will use
+
+| Repository | What it is |
+|---|---|
+| [`az-tf-ops`](https://github.com/Innovation-In-Software/az-tf-ops) | Summit's Orders platform repository. Lab 2 practices in the shared copy, then you make your own from it |
+| [`az-tf-ops-modules`](https://github.com/Innovation-In-Software/az-tf-ops-modules) | Summit's shared in-house modules. You consume these from Lab 7 on. You never edit them |
+
+## Solutions
+
+`solutions/` holds the complete end state of each lab. Use it to catch up if you
+fall behind, or to compare against your own work afterwards. Replace `<suffix>`
+with yours before running anything from it.
+
+## Conventions used in every lab
+
+| | |
+|---|---|
+| Region | `eastus` |
+| Terraform | `required_version = ">= 1.9"`, run on 1.15.x |
+| Provider | `hashicorp/azurerm`, pinned `~> 4.0` |
+| Naming | `<type>-summit-orders-<environment>`, for example `vnet-summit-orders-dev` |
+| Tags | `environment`, `solution`, `owner`, `managed_by` on everything |
+| Shell | PowerShell, on the Windows dev VM. Where syntax differs, the macOS and Linux form is shown too |
+
+## If something goes wrong
+
+Every lab ends with an **If you get stuck** table covering the errors that lab
+actually produces. Check there first. The most common problem all week is
+`ARM_SUBSCRIPTION_ID` not being set in the terminal you are typing in.
