@@ -215,24 +215,49 @@ Both are public, so you can read and clone them without any extra access. You
 also have **write** access to `az-tf-ops` so you can push a branch and open a
 pull request in Lab 2.
 
-## Step 7: Make a working folder
+## Step 7: Make your working folder
 
-You will end up using **two** locations, and it is worth being clear about which
+You will use **two** locations all week, and it is worth being clear about which
 is which:
 
-| Folder | What lives there |
-|---|---|
-| `C:\Users\Administrator\Downloads\repos\practical-tf-az` | The class repository you just cloned. You **read** from this: lab instructions, starter files, solutions |
-| `C:\labs` | The repositories you **build in**, cloned in Lab 2 |
+| Folder | What lives there | You... |
+|---|---|---|
+| `C:\Users\Administrator\Downloads\repos\practical-tf-az` | The class repository you just cloned: lab instructions, starter files, solutions | **read** from it |
+| `C:\Users\Administrator\Downloads\terraform\labs` | Everything you build this week | **write** here |
 
-Make the second one now:
+Make the working folder now:
 
 ```powershell
-mkdir C:\labs
-cd C:\labs
+mkdir C:\Users\Administrator\Downloads\terraform\labs
+cd C:\Users\Administrator\Downloads\terraform\labs
 ```
 
-Every lab from 2 onward assumes your own repository sits under `C:\labs`.
+Both are under your own user profile, so you own them and nothing needs
+administrator rights.
+
+### How the working folder fills up
+
+**Never run Terraform inside the class repository.** `terraform init` downloads
+a provider that is hundreds of megabytes, and it would land in a folder you
+have to `git pull` every morning. Copy what you need out of it and work in
+`terraform\labs`.
+
+Each lab tells you which folder to be in. By the end of the week you will have:
+
+```
+C:\Users\Administrator\Downloads\terraform\labs\
+  lab-01\                      Lab 1: a copy of the starter main.tf
+  az-tf-ops\                   Lab 2: the shared practice repository
+  az-tf-ops-<your-username>\   Labs 3 to 12: your own repository. This is the
+                               one that matters. Every lab from 3 on adds to it
+  broken\                      Lab 11: a throwaway sandbox
+```
+
+> **Labs 3 to 12 are cumulative and all happen in one repository.** They are not
+> twelve separate folders. Lab 4 builds on what Lab 3 applied, Lab 5 moves that
+> state to Azure Storage, and Lab 12 refactors what you built in Labs 3 to 6.
+> The standalone folders above are the exceptions: Lab 1 before you have a
+> repository, and Lab 11's deliberately broken sandbox.
 
 ## Quick reference: values you will reuse all week
 

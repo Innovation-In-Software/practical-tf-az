@@ -33,7 +33,7 @@ By the end of this lab you can:
 
 ## What you'll need
 
-- Your own repository from Lab 2, at `C:\labs\az-tf-ops-<your-username>`
+- Your own repository from Lab 2, at `C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>`
 - `ARM_SUBSCRIPTION_ID` set in your terminal (see the [setup guide](../setup/index.md))
 - Your 4-character student suffix
 
@@ -52,7 +52,7 @@ nothing, set it before going further.
 
 Old habits: open the editor and start typing. New habit: branch first.
 
-1. Open `C:\labs\az-tf-ops-<your-username>` in VS Code.
+1. Open `C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>` in VS Code.
 2. Click the branch name in the status bar, choose **Create new branch...**,
    and name it `feature/lab03-network-foundation`.
 

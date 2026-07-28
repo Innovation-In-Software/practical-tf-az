@@ -37,7 +37,7 @@ By the end of this lab you can:
 - The usual environment variables
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab12-dev-on-modules
@@ -498,7 +498,7 @@ underneath a running server and it did not notice.**
 ## Part 5: Ship it through the pipeline
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/dev fmt
 
 git add -A
@@ -636,7 +636,7 @@ Order matters, and it is not obvious:
 Preview it:
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 .\scripts\destroy-all.ps1 -Suffix <suffix> -WhatIf
 ```
 

@@ -44,7 +44,7 @@ By the end of this lab you can:
 - The usual environment variables set:
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab06-variables
@@ -681,7 +681,7 @@ terraform plan -var-file=prod.tfvars
 ## Part 8: Commit
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/dev fmt
 terraform -chdir=environments/prod fmt
 

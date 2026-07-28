@@ -39,7 +39,7 @@ By the end of this lab you can:
 - `az login` current, `ARM_SUBSCRIPTION_ID` set, your suffix
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab09-import-legacy-reporting
@@ -533,7 +533,7 @@ is the plan you have to be able to spot at 5pm on a Friday.
 First, commit the import exactly as it is:
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/legacy-reporting fmt
 
 git add -A

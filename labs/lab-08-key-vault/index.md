@@ -32,7 +32,7 @@ By the end of this lab you can:
 - `az login` current, `ARM_SUBSCRIPTION_ID` set, your suffix
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab08-key-vault
@@ -456,7 +456,7 @@ is Summit's current standard.
 ## Part 8: Commit
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/dev fmt
 terraform -chdir=environments/prod fmt
 

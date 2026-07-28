@@ -43,7 +43,7 @@ By the end of this lab you can:
 - Your suffix, and the usual environment variables
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab07-prod-from-modules
@@ -519,7 +519,7 @@ input would solve it.
 ## Part 9: Commit
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/prod fmt
 
 git add -A

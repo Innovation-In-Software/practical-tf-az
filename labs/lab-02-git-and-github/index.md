@@ -51,7 +51,7 @@ Cloning makes a full local copy of the repository, including its entire history.
 2. Type `Git: Clone` and press Enter.
 3. Choose **Clone from GitHub**, then start typing `Innovation-In-Software/az-tf-ops`
    and select it.
-4. When asked where to put it, choose `C:\labs`.
+4. When asked where to put it, choose `C:\Users\Administrator\Downloads\terraform\labs`.
 5. When VS Code asks **Would you like to open the cloned repository?**, click
    **Open**.
 
@@ -60,7 +60,7 @@ Cloning makes a full local copy of the repository, including its entire history.
 The command line equivalent, for reference:
 
 ```powershell
-cd C:\labs
+cd C:\Users\Administrator\Downloads\terraform\labs
 git clone https://github.com/Innovation-In-Software/az-tf-ops.git
 cd az-tf-ops
 ```
@@ -290,15 +290,15 @@ Now clone your copy next to the shared one:
 
 1. `Ctrl+Shift+P`, `Git: Clone`, **Clone from GitHub**
 2. Pick `<your-username>/az-tf-ops-<your-username>`
-3. Save it into `C:\labs`
+3. Save it into `C:\Users\Administrator\Downloads\terraform\labs`
 4. **Open** it when prompted
 
 ```powershell
-cd C:\labs
+cd C:\Users\Administrator\Downloads\terraform\labs
 git clone https://github.com/<your-username>/az-tf-ops-<your-username>.git
 ```
 
-You now have two folders under `C:\labs`:
+You now have two folders under `C:\Users\Administrator\Downloads\terraform\labs`:
 
 | Folder | Used for |
 |---|---|
@@ -314,7 +314,7 @@ You are done when all of these are true:
 - [ ] Your pull request into `Innovation-In-Software/az-tf-ops` was approved and merged
 - [ ] You left a review comment on a teammate's pull request
 - [ ] `git log --oneline -3` on `main` shows your commit in the history
-- [ ] `C:\labs\az-tf-ops-<your-username>` exists, is open in VS Code, and its
+- [ ] `C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>` exists, is open in VS Code, and its
       GitHub page shows **Public**
 
 ## If you get stuck

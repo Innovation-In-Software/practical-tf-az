@@ -40,7 +40,7 @@ By the end of this lab you can:
 - `az login` current
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab10-github-actions

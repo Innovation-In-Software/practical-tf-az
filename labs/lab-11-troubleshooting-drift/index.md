@@ -36,7 +36,7 @@ By the end of this lab you can:
 - The `broken/` folder that ships with this lab
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 ```
@@ -57,9 +57,9 @@ Copy the `broken/` folder out of the lab materials to somewhere outside your
 repository, so you do not commit it:
 
 ```powershell
-mkdir C:\labs\broken
-Copy-Item C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-11-troubleshooting-drift\broken\main.tf C:\labs\broken\
-cd C:\labs\broken
+mkdir C:\Users\Administrator\Downloads\terraform\labs\broken
+Copy-Item C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-11-troubleshooting-drift\broken\main.tf C:\Users\Administrator\Downloads\terraform\labs\broken\
+cd C:\Users\Administrator\Downloads\terraform\labs\broken
 ```
 
 Set your suffix and initialize:
@@ -261,8 +261,8 @@ Four faults, four layers, one at a time. **Do not apply.** You are done with
 this folder:
 
 ```powershell
-cd C:\labs
-Remove-Item -Recurse -Force C:\labs\broken
+cd C:\Users\Administrator\Downloads\terraform\labs
+Remove-Item -Recurse -Force C:\Users\Administrator\Downloads\terraform\labs\broken
 ```
 
 ## When the error is not enough: `TF_LOG`
@@ -273,7 +273,7 @@ Then you turn the logs up.
 
 ```powershell
 $env:TF_LOG = "DEBUG"
-$env:TF_LOG_PATH = "C:\labs\terraform-debug.log"
+$env:TF_LOG_PATH = "C:\Users\Administrator\Downloads\terraform\labs\terraform-debug.log"
 terraform plan
 ```
 
@@ -359,7 +359,7 @@ common way a Terraform repository stops being the truth.**
 Monday morning:
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>\environments\dev
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>\environments\dev
 $env:TF_VAR_allowed_ssh_source = "$(Invoke-RestMethod https://api.ipify.org)/32"
 terraform plan -var-file=dev.tfvars
 ```
@@ -492,7 +492,7 @@ Neither answer is "run `terraform apply` from your laptop and move on."
 You have a pipeline. Use it.
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch -c fix/reconcile-dev-drift
 ```
 

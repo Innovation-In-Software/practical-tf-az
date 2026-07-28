@@ -102,10 +102,23 @@ Nothing recorded those choices except the running resource itself.
 
 Now open the version that lives in a file.
 
+First make a folder for this lab and copy the starter file into it. You work in
+your own folder, never inside the class repository:
+
+```powershell
+mkdir C:\Users\Administrator\Downloads\terraform\labs\lab-01
+Copy-Item C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-01-portal-vs-iac\main.tf C:\Users\Administrator\Downloads\terraform\labs\lab-01\
+```
+
+> **Why copy it?** In Part 3 you run `terraform init`, which downloads a provider
+> several hundred megabytes in size into whatever folder you are standing in. You
+> do not want that inside the class repository you pull updates into every
+> morning.
+
 1. In VS Code, choose **File > Open Folder** and open:
 
    ```
-   C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-01-portal-vs-iac
+   C:\Users\Administrator\Downloads\terraform\labs\lab-01
    ```
 2. Open `main.tf`. Because you have the HashiCorp Terraform extension, the file
    should be color-coded.
@@ -146,8 +159,9 @@ Notice two things the file does that the portal did not:
 You will not apply anything. You will ask Terraform to compare the file to your
 subscription and tell you what it would do.
 
-1. Right-click the `lab-01-portal-vs-iac` folder in the VS Code Explorer and
-   choose **Open in Integrated Terminal**.
+1. Right-click the `lab-01` folder in the VS Code Explorer and choose **Open in
+   Integrated Terminal**. Confirm you are in the right place before you run
+   anything: the prompt should end in `terraform\labs\lab-01`, not `practical-tf-az`.
 2. Make sure the CLI knows your subscription (only needed once per terminal):
    ```powershell
    $env:ARM_SUBSCRIPTION_ID = (az account show --query id -o tsv)

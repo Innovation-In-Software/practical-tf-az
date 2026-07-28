@@ -40,7 +40,7 @@ By the end of this lab you can:
 - Your 4-character student suffix
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab05-remote-state
@@ -535,7 +535,7 @@ importing it, which is Lab 9.
 ## Part 10: Commit
 
 ```powershell
-cd C:\labs\az-tf-ops-<your-username>
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/dev fmt
 terraform -chdir=environments/prod fmt
 
