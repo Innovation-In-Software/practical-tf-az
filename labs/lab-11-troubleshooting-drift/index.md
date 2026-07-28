@@ -58,7 +58,7 @@ repository, so you do not commit it:
 
 ```powershell
 mkdir C:\labs\broken
-Copy-Item <path-to-lab-materials>\lab-11-troubleshooting-drift\broken\main.tf C:\labs\broken\
+Copy-Item C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-11-troubleshooting-drift\broken\main.tf C:\labs\broken\
 cd C:\labs\broken
 ```
 

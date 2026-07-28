@@ -34,8 +34,14 @@ to the exact line of Terraform that produces each part of it.
 - Visual Studio Code with the **HashiCorp Terraform** extension installed.
 - Azure CLI signed in: run `az login` and confirm you are on the class
   subscription with `az account show`.
-- The `main.tf` file that ships with this lab, in the
-  `lab-01-portal-vs-iac` folder.
+- The class repository cloned, from [Step 5 of the setup
+  guide](../setup/index.md). This lab reads a file from it:
+
+  ```
+  C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-01-portal-vs-iac\main.tf
+  ```
+
+  If that folder is not on your machine, go back and do Step 5 now.
 
 Commands are shown in **PowerShell**, which is what you have on the Windows
 development VM. Where the syntax differs on macOS or Linux, both are given.
@@ -96,8 +102,11 @@ Nothing recorded those choices except the running resource itself.
 
 Now open the version that lives in a file.
 
-1. In VS Code, choose **File > Open Folder** and open the
-   `lab-01-portal-vs-iac` folder that came with this lab.
+1. In VS Code, choose **File > Open Folder** and open:
+
+   ```
+   C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-01-portal-vs-iac
+   ```
 2. Open `main.tf`. Because you have the HashiCorp Terraform extension, the file
    should be color-coded.
 3. Read it top to bottom. It is short. It produces the same resource group and

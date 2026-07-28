@@ -153,10 +153,58 @@ git config --global core.autocrlf true
 You should now see a **GitHub** icon in the activity bar. That is where pull
 requests show up in Lab 2.
 
-## Step 5: Know the two class repositories
+## Step 5: Clone the class repository
 
-Summit Retail's platform lives in two public repositories in the
-`Innovation-In-Software` GitHub organization:
+The lab guide, the starter files, and the instructor solutions all live in one
+repository. Clone it now, because **Lab 1 opens a file from it**.
+
+First make the folder it goes in:
+
+```powershell
+mkdir C:\Users\Administrator\Downloads\repos
+```
+
+Then clone:
+
+1. Open a new **Visual Studio Code** window.
+2. Click **Clone Repository** and paste:
+
+   ```
+   https://github.com/Innovation-In-Software/practical-tf-az
+   ```
+
+3. Press Enter. In the pop-up window, browse to
+   `C:\Users\Administrator\Downloads\repos`.
+4. Click **Select as repository destination**.
+5. When prompted to open the cloned repository, choose **Open**.
+6. Click the third icon in the left toolbar for **Source Control**. Next to
+   **Changes**, click the ellipses (three dots) and choose **Pull**.
+
+The command line equivalent, for reference:
+
+```powershell
+mkdir C:\Users\Administrator\Downloads\repos
+cd C:\Users\Administrator\Downloads\repos
+git clone https://github.com/Innovation-In-Software/practical-tf-az.git
+```
+
+You now have:
+
+```
+C:\Users\Administrator\Downloads\repos\practical-tf-az\
+  README.md          the lab index
+  labs\              one folder per lab, including Lab 1's starter main.tf
+  solutions\         the finished state of each lab, if you fall behind
+```
+
+> **Pull this again each morning.** Use the same Source Control > ellipses >
+> **Pull** step. If a lab gets a correction during the week, that is how you
+> pick it up.
+
+## Step 6: Know the two Summit repositories
+
+Separately from the class repository above, Summit Retail's platform lives in
+two public repositories in the `Innovation-In-Software` GitHub organization:
 
 | Repository | What it is | What you do with it |
 |---|---|---|
@@ -167,16 +215,24 @@ Both are public, so you can read and clone them without any extra access. You
 also have **write** access to `az-tf-ops` so you can push a branch and open a
 pull request in Lab 2.
 
-## Step 6: Make a working folder
+## Step 7: Make a working folder
 
-Keep everything in one place:
+You will end up using **two** locations, and it is worth being clear about which
+is which:
+
+| Folder | What lives there |
+|---|---|
+| `C:\Users\Administrator\Downloads\repos\practical-tf-az` | The class repository you just cloned. You **read** from this: lab instructions, starter files, solutions |
+| `C:\labs` | The repositories you **build in**, cloned in Lab 2 |
+
+Make the second one now:
 
 ```powershell
 mkdir C:\labs
 cd C:\labs
 ```
 
-Every lab assumes you are working somewhere under `C:\labs`.
+Every lab from 2 onward assumes your own repository sits under `C:\labs`.
 
 ## Quick reference: values you will reuse all week
 
