@@ -158,7 +158,7 @@ resource "azurerm_linux_virtual_machine" "app" {
   name                = "vm-summit-orders-dev"
   resource_group_name = azurerm_resource_group.orders.name
   location            = azurerm_resource_group.orders.location
-  size                = "Standard_B1s"
+  size                = "Standard_F1als_v7"
 
   admin_username                  = "azureuser"
   admin_password                  = var.vm_admin_password
@@ -199,7 +199,19 @@ hazard: the image can move under you and a rebuilt VM is not identical to the
 original. Pin a specific image version in real production. We use `latest` here
 so the lab does not break when Canonical retires an image.
 
-**`Standard_B1s`** is a burstable, inexpensive size. Plenty for this.
+**`Standard_F1als_v7`** is a small, inexpensive size: one vCPU and 2 GB of
+memory. Plenty for this.
+
+> Most Azure tutorials you find online use `Standard_B1s`, the burstable size
+> that used to be the default choice for a small VM. Your class subscription
+> does not offer the B series, so that size fails with `SkuNotAvailable`. This
+> is worth knowing beyond the classroom: **VM sizes are not uniformly available**.
+> What exists depends on the region and on your subscription's offer, and
+> checking is one command:
+>
+> ```powershell
+> az vm list-skus --location eastus --resource-type virtualMachines --query "[?name=='Standard_F1als_v7']" -o table
+> ```
 
 ## Part 3: Declare the variables
 
@@ -432,7 +444,7 @@ was committed.
 
 Talk these through:
 
-1. Your configuration hardcodes `Standard_B1s`, `LRS`, and `10.10.0.0/16`. What
+1. Your configuration hardcodes `Standard_F1als_v7`, `LRS`, and `10.10.0.0/16`. What
    has to happen when you need a production copy of this environment? (Lab 6.)
 2. `terraform.tfstate` is on your VM's disk. What happens when a teammate needs
    to change this environment? (Lab 5.)
@@ -459,7 +471,7 @@ Those three questions are the rest of Day 2.
 | SSH connection times out | Your public IP changed. Run the `ipify` command again, reset `TF_VAR_allowed_ssh_source`, and `terraform apply`. Then confirm the rule in the portal under the NSG's **Inbound security rules**. |
 | SSH says `Permission denied` | The password is wrong, or it did not meet Azure complexity rules and the VM took a different one. Reset it in the portal under the VM's **Reset password**, or destroy and recreate the VM. |
 | `Password not complex enough` on apply | 12-72 characters, and three of: lowercase, uppercase, digit, symbol. |
-| `SkuNotAvailable` for `Standard_B1s` | The region is out of that size. Ask the instructor for an alternative, usually `Standard_B2s` or a different region. |
+| `SkuNotAvailable` for `Standard_F1als_v7` | Your subscription does not offer that size in this region. Confirm with `az vm list-skus --location eastus --resource-type virtualMachines --query "[?name=='Standard_F1als_v7']" -o table`. If it comes back empty, tell the instructor. `Standard_D2als_v7` is the fallback. Changing region rarely helps, because the restriction usually comes from the subscription rather than the region. |
 | Plan wants to replace the VM you just built | You changed something immutable, such as the image or the admin username. Read the `# forces replacement` note in the plan. |
 
 ## Cleanup

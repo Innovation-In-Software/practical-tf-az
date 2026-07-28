@@ -47,7 +47,7 @@ variable "vnet_address_space" {
 variable "vm_size" {
   description = "Azure VM size for the application server."
   type        = string
-  default     = "Standard_B1s"
+  default     = "Standard_F1als_v7"
 }
 
 variable "vm_admin_username" {

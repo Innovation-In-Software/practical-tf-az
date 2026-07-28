@@ -255,7 +255,7 @@ variable "vnet_address_space" {
 variable "vm_size" {
   description = "Azure VM size for the production application server."
   type        = string
-  default     = "Standard_B2s"
+  default     = "Standard_D2als_v7"
 }
 
 variable "vm_admin_password" {
@@ -286,15 +286,15 @@ And update `environments/prod/prod.tfvars`:
 environment         = "prod"
 location            = "eastus"
 vnet_address_space  = ["10.20.0.0/16"]
-vm_size             = "Standard_B2s"
+vm_size             = "Standard_D2als_v7"
 storage_name_suffix = "<suffix>"
 ```
 
 Replace `<suffix>`.
 
 Prod uses `10.20.0.0/16` where dev uses `10.10.0.0/16`, so the two networks
-could be peered later without an address collision. Prod gets `Standard_B2s`
-where dev gets `Standard_B1s`. **This is the payoff of Lab 6 and Lab 5
+could be peered later without an address collision. Prod gets `Standard_D2als_v7`
+where dev gets `Standard_F1als_v7`. **This is the payoff of Lab 6 and Lab 5
 together:** two environments, different sizes and address spaces, no duplicated
 resource definitions and no shared state.
 

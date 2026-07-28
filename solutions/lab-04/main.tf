@@ -101,7 +101,7 @@ resource "azurerm_linux_virtual_machine" "app" {
   name                = "vm-summit-orders-dev"
   resource_group_name = azurerm_resource_group.orders.name
   location            = azurerm_resource_group.orders.location
-  size                = "Standard_B1s"
+  size                = "Standard_F1als_v7"
 
   admin_username                  = "azureuser"
   admin_password                  = var.vm_admin_password

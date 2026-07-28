@@ -4,7 +4,7 @@
 
 Open `environments/dev/main.tf` and count the string literals. `"eastus"`
 appears in seven resources. `"summit-orders-dev"` is baked into eight names.
-`"Standard_B1s"` and `"LRS"` are decisions somebody made once and nobody can
+`"Standard_F1als_v7"` and `"LRS"` are decisions somebody made once and nobody can
 change without a find-and-replace.
 
 Now imagine building `prod` by copying that file and editing every literal.
@@ -123,7 +123,7 @@ variable "vnet_address_space" {
 variable "vm_size" {
   description = "Azure VM size for the application server."
   type        = string
-  default     = "Standard_B1s"
+  default     = "Standard_F1als_v7"
 }
 
 variable "vm_admin_username" {
@@ -462,7 +462,7 @@ Create `environments/dev/dev.tfvars`:
 environment         = "dev"
 location            = "eastus"
 vnet_address_space  = ["10.10.0.0/16"]
-vm_size             = "Standard_B1s"
+vm_size             = "Standard_F1als_v7"
 storage_name_suffix = "<suffix>"
 ```
 

@@ -42,7 +42,7 @@ variable "vnet_address_space" {
 variable "vm_size" {
   description = "Azure VM size for the production application server."
   type        = string
-  default     = "Standard_B2s"
+  default     = "Standard_D2als_v7"
 }
 
 variable "allowed_ssh_source" {
