@@ -183,11 +183,26 @@ Read the output. Terraform will report something like **"Plan: 2 to add, 0 to
 change, 0 to destroy"** and show a `+` next to a resource group and a storage
 account.
 
-Sit with why that happens. The resources you built in the portal are real, but
-Terraform is not tracking them, and the names in the file do not match the names
-you typed. So from Terraform's point of view, the file describes two resources
-that do not exist yet, and it offers to create them. It did not ask you *how* to
-create them. It read the end state you described and worked out the plan itself.
+Sit with why that happens, because it surprises people. The resource group in
+this file is named `rg-summit-lab1`, which is **exactly** the one you created in
+the portal ten minutes ago. It is real. It exists. And Terraform still offers to
+create it.
+
+The reason is that **Terraform's picture of the world is its state file, not
+Azure.** You have never run `apply` here, so there is no state, so as far as
+Terraform is concerned it manages nothing at all. It is not lying to you and it
+has not failed to look. It simply has no record connecting that line in your file
+to that resource group in your subscription.
+
+What it did next is the part worth noticing. It did not ask you *how* to build
+anything. It read the end state you described and worked out the plan itself.
+
+> **So what would happen if you ran `apply`?** The storage account would be
+> created, because the name in the file (`stsummitlab1xyz`) is not the one you
+> typed in the portal. The resource group would fail, because Azure already has
+> one by that name and Terraform does not know it is yours to manage. Connecting
+> existing resources to Terraform is a real and common job, and it is what Lab 9
+> is about. Do not run `apply` here.
 
 > This is the whole point of the lab. You described a result, and a tool produced
 > a repeatable plan to reach it. In Lab 3 you will let it actually run.

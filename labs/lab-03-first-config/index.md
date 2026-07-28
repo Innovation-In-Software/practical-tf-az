@@ -257,12 +257,21 @@ Error: Unsupported argument
   on main.tf line 30, in resource "azurerm_subnet" "app":
   30:   address_prefix = ["10.10.1.0/24"]
 
-An argument named "address_prefix" is not expected here.
+An argument named "address_prefix" is not expected here. Did you mean
+"address_prefixes"?
 ```
 
+Your line number will differ from the one above. That is fine: it points at
+wherever the argument landed in *your* file.
+
 Notice the shape of it: the error type, the exact file and line, the offending
-text, and a plain explanation. Terraform errors are usually this good. Read them
-top to bottom rather than skimming for red.
+text, a plain explanation, and in this case the fix itself. Terraform errors are
+usually this good. Read them top to bottom rather than skimming for red.
+
+> `address_prefix` is not a typo somebody invented. It was the correct argument
+> in version 2 of the `azurerm` provider and was removed in version 4. You will
+> meet a harder version of this in Lab 11, where the error does **not** suggest
+> the replacement.
 
 3. Put the `es` back and run `terraform validate` again.
 

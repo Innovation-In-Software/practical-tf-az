@@ -9,10 +9,10 @@ change you make this week travels through them**.
 
 This lab has two halves:
 
-- **Part 1 to 4:** the everyday loop, run for real against Summit's shared
+- **Parts 1 to 5:** the everyday loop, run for real against Summit's shared
   `az-tf-ops` repository. Clone, branch, edit, commit, push, open a pull
   request, and review a teammate's.
-- **Part 5:** create your **own** copy of the Orders repository. Labs 3 through
+- **Part 6:** create your **own** copy of the Orders repository. Labs 3 through
   12 all build in that copy, so you get to run pipelines and set branch rules on
   a repository you control.
 
@@ -78,12 +78,23 @@ az-tf-ops/
   .gitignore
   docs/
     naming-and-tagging.md
+  scripts/
+    bootstrap-backend.ps1          Lab 5
+    create-service-principal.ps1   Lab 10
+    destroy-all.ps1                Lab 12
+    seed-key-vault.ps1             Lab 8
+    seed-legacy-reporting.ps1      Lab 9
   students/
     README.md
 ```
 
 Nothing here is Terraform yet. That is deliberate: this lab is about the
 workflow, not the tool.
+
+The `scripts/` folder is for later in the week. Those scripts create the few
+things Terraform cannot create for itself, such as the storage account that
+holds Terraform's own state. Ignore them for now; each lab tells you when to
+run one.
 
 ## Part 2: Branch before you change anything
 
