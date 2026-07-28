@@ -94,8 +94,6 @@ Add five secrets:
 | `AZURE_SUBSCRIPTION_ID` | from the script |
 | `TF_VAR_ALLOWED_SSH_SOURCE` | your public IP with `/32`, from `Invoke-RestMethod https://api.ipify.org` |
 
-<!-- screenshot: GitHub Actions secrets page with the five secrets listed -> images/gh-secrets.png -->
-
 Two things about Actions secrets:
 
 - **They are write-only.** Once saved, nobody, including you, can read the value
@@ -429,8 +427,6 @@ Within a few seconds a check appears at the bottom: **terraform-plan**, with a
 spinner. About a minute later it turns green, and a comment appears with the
 plan folded inside a **Show plan** toggle.
 
-<!-- screenshot: pull request with the terraform-plan check and plan comment -> images/pr-plan-comment.png -->
-
 Open it. That is the same output you have been reading in your terminal all
 week, now attached to the proposal, visible to anyone who looks, and permanently
 recorded on the pull request.
@@ -461,8 +457,6 @@ Configure:
 
 Save.
 
-<!-- screenshot: branch protection settings for main -> images/branch-protection.png -->
-
 > **Why your repository is public.** Branch protection and required status
 > checks on private repositories need a paid GitHub plan. The organization is on
 > the free tier, so the class repositories are public in order to make this
@@ -491,8 +485,6 @@ Go back to your open pull request and refresh.
 
 The merge button is now grey: **Review required** and **Merging is blocked**.
 The plan check is green, but nobody has approved.
-
-<!-- screenshot: blocked merge button showing review required -> images/merge-blocked.png -->
 
 Try clicking it. You cannot. **That is the deliverable of this lab.** Summit's
 review policy is no longer a habit somebody might forget; it is a property of
@@ -553,8 +545,6 @@ step scroll. In about a minute:
 ```
 Apply complete! Resources: 0 added, 7 changed, 0 destroyed.
 ```
-
-<!-- screenshot: Actions tab showing a successful terraform-apply run -> images/apply-run.png -->
 
 Confirm in the portal: every resource in `rg-summit-orders-dev` now carries
 `cost_center = retail-ops`.

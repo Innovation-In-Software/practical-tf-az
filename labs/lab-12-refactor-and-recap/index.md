@@ -516,7 +516,7 @@ git push -u origin feature/lab12-dev-on-modules
 
 Open a pull request. Look at the plan comment your pipeline posted: a reviewer
 can see eleven `has moved to` lines and `0 to destroy` without running anything.
-**That is the argument for `moved` in one screenshot.**
+**That is the whole argument for `moved`, visible at a glance.**
 
 Get it reviewed and merge it. The apply job runs on `main`, sees the moves are
 already recorded in state from your local apply, and reports no changes. That is

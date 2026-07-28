@@ -194,8 +194,6 @@ Put your cursor inside the `azurerm_subnet` block, on a blank line, and press
 Hover over `address_prefixes` and it shows the documentation inline. Use this
 constantly. Nobody memorizes provider schemas.
 
-<!-- screenshot: VS Code autocomplete inside a resource block -> images/tf-autocomplete.png -->
-
 ## Part 5: Initialize
 
 Open a terminal in the repository folder (right-click the folder in the Explorer,
@@ -349,8 +347,6 @@ Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
    with `10.10.1.0/24`.
 4. Back on the resource group, look at **Tags**. All four are there, spelled
    identically, because they came from one place.
-
-<!-- screenshot: Azure portal showing rg-summit-orders-dev contents -> images/portal-verify.png -->
 
 ## Part 9: Look at state
 

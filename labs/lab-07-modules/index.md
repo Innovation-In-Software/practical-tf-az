@@ -90,8 +90,6 @@ Do that now for `network`. Answer these before continuing:
 - What does the module name the subnets it creates?
 - What does `subnet_ids` give you back, and what shape is it?
 
-<!-- screenshot: az-tf-ops-modules repo, network/variables.tf on GitHub -> images/module-variables.png -->
-
 > **Do not read `main.tf` first.** A module's interface is its variables and
 > outputs. If you find yourself reading the implementation to work out how to
 > call it, that is a documentation bug worth raising as an issue.
@@ -513,8 +511,6 @@ security fixes like the v1.1.0 TLS change, and nobody notices for a year.
 real gap: per-subnet NSGs, outbound rules, service endpoints, delegation. Write
 two or three sentences: what you are trying to do, what you tried, and what
 input would solve it.
-
-<!-- screenshot: a well-written module issue on GitHub -> images/module-issue.png -->
 
 ## Part 9: Commit
 

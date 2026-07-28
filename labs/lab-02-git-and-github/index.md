@@ -55,8 +55,6 @@ Cloning makes a full local copy of the repository, including its entire history.
 5. When VS Code asks **Would you like to open the cloned repository?**, click
    **Open**.
 
-<!-- screenshot: VS Code Command Palette showing Git: Clone -> images/clone-palette.png -->
-
 The command line equivalent, for reference:
 
 ```powershell
@@ -108,8 +106,6 @@ of work that starts as an exact copy of `main`.
    `feature/jrivera-intro`.
 4. Press Enter.
 
-<!-- screenshot: VS Code branch picker with Create new branch highlighted -> images/create-branch.png -->
-
 The status bar now shows your branch name. Command line equivalent:
 
 ```powershell
@@ -147,8 +143,6 @@ Staging is you saying "this specific change belongs in the next commit."
 
 5. Hover over your file in the Source Control panel and click the **+**
    (Stage Changes). The file moves up into **Staged Changes**.
-
-<!-- screenshot: VS Code Source Control panel with a staged file -> images/stage-change.png -->
 
 ### Commit it
 
@@ -211,8 +205,6 @@ place to discuss it before that happens.
 
 6. Click **Create**.
 
-<!-- screenshot: GitHub Pull Requests extension, Create Pull Request form -> images/create-pr.png -->
-
 VS Code opens the pull request view. Notice what it gives you: the description,
 the list of commits, the files changed, and a place for reviewers to comment.
 
@@ -240,8 +232,6 @@ mistakes.
    ```
 
 5. Click **Start Review**, then **Submit Review**, and choose **Approve**.
-
-<!-- screenshot: reviewing a PR in VS Code with a line comment -> images/review-pr.png -->
 
 6. Go back to your own pull request. Read the comment your neighbor left. If it
    asks for a change, make it: edit the file locally, stage, commit, and push
@@ -288,8 +278,6 @@ branch. Twenty people cannot do that to one repository.
      `az-tf-ops-jrivera`
    - **Visibility:** **Public**
 4. Click **Create repository**.
-
-<!-- screenshot: GitHub Use this template dialog -> images/use-template.png -->
 
 > **Why public?** Branch protection rules and required status checks, which you
 > set up in Lab 10, are only available on public repositories under the

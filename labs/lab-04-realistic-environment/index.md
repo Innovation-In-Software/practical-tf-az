@@ -404,8 +404,6 @@ including the OS disk that Terraform created implicitly. Click **Tags** on a few
 of them: every one carries the same four tags, spelled the same way, because
 they all reference one map.
 
-<!-- screenshot: portal resource group listing all Lab 4 resources -> images/lab04-portal.png -->
-
 Then run:
 
 ```powershell

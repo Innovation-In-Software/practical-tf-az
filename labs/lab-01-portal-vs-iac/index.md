@@ -69,8 +69,6 @@ A **resource group (RG)** is the container Azure puts related resources in.
    - `owner` = `ops-team`
 6. Click **Review + create**, then **Create**.
 
-<!-- screenshot: portal - resource group Basics tab filled in -> images/rg-basics.png -->
-
 ### Create a storage account
 
 1. Search for **Storage accounts** in the top search bar and click it.
@@ -91,8 +89,6 @@ A **resource group (RG)** is the container Azure puts related resources in.
 5. Click **Review + create**, then **Create**.
 6. When the deployment finishes, click **Go to resource** and look at the
    **Overview** page.
-
-<!-- screenshot: portal - storage account Basics tab filled in -> images/storage-basics.png -->
 
 Take a moment to appreciate what just happened: you made a series of choices
 across several screens, and most of them were defaults you did not think about.

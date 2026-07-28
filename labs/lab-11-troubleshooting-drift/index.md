@@ -340,16 +340,12 @@ is 4:50pm on a Friday. You open the portal.
    - **Name:** `AllowAppPortTemp`
 4. **Add**.
 
-<!-- screenshot: portal adding an inbound NSG rule by hand -> images/portal-nsg-rule.png -->
-
 ### The other one
 
 Somebody in finance needs a ticket reference on the resource group.
 
 5. Open `rg-summit-orders-dev` > **Tags**.
 6. Add `ticket` = `INC-4471`. **Apply**.
-
-<!-- screenshot: portal tags blade with the added ticket tag -> images/portal-tag.png -->
 
 Both changes are reasonable. Neither is in code. **This is the single most
 common way a Terraform repository stops being the truth.**

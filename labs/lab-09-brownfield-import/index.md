@@ -179,8 +179,6 @@ az network vnet subnet show `
 **JSON View** in the top right of the Overview blade. The `id` field is at the
 top.
 
-<!-- screenshot: Azure portal JSON View showing a resource id -> images/portal-resource-id.png -->
-
 ### The ID format
 
 ```
