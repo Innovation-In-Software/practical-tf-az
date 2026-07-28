@@ -31,23 +31,22 @@ minutes and prevents most of the problems people hit later in the week.
 | [Lab 3: Your first Terraform configuration](labs/lab-03-first-config/index.md) | Resource group, virtual network, subnet, and the full `init` to `apply` lifecycle |
 | [Lab 4: A realistic environment](labs/lab-04-realistic-environment/index.md) | NSG, Linux VM, storage, consistent tags, and your first variable |
 
-## Day 2: State, multi-environment repo, variables, modules, secrets
+## Day 2 and Day 3
 
-| Lab | What you build |
-|---|---|
-| [Lab 5: Remote state and a multi-environment repository](labs/lab-05-remote-state/index.md) | State in Azure Storage with locking, and separate `dev` and `prod` directories |
-| [Lab 6: Variables, locals, outputs, and expressions](labs/lab-06-variables/index.md) | One configuration driven by per-environment values, and `for_each` |
-| [Lab 7: Consuming modules across repositories](labs/lab-07-modules/index.md) | Production built entirely from Summit's shared, version-pinned modules |
-| [Lab 8: Secrets with Azure Key Vault](labs/lab-08-key-vault/index.md) | The VM password out of your shell and into a vault |
+Published at the end of each day. Day 2 covers remote state, a
+multi-environment repository, variables and expressions, shared modules, and
+Azure Key Vault. Day 3 covers importing existing infrastructure, CI/CD with
+GitHub Actions, troubleshooting and drift, and refactoring with `moved`.
 
-## Day 3: Brownfield import, CI/CD, day-2 operations
+**Pull this repository each morning** to pick them up:
 
-| Lab | What you build |
-|---|---|
-| [Lab 9: Importing existing Azure infrastructure](labs/lab-09-brownfield-import/index.md) | A hand-built legacy environment brought under Terraform with nothing destroyed |
-| [Lab 10: CI/CD with GitHub Actions](labs/lab-10-github-actions/index.md) | Plan on pull request, apply on merge, and a `main` branch that enforces review |
-| [Lab 11: Troubleshooting and drift](labs/lab-11-troubleshooting-drift/index.md) | Four faults from four layers of the stack, then real drift from a portal change |
-| [Lab 12: Refactoring with `moved`, and proving it all works](labs/lab-12-refactor-and-recap/index.md) | Dev rebuilt on shared modules with zero destroys, then destroyed and rebuilt from a file |
+> Source Control panel > the ellipses (three dots) next to **Changes** >
+> **Pull**.
+
+The Day 1 labs refer forward to these by number, so you will see mentions of
+Lab 5 and Lab 12 before those labs exist. That is deliberate: it is the arc of
+the week, and each mention tells you which later lab fixes the problem you just
+met.
 
 ## Repositories you will use
 
@@ -61,6 +60,9 @@ minutes and prevents most of the problems people hit later in the week.
 `solutions/` holds the complete end state of each lab. Use it to catch up if you
 fall behind, or to compare against your own work afterwards. Replace `<suffix>`
 with yours before running anything from it.
+
+Solutions appear alongside their labs, so `solutions/` currently covers Day 1
+only.
 
 ## Conventions used in every lab
 
