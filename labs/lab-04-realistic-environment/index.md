@@ -68,6 +68,17 @@ Same pattern as Lab 2, now as habit: get onto `main`, pull, then branch.
    still says `main`, you are about to commit to the shared branch. Go back to
    step 4.
 
+> **Before you go further, check that `main.tf` is in the Explorer.**
+>
+> If it is missing, your Lab 3 pull request was never merged. Your configuration
+> is still sitting on `feature/lab03-network-foundation`, and switching to `main`
+> took it off the disk. Nothing is lost and nothing in Azure is affected: go back
+> to [Lab 3 Part 10](../lab-03-first-config/index.md), merge that pull request,
+> then come back and start this lab again.
+>
+> The symptom if you skip this check is `Error: No configuration files` on the
+> next step, which does not obviously mean "you forgot to merge."
+
 The command line equivalent, which is what those buttons run:
 
 ```powershell
@@ -589,6 +600,8 @@ Those three questions are the rest of Day 2.
 
 | Error | What it means and what to do |
 |---|---|
+| `Error: No configuration files` | `main.tf` is not on `main`, because your Lab 3 pull request was never merged. The file is still on `feature/lab03-network-foundation`. Merge that pull request ([Lab 3 Part 10](../lab-03-first-config/index.md)), then start this lab again. Your Azure resources and your state file are untouched. |
+| `main.tf` disappeared when you switched to `main` | Same cause as above. Switching branches swaps the tracked files on disk; a file that was only ever committed to a feature branch is not on `main`. |
 | `StorageAccountAlreadyTaken` | You left `<suffix>` in the name, or your suffix collides. Change it, `terraform apply` again. |
 | `The storage account named ... is invalid` | Uppercase letters or hyphens in the name. Lowercase and digits only, 3-24 characters. |
 | `no value for required variable` | `TF_VAR_vm_admin_password` or `TF_VAR_allowed_ssh_source` is not set in **this** terminal. |

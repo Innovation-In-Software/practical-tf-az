@@ -404,21 +404,52 @@ the code. In Lab 11 you will find out what it means when it stops being true.
 
 ## Part 10: Commit your work
 
+Your configuration currently exists **only on your branch**. Lab 4 starts from
+`main`, so this part is not optional bookkeeping: if you stop after pushing,
+Lab 4 will not work. Take it to the end.
+
+### Stage and commit
+
+1. Open the **Source Control** panel (the branching icon in the activity bar).
+2. You should see `main.tf` and `.terraform.lock.hcl` under **Changes**, and
+   **nothing else**. In particular there must be no `terraform.tfstate` and no
+   `.terraform/`. If either appears, your `.gitignore` is not doing its job:
+   tell the instructor before you push.
+3. Hover over **Changes** and click the **+** to stage both files.
+4. In the message box, write:
+
+   ```
+   Add resource group, virtual network, and subnet for orders dev
+   ```
+
+5. Click the **Commit** checkmark.
+6. Click **Publish Branch**.
+
+### Open the pull request and merge it
+
+7. Click the **GitHub** icon in the activity bar, then **Create Pull Request**.
+8. Confirm the base is **your own** repository's `main`.
+9. Title it the same as your commit and click **Create**.
+10. Merge it: click **Merge pull request** in the pull request view or on the
+    GitHub web page, then **Confirm merge**.
+
+### Get back onto main
+
+11. Click the branch name in the bottom left status bar and choose `main`.
+12. Click the sync icon next to it to pull the merge down.
+
+**Now confirm it worked.** With `main` checked out, `main.tf` must still be
+visible in the Explorer. If it disappeared when you switched branches, the merge
+did not happen and your work is still only on the feature branch. Go back to
+step 7.
+
+The command line equivalent for all of Part 10:
+
 ```powershell
-terraform fmt
 git add main.tf .terraform.lock.hcl
 git commit -m "Add resource group, virtual network, and subnet for orders dev"
 git push -u origin feature/lab03-network-foundation
-```
-
-Check `git status`. It should be clean, with no mention of `terraform.tfstate`
-or `.terraform/`. If either shows up, your `.gitignore` is not doing its job:
-tell the instructor before you push.
-
-Open a pull request from VS Code, the same way you did in Lab 2, and merge it
-into your `main`. Then:
-
-```powershell
+# open and merge the pull request, then:
 git switch main
 git pull
 ```
@@ -431,7 +462,10 @@ git pull
 - [ ] `terraform plan` reports **No changes**
 - [ ] `terraform state list` shows exactly three resources
 - [ ] The portal shows `rg-summit-orders-dev` with the VNet and subnet inside
-- [ ] Your change is merged into `main` and `git status` is clean
+- [ ] Your pull request is **merged**, and the status bar shows `main`
+- [ ] **With `main` checked out, `main.tf` is still there.** This is the one Lab 4
+      depends on. If `main.tf` vanishes when you switch to `main`, your work never
+      reached it
 
 ## If you get stuck
 
