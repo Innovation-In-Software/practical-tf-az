@@ -37,13 +37,53 @@ By the end of this lab you can:
 - `ARM_SUBSCRIPTION_ID` set
 - Your 4-character student suffix
 
-Start clean:
+> **This lab drives VS Code rather than the command line wherever VS Code can do
+> the job:** branching, creating files, formatting, reading your own diff,
+> committing, and opening the pull request. The equivalent commands are shown
+> underneath each one, because pipelines and error messages speak in commands and
+> you need to recognize them.
+>
+> Terraform itself has no buttons. `init`, `validate`, `plan`, and `apply` are
+> always typed into the integrated terminal, and so is anything setting an
+> environment variable.
+
+### Start clean
+
+Same pattern as Lab 2, now as habit: get onto `main`, pull, then branch.
+
+1. Open your repository in VS Code if it is not already open:
+   **File > Open Recent**, and pick `az-tf-ops-<your-username>`.
+2. **Get onto `main`.** Click the branch name in the bottom left status bar and
+   choose `main` from the list.
+3. **Pull.** Click the sync icon (the circular arrows) next to the branch name in
+   the status bar. This brings down the Lab 3 change you merged.
+4. **Branch.** Click the branch name again, choose **Create new branch...**, and
+   name it:
+
+   ```
+   feature/lab04-orders-dev-environment
+   ```
+
+5. Confirm the status bar now shows `feature/lab04-orders-dev-environment`. If it
+   still says `main`, you are about to commit to the shared branch. Go back to
+   step 4.
+
+The command line equivalent, which is what those buttons run:
 
 ```powershell
 cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab04-orders-dev-environment
+```
+
+### Confirm Lab 3 is still good
+
+Terraform has no VS Code buttons, so open a terminal for this one:
+``Ctrl+` ``, or right-click the repository folder in the Explorer and choose
+**Open in Integrated Terminal**.
+
+```powershell
 terraform plan
 ```
 
@@ -215,8 +255,19 @@ memory. Plenty for this.
 
 ## Part 3: Declare the variables
 
-The NSG rule and the VM both reference variables. Declare them now. Create a new
-file called `variables.tf`:
+The NSG rule and the VM both reference variables. Declare them now.
+
+Create the file in VS Code: hover over the repository name at the top of the
+**Explorer** panel and click the **New File...** icon (a page with a `+`), then
+type `variables.tf` and press Enter. Make sure it lands at the top level of the
+repository, next to `main.tf`, not inside another folder.
+
+> Watch the bottom right of the window after you name it. It should say
+> **Terraform**. That is VS Code recognizing the `.tf` extension and switching on
+> the HashiCorp extension's syntax highlighting and autocomplete. If it says
+> **Plain Text**, you have a typo in the file name.
+
+Put this in it:
 
 ```hcl
 variable "vm_admin_password" {
@@ -307,6 +358,12 @@ resource "azurerm_storage_container" "data" {
 Replace `<suffix>` with yours. If you skip this, you will get
 `StorageAccountAlreadyTaken` and now you know why.
 
+> **A faster way to do that replacement, and a habit worth forming.** Press
+> `Ctrl+H` to open Find and Replace in the current file. Put `<suffix>` in the
+> top box and your four characters in the bottom, then click **Replace All** (or
+> `Ctrl+Alt+Enter`). Use `Ctrl+Shift+H` to do the same across every file in the
+> repository at once, which is what you will want in Lab 6.
+
 `account_replication_type = "LRS"` is locally redundant storage: three copies in
 one datacenter. It is the cheapest option and correct for a dev environment.
 Production would use `ZRS` or `GRS`, and in Lab 6 that difference becomes a
@@ -319,7 +376,10 @@ variable rather than an edit.
 ## Part 5: Add an output
 
 You will want the VM's public IP address, and hunting for it in the portal every
-time is silly. Create `outputs.tf`:
+time is silly.
+
+Create `outputs.tf` the same way you created `variables.tf`: **New File...** in
+the Explorer, at the top level of the repository.
 
 ```hcl
 output "vm_public_ip" {
@@ -344,8 +404,32 @@ constantly in Lab 6.
 
 ## Part 6: Apply
 
+### Format from VS Code
+
+You ran `terraform fmt` from the terminal in Lab 3. VS Code can do it for you:
+with a `.tf` file open, press `Shift+Alt+F` (**Format Document**). The HashiCorp
+extension aligns the `=` signs and fixes the indentation in place.
+
+Better, make it automatic. Press `Ctrl+,` to open Settings, search for
+**Format On Save**, and tick it. Every save is now formatted, and you never think
+about `terraform fmt` again.
+
+> If `Shift+Alt+F` asks you to pick a formatter, choose **HashiCorp Terraform**.
+> If nothing happens at all, the extension is not active on this file: check the
+> language indicator in the bottom right says **Terraform**.
+
+The command line still works and is what the pipeline uses in Lab 10, so it is
+worth knowing both:
+
 ```powershell
 terraform fmt
+```
+
+### Validate and plan
+
+These have no VS Code equivalent. Back to the terminal:
+
+```powershell
 terraform validate
 terraform plan
 ```
@@ -420,23 +504,65 @@ first time a count surprises you.
 
 ## Part 8: Commit
 
+All of this is the Lab 2 loop, run from the **Source Control** panel (the
+branching icon in the activity bar).
+
+### Read your own diff first
+
+1. Open the Source Control panel. Under **Changes** you should see three entries:
+   `main.tf`, `variables.tf`, and `outputs.tf`.
+2. **Click `main.tf`.** VS Code opens a side-by-side diff: your original Lab 3
+   file on the left, the new version on the right. Read it.
+
+This is the habit worth taking away from Lab 4. You are about to ask a colleague
+to review 60 lines that create a VM and open a firewall port. Read it yourself
+first, the way they will.
+
+While you are looking, confirm what is **not** listed: no `terraform.tfstate`, no
+`.terraform/`, no `.terraform.lock.hcl` changes you did not expect. If state
+appears here, stop and tell the instructor, because the `.gitignore` is not doing
+its job.
+
+### Stage, commit, push
+
+3. Hover over **Changes** and click the **+** to stage all three files at once.
+4. In the message box, write:
+
+   ```
+   Add NSG, Linux VM, and storage to the orders dev environment
+   ```
+
+5. Click the **Commit** checkmark.
+6. Click **Publish Branch**.
+
+### Open the pull request
+
+7. Click the **GitHub** icon in the activity bar, then **Create Pull Request**.
+8. Check the base is **your** repository's `main`, not the organization's.
+9. Title it the same as the commit, describe it in a sentence, and click
+   **Create**.
+10. Open **Files Changed** and look at the diff as a reviewer sees it. This is a
+    substantial change, exactly the kind a teammate should read.
+11. Merge it from the pull request view or the GitHub web page.
+
+### Get back onto main
+
+12. Click the branch name in the status bar, choose `main`, then click the sync
+    icon to pull the merge down.
+
+The command line equivalent for the whole of Part 8:
+
 ```powershell
-terraform fmt
 git add main.tf variables.tf outputs.tf
 git commit -m "Add NSG, Linux VM, and storage to the orders dev environment"
 git push -u origin feature/lab04-orders-dev-environment
-```
-
-Open a pull request, look at the diff (this is a substantial change, exactly the
-kind a teammate should read), merge it, then:
-
-```powershell
+# open, review, and merge the pull request, then:
 git switch main
 git pull
 ```
 
-Confirm `git status` is clean and neither `terraform.tfstate` nor `.terraform/`
-was committed.
+Confirm the Source Control panel shows no pending changes, and that neither
+`terraform.tfstate` nor `.terraform/` was committed.
 
 ## Reflect
 
