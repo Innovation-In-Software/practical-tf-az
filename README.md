@@ -1,5 +1,7 @@
 # Practical Terraform for Azure Operations Teams
 
+[Lab environments](https://docs.google.com/spreadsheets/d/1aldG8TSXSl5oKmenfi7I8WjM2FuOt0LCdzuC5e3ZL-8/edit?usp=sharing)
+
 Lab guide for the 3-day course.
 
 Across the week you work as part of **Summit Retail's cloud operations team**,
