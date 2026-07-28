@@ -34,14 +34,14 @@ to the exact line of Terraform that produces each part of it.
 - Visual Studio Code with the **HashiCorp Terraform** extension installed.
 - Azure CLI signed in: run `az login` and confirm you are on the class
   subscription with `az account show`.
-- The class repository cloned, from [Step 5 of the setup
+- The class repository cloned, from [Step 6 of the setup
   guide](../setup/index.md). This lab reads a file from it:
 
   ```
   C:\Users\Administrator\Downloads\repos\practical-tf-az\labs\lab-01-portal-vs-iac\main.tf
   ```
 
-  If that folder is not on your machine, go back and do Step 5 now.
+  If that folder is not on your machine, go back and do Step 6 now.
 
 Commands are shown in **PowerShell**, which is what you have on the Windows
 development VM. Where the syntax differs on macOS or Linux, both are given.

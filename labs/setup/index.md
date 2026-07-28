@@ -44,7 +44,45 @@ For the rest of the labs, wherever you see `<suffix>`, substitute yours.
 > `stsummitordersdevjr42`. Write your suffix on a sticky note. You will type it
 > a lot.
 
-## Step 2: Sign in to Azure and set your subscription
+## Step 2: Open VS Code and a terminal
+
+Every command in every lab this week is typed into a terminal inside VS Code.
+Set that up once now.
+
+1. Open **Visual Studio Code**.
+2. Open the integrated terminal: press ``Ctrl+` `` (the backtick key, above Tab),
+   or use the menu **Terminal > New Terminal**.
+3. Look at the right-hand side of the terminal panel. It names the shell you are
+   in. It should say **powershell** or **pwsh**.
+
+If it says something else, click the **v** next to the **+** at the top right of
+the terminal panel, choose **Select Default Profile**, pick **PowerShell**, then
+close the terminal with the trash-can icon and open a new one.
+
+> **Use PowerShell all week, not Git Bash.** The terminal dropdown also offers
+> Git Bash, and it looks like a reasonable choice. It is not, for this course.
+> Several labs run PowerShell scripts (`scripts/*.ps1`) that Git Bash cannot
+> execute, and Lab 9 pastes Azure resource ids that begin with `/subscriptions/`,
+> which Git Bash silently rewrites into Windows paths. Both failures are
+> confusing and neither is your fault. Stay in PowerShell.
+
+### Check your tools
+
+With the terminal open, run these four. They confirm the machine is ready:
+
+```powershell
+terraform version
+az version
+git --version
+code --version
+```
+
+You should get a version number from each. Terraform should report **1.15.x**.
+If any command is not recognized, close the terminal, open a new one so it picks
+up the PATH, and try again. If it still fails, tell the instructor now rather
+than in the middle of Lab 3.
+
+## Step 3: Sign in to Azure and set your subscription
 
 ```powershell
 az login
@@ -120,7 +158,7 @@ Each should print `Registered`. If one says `NotRegistered`, register it:
 az provider register --namespace Microsoft.KeyVault
 ```
 
-## Step 3: Set your Git identity
+## Step 4: Set your Git identity
 
 Git stamps your name and email on every commit. Set them once:
 
@@ -139,13 +177,12 @@ git config --global init.defaultBranch main
 git config --global core.autocrlf true
 ```
 
-## Step 4: Sign in to GitHub from VS Code
+## Step 5: Sign in to GitHub from VS Code
 
-1. Open VS Code.
-2. Click the **Accounts** icon at the bottom of the left activity bar (the
-   person outline).
-3. Choose **Sign in with GitHub**, and complete the browser prompt.
-4. Back in VS Code, open the **Extensions** panel and confirm both extensions
+1. In the VS Code window you already have open, click the **Accounts** icon at
+   the bottom of the left activity bar (the person outline).
+2. Choose **Sign in with GitHub**, and complete the browser prompt.
+3. Back in VS Code, open the **Extensions** panel and confirm both extensions
    are installed and enabled:
    - **HashiCorp Terraform**
    - **GitHub Pull Requests**
@@ -153,7 +190,7 @@ git config --global core.autocrlf true
 You should now see a **GitHub** icon in the activity bar. That is where pull
 requests show up in Lab 2.
 
-## Step 5: Clone the class repository
+## Step 6: Clone the class repository
 
 The lab guide, the starter files, and the instructor solutions all live in one
 repository. Clone it now, because **Lab 1 opens a file from it**.
@@ -201,7 +238,7 @@ C:\Users\Administrator\Downloads\repos\practical-tf-az\
 > **Pull** step. If a lab gets a correction during the week, that is how you
 > pick it up.
 
-## Step 6: Know the two Summit repositories
+## Step 7: Know the two Summit repositories
 
 Separately from the class repository above, Summit Retail's platform lives in
 two public repositories in the `Innovation-In-Software` GitHub organization:
@@ -215,7 +252,7 @@ Both are public, so you can read and clone them without any extra access. You
 also have **write** access to `az-tf-ops` so you can push a branch and open a
 pull request in Lab 2.
 
-## Step 7: Make your working folder
+## Step 8: Make your working folder
 
 You will use **two** locations all week, and it is worth being clear about which
 is which:
@@ -294,7 +331,7 @@ somebody created by hand.
 
 | Symptom | Usual cause |
 |---|---|
-| `subscription_id is a required provider property` | `ARM_SUBSCRIPTION_ID` is not set in this terminal (Step 2) |
+| `subscription_id is a required provider property` | `ARM_SUBSCRIPTION_ID` is not set in this terminal (Step 3) |
 | `building account: unable to obtain authorization token` | your `az login` session expired. Run `az login` again |
 | `StorageAccountAlreadyTaken` | someone else has that global name. Change your suffix |
 | `AuthorizationFailed` | you are pointed at the wrong subscription. Run `az account show` |
