@@ -549,17 +549,42 @@ its job.
 ### Open the pull request
 
 7. Click the **GitHub** icon in the activity bar, then **Create Pull Request**.
-8. Check the base is **your** repository's `main`, not the organization's.
+8. Check the base is **your** repository's `main`, not the organization's. Getting
+   this wrong proposes your change to somebody else's repository.
 9. Title it the same as the commit, describe it in a sentence, and click
    **Create**.
 10. Open **Files Changed** and look at the diff as a reviewer sees it. This is a
     substantial change, exactly the kind a teammate should read.
-11. Merge it from the pull request view or the GitHub web page.
+
+### Merge it
+
+Same as Lab 3, and just as necessary: **Lab 5 starts from `main`.** If you stop
+after opening the pull request, your VM and storage stay on the feature branch
+and Lab 5 will not find them.
+
+11. Click **Merge pull request**, either in the VS Code pull request view or on
+    the GitHub web page.
+12. Click **Confirm merge**.
+13. Click **Delete branch** when GitHub offers. The work is on `main` now, and
+    leaving merged branches around makes the branch list useless by Friday.
 
 ### Get back onto main
 
-12. Click the branch name in the status bar, choose `main`, then click the sync
-    icon to pull the merge down.
+14. Click the branch name in the bottom left status bar and choose `main`.
+15. Click the sync icon next to it to pull the merge down.
+
+**Now confirm it worked.** With `main` checked out, all three files must still be
+in the Explorer: `main.tf`, `variables.tf`, and `outputs.tf`. If any of them
+disappeared when you switched branches, the merge did not happen. Go back to
+step 11.
+
+```powershell
+terraform plan
+```
+
+This should report **No changes**. That is the state Lab 5 expects to start from:
+eleven resources applied, configuration merged to `main`, and reality matching
+the code.
 
 The command line equivalent for the whole of Part 8:
 
@@ -570,6 +595,7 @@ git push -u origin feature/lab04-orders-dev-environment
 # open, review, and merge the pull request, then:
 git switch main
 git pull
+terraform plan
 ```
 
 Confirm the Source Control panel shows no pending changes, and that neither
@@ -594,7 +620,10 @@ Those three questions are the rest of Day 2.
 - [ ] `terraform state list` shows 11 resources
 - [ ] You can SSH to the VM using the `vm_ssh_command` output
 - [ ] Every resource in the portal carries the four standard tags
-- [ ] Your branch is merged into `main`
+- [ ] Your pull request is **merged**, and the status bar shows `main`
+- [ ] **With `main` checked out, `main.tf`, `variables.tf`, and `outputs.tf` are
+      all still there.** Lab 5 starts from `main`, so if any of them vanish when
+      you switch branches, the merge did not happen
 
 ## If you get stuck
 
