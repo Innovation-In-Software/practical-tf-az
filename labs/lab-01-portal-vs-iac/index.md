@@ -25,7 +25,7 @@ to the exact line of Terraform that produces each part of it.
 
 > You will **not** run `terraform apply` in this lab. You will only read the
 > config and run `terraform plan` so you can see how Terraform describes the same
-> resources. Applying comes in Lab 3.
+> resources.
 
 ## What you'll need
 
@@ -147,7 +147,7 @@ Notice two things the file does that the portal did not:
 
 > The `provider "azurerm"` block at the top and the `terraform { ... }` block
 > are plumbing: they tell Terraform which provider to download and which Azure
-> subscription to talk to. You will learn these properly in Lab 3. For now, just
+> subscription to talk to. You will write these yourself shortly. For now, just
 > notice they exist.
 
 ## Part 3: Let Terraform describe the end state
@@ -196,12 +196,12 @@ anything. It read the end state you described and worked out the plan itself.
 > **So what would happen if you ran `apply`?** The storage account would be
 > created, because the name in the file (`stsummitlab1xyz`) is not the one you
 > typed in the portal. The resource group would fail, because Azure already has
-> one by that name and Terraform does not know it is yours to manage. Connecting
-> existing resources to Terraform is a real and common job, and it is what Lab 9
-> is about. Do not run `apply` here.
+> one by that name and Terraform does not know it is yours to manage. Bringing
+> existing resources under Terraform is a real and common job, and it has its own
+> command. Do not run `apply` here.
 
 > This is the whole point of the lab. You described a result, and a tool produced
-> a repeatable plan to reach it. In Lab 3 you will let it actually run.
+> a repeatable plan to reach it.
 
 ## Reflect
 

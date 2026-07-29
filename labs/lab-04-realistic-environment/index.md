@@ -145,7 +145,7 @@ something, and an NSG with no rules only carries Azure's invisible defaults.
 resource, or declare each rule as a separate `azurerm_network_security_rule`.
 We use separate resources, because adding a rule is then a new block rather than
 an edit to an existing one, which makes for a smaller and clearer pull request.
-Summit's shared modules do the same, which matters in Lab 12.
+Summit's shared modules do the same.
 
 **Never mix the two styles on one NSG.** They will fight on every apply, each
 removing what the other added. Pick separate resources and stay with them.
@@ -233,8 +233,8 @@ A few details that trip people up:
 
 **`disable_password_authentication = false`** is required whenever you use
 `admin_password`. The provider defaults it to `true`, because SSH keys are the
-better practice. We use a password here so that Lab 8 has something to move into
-Key Vault.
+better practice. A password is used here because it is the simpler thing to see
+working, and because it gives you a secret to handle properly later.
 
 **`network_interface_ids` is a list.** A VM can have more than one NIC. Even with
 one, the brackets are required.
@@ -286,8 +286,8 @@ and apply output. Be clear about what it does and does not do:
 - It **does not** encrypt anything. The password lands in `terraform.tfstate` in
   plain text regardless
 
-That second point is why Lab 5 moves state somewhere access-controlled and Lab 8
-stops putting the secret in a variable at all.
+That second point is why state belongs somewhere access-controlled, and why a
+password should not be a Terraform variable at all.
 
 ### Supply the values
 
@@ -295,8 +295,8 @@ A variable with no `default` has to get its value from somewhere. Terraform will
 take one from several places, and two of them matter here.
 
 A **`.tfvars` file** is the normal choice for values that describe an
-environment: region, sizes, address ranges. You will build one in Lab 6, and it
-gets committed, because a teammate needs to see how dev is configured.
+environment: region, sizes, address ranges. It gets committed, because a
+teammate needs to see how dev is configured.
 
 A **password is not that kind of value.** It does not describe the environment,
 and it must never reach the repository. Supply it through an **environment
@@ -329,8 +329,8 @@ $env:TF_VAR_vm_admin_password = "Summit-Lab-2026!"
 ```
 
 > Yes, that password is now in your shell history, and yes, that is also a bad
-> habit. It is a deliberate stepping stone: Lab 8 removes the variable entirely
-> and reads the value from Key Vault at apply time.
+> habit, and a temporary one. The fix is to keep the password out of the variable
+> entirely and have Terraform read it from a secret store at apply time.
 
 > **`/32` matters.** It means "exactly this one address." A tired engineer types
 > `0.0.0.0/0` to make an SSH problem go away and opens the machine to the whole
@@ -368,12 +368,12 @@ Replace `<suffix>` with yours. If you skip this, you will get
 > `Ctrl+H` to open Find and Replace in the current file. Put `<suffix>` in the
 > top box and your four characters in the bottom, then click **Replace All** (or
 > `Ctrl+Alt+Enter`). Use `Ctrl+Shift+H` to do the same across every file in the
-> repository at once, which is what you will want in Lab 6.
+> repository at once.
 
 `account_replication_type = "LRS"` is locally redundant storage: three copies in
 one datacenter. It is the cheapest option and correct for a dev environment.
-Production would use `ZRS` or `GRS`, and in Lab 6 that difference becomes a
-variable rather than an edit.
+Production would use `ZRS` or `GRS`, which is a good argument for making it a
+variable rather than a literal.
 
 > Note `storage_account_id` rather than `storage_account_name`. Version 4 of the
 > provider deprecated the name form. If you copy an example from a blog post
@@ -405,14 +405,13 @@ output "storage_account_name" {
 ```
 
 `"${...}"` is string interpolation: everything inside the braces is an
-expression, and its result is substituted into the string. You will use it
-constantly in Lab 6.
+expression, and its result is substituted into the string.
 
 ## Part 6: Apply
 
 ### Format from VS Code
 
-You ran `terraform fmt` from the terminal in Lab 3. VS Code can do it for you:
+You ran `terraform fmt` from the terminal earlier. VS Code can do it for you:
 with a `.tf` file open, press `Shift+Alt+F` (**Format Document**). The HashiCorp
 extension aligns the `=` signs and fixes the indentation in place.
 
@@ -424,7 +423,7 @@ about `terraform fmt` again.
 > If nothing happens at all, the extension is not active on this file: check the
 > language indicator in the bottom right says **Terraform**.
 
-The command line still works and is what the pipeline uses in Lab 10, so it is
+The command line still works, and it is what a pipeline would run, so it is
 worth knowing both:
 
 ```powershell
@@ -510,8 +509,8 @@ first time a count surprises you.
 
 ## Part 8: Commit
 
-All of this is the Lab 2 loop, run from the **Source Control** panel (the
-branching icon in the activity bar).
+All of this is the loop you learned in Lab 2, run from the **Source Control**
+panel (the branching icon in the activity bar).
 
 ### Read your own diff first
 
@@ -553,9 +552,9 @@ its job.
 
 ### Merge it
 
-Same as Lab 3, and just as necessary: **Lab 5 starts from `main`.** If you stop
-after opening the pull request, your VM and storage stay on the feature branch
-and Lab 5 will not find them.
+Same as last time, and just as necessary: **the next lab starts from `main`.** If
+you stop after opening the pull request, your VM and storage stay on the feature
+branch and the next lab will not find them.
 
 11. Click **Merge pull request**, either in the VS Code pull request view or on
     the GitHub web page.
@@ -577,9 +576,8 @@ step 11.
 terraform plan
 ```
 
-This should report **No changes**. That is the state Lab 5 expects to start from:
-eleven resources applied, configuration merged to `main`, and reality matching
-the code.
+This should report **No changes**: eleven resources applied, configuration merged
+to `main`, and reality matching the code.
 
 The command line equivalent for the whole of Part 8:
 
@@ -600,14 +598,11 @@ Confirm the Source Control panel shows no pending changes, and that neither
 
 Talk these through:
 
-1. Your configuration hardcodes `Standard_F1als_v7`, `LRS`, and `10.10.0.0/16`. What
-   has to happen when you need a production copy of this environment? (Lab 6.)
+1. Your configuration hardcodes `Standard_F1als_v7`, `LRS`, and `10.10.0.0/16`.
+   What has to happen when you need a production copy of this environment?
 2. `terraform.tfstate` is on your VM's disk. What happens when a teammate needs
-   to change this environment? (Lab 5.)
+   to change this environment?
 3. The VM password is in your shell history and in state. Where should it live?
-   (Lab 8.)
-
-Those three questions are the rest of Day 2.
 
 ## How to verify
 
@@ -617,8 +612,8 @@ Those three questions are the rest of Day 2.
 - [ ] Every resource in the portal carries the four standard tags
 - [ ] Your pull request is **merged**, and the status bar shows `main`
 - [ ] **With `main` checked out, `main.tf`, `variables.tf`, and `outputs.tf` are
-      all still there.** Lab 5 starts from `main`, so if any of them vanish when
-      you switch branches, the merge did not happen
+      all still there.** The next lab starts from `main`, so if any of them vanish
+      when you switch branches, the merge did not happen
 
 ## If you get stuck
 
@@ -637,8 +632,7 @@ Those three questions are the rest of Day 2.
 
 ## Cleanup
 
-**Leave the environment running.** Lab 5 migrates its state to a shared backend,
-and that is far more interesting with real resources behind it.
+**Leave the environment running.** The next lab builds on it.
 
 Do stop the VM at the end of the day so it does not bill for compute overnight:
 
@@ -662,5 +656,5 @@ tagged, network-secured, code-defined environment that you can rebuild from a
 file in about three minutes.
 
 It also has three real problems: the state is on your laptop, the values are
-hardcoded, and there is a password in your shell history. Day 2 fixes all three,
-in that order.
+hardcoded, and there is a password in your shell history. Those are the next
+things to fix.

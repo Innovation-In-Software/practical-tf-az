@@ -60,7 +60,7 @@ the terminal panel, choose **Select Default Profile**, pick **PowerShell**, then
 close the terminal with the trash-can icon and open a new one.
 
 > **Use PowerShell all week, not Git Bash.** Several labs run PowerShell scripts,
-> and Git Bash rewrites the Azure resource ids that Lab 9 depends on.
+> and Git Bash rewrites the Azure resource ids you will be pasting.
 
 ### Check your tools
 
@@ -76,7 +76,7 @@ code --version
 You should get a version number from each. Terraform should report **1.15.x**.
 If any command is not recognized, close the terminal, open a new one so it picks
 up the PATH, and try again. If it still fails, tell the instructor now rather
-than in the middle of Lab 3.
+than in the middle of a lab.
 
 ## Step 3: Sign in to Azure and set your subscription
 
@@ -242,7 +242,7 @@ two public repositories in the `Innovation-In-Software` GitHub organization:
 | Repository | What it is | What you do with it |
 |---|---|---|
 | [`az-tf-ops`](https://github.com/Innovation-In-Software/az-tf-ops) | The Orders platform working repository | Lab 2: branch, commit, and open a pull request against the shared copy. Then make your **own** copy from it, which you use for Labs 3 to 12. |
-| [`az-tf-ops-modules`](https://github.com/Innovation-In-Software/az-tf-ops-modules) | Summit's shared in-house Terraform modules | Lab 7 onward: you consume these. You never edit them. |
+| [`az-tf-ops-modules`](https://github.com/Innovation-In-Software/az-tf-ops-modules) | Summit's shared in-house Terraform modules | Later in the week you consume these. You never edit them. |
 
 Both are public, so you can read and clone them without any extra access. You
 also have **write** access to `az-tf-ops` so you can push a branch and open a
@@ -281,16 +281,15 @@ Each lab tells you which folder to be in. By the end of the week you will have:
 C:\Users\Administrator\Downloads\terraform\labs\
   lab-01\                      Lab 1: a copy of the starter main.tf
   az-tf-ops\                   Lab 2: the shared practice repository
-  az-tf-ops-<your-username>\   Labs 3 to 12: your own repository. This is the
-                               one that matters. Every lab from 3 on adds to it
-  broken\                      Lab 11: a throwaway sandbox
+  az-tf-ops-<your-username>\   Lab 3 onward: your own repository. This is the
+                               one that matters. Every lab adds to it
+  broken\                      a throwaway sandbox, later in the week
 ```
 
-> **Labs 3 to 12 are cumulative and all happen in one repository.** They are not
-> twelve separate folders. Lab 4 builds on what Lab 3 applied, Lab 5 moves that
-> state to Azure Storage, and Lab 12 refactors what you built in Labs 3 to 6.
-> The standalone folders above are the exceptions: Lab 1 before you have a
-> repository, and Lab 11's deliberately broken sandbox.
+> **From Lab 3 on, the labs are cumulative and all happen in one repository.**
+> They are not twelve separate folders: each lab builds on the state the previous
+> one left behind. The standalone folders above are the exceptions, and each lab
+> tells you when you are in one.
 
 ## Quick reference: values you will reuse all week
 
@@ -319,9 +318,9 @@ so they get the squashed form plus your suffix:
 - `stsummitordersdev<suffix>` (storage account: lowercase and digits only, 3-24 characters)
 - `kv-summit-dev-<suffix>` (Key Vault: 3-24 characters)
 
-Consistency here is not cosmetic. In Lab 6 you generate these names from a
-single pattern, and in Lab 11 the convention is what lets you spot the resource
-somebody created by hand.
+Consistency here is not cosmetic. A predictable name is what lets you generate
+names from a single pattern instead of typing them, and what lets you spot the
+resource somebody created by hand.
 
 ## If something goes wrong
 

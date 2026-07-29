@@ -13,11 +13,11 @@ of your career with this tool:
 write  ->  init  ->  validate  ->  plan  ->  apply
 ```
 
-You will also look at the state file Terraform writes, because in Lab 5 that
-file becomes the most important object in the repository.
+You will also look at the state file Terraform writes, which is how Terraform
+knows which real resources belong to your configuration.
 
 > **This lab creates real Azure resources in your subscription.** They are
-> small and free or nearly free, and you will keep them: Lab 4 adds to this
+> small and free or nearly free, and you will keep them: the next lab adds to this
 > exact configuration.
 
 ## Objectives
@@ -267,9 +267,9 @@ text, a plain explanation, and in this case the fix itself. Terraform errors are
 usually this good. Read them top to bottom rather than skimming for red.
 
 > `address_prefix` is not a typo somebody invented. It was the correct argument
-> in version 2 of the `azurerm` provider and was removed in version 4. You will
-> meet a harder version of this in Lab 11, where the error does **not** suggest
-> the replacement.
+> in version 2 of the `azurerm` provider and was removed in version 4. Not every
+> error is this helpful: sometimes an argument is simply gone and the message
+> does not tell you what replaced it.
 
 3. Put the `es` back and run `terraform validate` again.
 
@@ -316,8 +316,7 @@ The symbols are the whole language of a plan:
 it yet. Resource ids and IP addresses are the usual ones.
 
 **"Plan: 3 to add, 0 to change, 0 to destroy"** is the line to read first, every
-single time. In Lab 11 you will meet the version of that line that should stop
-you cold.
+single time.
 
 > Get in the habit now: never type `terraform apply` without reading the plan
 > that preceded it. This is the single practice that separates people who trust
@@ -377,15 +376,14 @@ You get every attribute Terraform recorded, including the Azure resource id:
 id = "/subscriptions/<sub>/resourceGroups/rg-summit-orders-dev/providers/Microsoft.Network/virtualNetworks/vnet-summit-orders-dev"
 ```
 
-That id format matters in Lab 9, when you import resources somebody built by
-hand.
+That id is how Terraform addresses the resource in Azure.
 
 You can open `terraform.tfstate` in VS Code and read it. Do that once, so it
 stops being mysterious. Then note two rules:
 
 - **Never edit it by hand.** Use `terraform state` commands.
-- **Never commit it.** It sits on your laptop right now, which is a problem you
-  fix in Lab 5.
+- **Never commit it.** It sits on your laptop right now, and it can contain
+  secrets in plain text.
 
 ### Prove that plan is idempotent
 
@@ -400,13 +398,13 @@ No changes. Your infrastructure matches the configuration.
 ```
 
 That sentence is the goal state of every Terraform repository. Reality matches
-the code. In Lab 11 you will find out what it means when it stops being true.
+the code.
 
 ## Part 10: Commit your work
 
-Your configuration currently exists **only on your branch**. Lab 4 starts from
-`main`, so this part is not optional bookkeeping: if you stop after pushing,
-Lab 4 will not work. Take it to the end.
+Your configuration currently exists **only on your branch**. The next lab starts
+from `main`, so this part is not optional bookkeeping: if you stop after pushing,
+the next lab will not work. Take it to the end.
 
 ### Stage and commit
 
@@ -455,7 +453,7 @@ git pull
 ```
 
 > You are approving your own pull request here, which is not how it works on a
-> real team. Lab 10 makes that impossible in your repository.
+> real team. Later you will make that impossible in your repository.
 
 ## How to verify
 
@@ -463,9 +461,9 @@ git pull
 - [ ] `terraform state list` shows exactly three resources
 - [ ] The portal shows `rg-summit-orders-dev` with the VNet and subnet inside
 - [ ] Your pull request is **merged**, and the status bar shows `main`
-- [ ] **With `main` checked out, `main.tf` is still there.** This is the one Lab 4
-      depends on. If `main.tf` vanishes when you switch to `main`, your work never
-      reached it
+- [ ] **With `main` checked out, `main.tf` is still there.** This is the one the
+      next lab depends on. If `main.tf` vanishes when you switch to `main`, your
+      work never reached it
 
 ## If you get stuck
 
@@ -473,14 +471,14 @@ git pull
 |---|---|
 | `subscription_id is a required provider property` | `ARM_SUBSCRIPTION_ID` is not set in this terminal. Set it and rerun. |
 | `Error: building account: ... token` | Your `az login` expired. Run `az login` again. |
-| `A resource with the ID ... already exists` | That resource already exists in Azure but not in your state, usually from a previous attempt. Either delete it in the portal, or preview Lab 9 and import it. |
+| `A resource with the ID ... already exists` | That resource already exists in Azure but not in your state, usually from a previous attempt. Delete it in the portal and apply again. |
 | `InvalidCidrNotation` or an address overlap | Check `address_space` is `["10.10.0.0/16"]` and the subnet is inside it. |
 | `Reference to undeclared resource` | A typo in a reference. The local name on the left of the dot must match a `resource` block exactly. |
 | `terraform apply` hangs at "Still creating..." | Normal. Networking resources take up to a minute. Give it two before worrying. |
 
 ## Cleanup
 
-**Do not destroy anything.** Lab 4 builds directly on top of what you just
+**Do not destroy anything.** The next lab builds directly on top of what you just
 created.
 
 If you want to see how `destroy` works, run `terraform plan -destroy` to preview
@@ -500,5 +498,4 @@ a real Azure subscription, and got the sentence that means everything is in
 order: **No changes. Your infrastructure matches the configuration.**
 
 You also saw resources reference each other rather than repeat values, which is
-what makes a configuration maintainable instead of a pile of literals. Lab 4
-turns this foundation into an environment somebody could actually use.
+what makes a configuration maintainable instead of a pile of literals.

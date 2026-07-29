@@ -77,11 +77,11 @@ az-tf-ops/
   docs/
     naming-and-tagging.md
   scripts/
-    bootstrap-backend.ps1          Lab 5
-    create-service-principal.ps1   Lab 10
-    destroy-all.ps1                Lab 12
-    seed-key-vault.ps1             Lab 8
-    seed-legacy-reporting.ps1      Lab 9
+    bootstrap-backend.ps1
+    create-service-principal.ps1
+    destroy-all.ps1
+    seed-key-vault.ps1
+    seed-legacy-reporting.ps1
   students/
     README.md
 ```
@@ -239,7 +239,7 @@ mistakes.
 
 > **The point:** a change to Summit's infrastructure will go through exactly
 > this. Somebody proposes it, somebody else reads it, and only then does it
-> reach `main`. In Lab 10 you make that a rule the repository enforces rather
+> reach `main`. Later you will make that a rule the repository enforces rather
 > than a habit people remember.
 
 7. Once approved, merge your pull request from the GitHub web page: click
@@ -279,9 +279,9 @@ branch. Twenty people cannot do that to one repository.
    - **Visibility:** **Public**
 4. Click **Create repository**.
 
-> **Why public?** Branch protection rules and required status checks, which you
-> set up in Lab 10, are only available on public repositories under the
-> organization's GitHub plan. There is nothing sensitive in this repository:
+> **Why public?** Branch protection rules and required status checks are only
+> available on public repositories under the organization's GitHub plan, and you
+> will need them later in the week. There is nothing sensitive in this repository:
 > real credentials live in GitHub Actions secrets and in Azure Key Vault, never
 > in the files.
 
@@ -334,7 +334,7 @@ Nothing to clean up in Azure. Leave both repositories in place.
 
 You ran the loop that every remaining lab depends on: branch, commit, push,
 propose, review, merge. You also have your own copy of Summit's Orders
-repository, which is where you write your first real Terraform in Lab 3.
+repository, which is where you write your first real Terraform.
 
 From here, when a lab says "commit your work," it means this loop. It will feel
 slow twice and then it will feel normal.
