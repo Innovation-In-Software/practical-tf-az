@@ -588,9 +588,44 @@ the lab.
 `this["orders-logs"]`. Terraform sees the old address disappear and two new ones
 appear. It cannot tell that one of them is the same container under a new label.
 
-The container is empty, so this is harmless. If it held anything, you would use a
-`moved` block instead, which tells Terraform "this address became that address"
-as a line of committed code.
+**Do not apply this yet.** Terraform would delete the container and immediately
+try to create one with the same name, and that fails:
+
+```
+Error: a resource with the ID ".../containers/orders-data" already exists - to be
+managed via Terraform this resource needs to be imported into the State.
+```
+
+The delete has not finished propagating when the create runs. Running `apply` a
+second time succeeds, but there is no reason to destroy the container at all.
+
+Tell state about the move instead, exactly as you did in Lab 5:
+
+```powershell
+terraform state mv 'azurerm_storage_container.orders_data' 'azurerm_storage_container.this["orders-data"]'
+```
+
+Note the single quotes. The new address contains double quotes, and single quotes
+stop PowerShell from touching them.
+
+```
+Move "azurerm_storage_container.orders_data" to "azurerm_storage_container.this[\"orders-data\"]"
+Successfully moved 1 object(s).
+```
+
+Now plan again:
+
+```powershell
+terraform plan -var-file=dev.tfvars
+```
+
+The destroy is gone. What remains is **1 to add** for the new `orders-logs`
+container, plus the tag change below. Nothing is destroyed, and the container that
+already existed is simply relabelled in state.
+
+> This is the same lesson as Lab 5, met in the wild: changing how you *address* a
+> resource is not the same as changing the resource. `for_each` changed the
+> address of a container you already had.
 
 **1 to change: the VM tags.** You added `role = "app-server"` with `merge()`.
 Terraform shows this as `~ tags` with the added key. Tags update in place; no
@@ -607,6 +642,21 @@ they compute to are identical. That silence is what a good refactor looks like.
 
 ```powershell
 terraform apply -var-file=dev.tfvars
+```
+
+Because you moved the container in state rather than letting Terraform destroy it,
+this reports:
+
+```
+Apply complete! Resources: 1 added, 1 changed, 0 destroyed.
+```
+
+**Zero destroyed** is the number that matters. `terraform state list` now shows
+twelve resources, including both containers:
+
+```
+azurerm_storage_container.this["orders-data"]
+azurerm_storage_container.this["orders-logs"]
 ```
 
 Then check the outputs:
@@ -786,6 +836,7 @@ If you finish early:
 
 | Error | What it means and what to do |
 |---|---|
+| `a resource with the ID ".../containers/orders-data" already exists` | You applied the `for_each` plan without running `terraform state mv` first, so Terraform destroyed the container and could not immediately recreate it under the same name. Run `apply` again to finish, or see Part 5 for the `state mv` that avoids the destroy entirely. |
 | `No value for required variable` | You forgot `-var-file=dev.tfvars`, or the variable is one of the `TF_VAR_` ones and this terminal does not have it. |
 | `Invalid value for variable: environment must be one of...` | Your validation is working. Fix the value in `dev.tfvars`. |
 | `Invalid function argument` on `cidrsubnet` | `vnet_address_space` is missing or not a list. It must be `["10.10.0.0/16"]`, with brackets. |
