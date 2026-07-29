@@ -591,13 +591,26 @@ pull request, VS Code gave you **two** editor tabs:
     it, click the pull request again in the **GitHub Pull Request** panel on the
     left.
 12. Scroll to the bottom of that tab. Click **Merge Pull Request**, then confirm.
-13. Click **Delete Branch** when it offers. The work is on `main` now, and
-    deleting merged branches keeps the branch list short.
 
-> **You cannot approve your own pull request.** GitHub rejects it: *"Can not
-> approve your own pull request."* The **Approve** option is there because
-> normally somebody else is reviewing. On your own repository you read your own
-> diff and merge it. Reviewing someone else's is what you did in Lab 2.
+The status at the top changes to **Merged**, and a new entry appears at the
+bottom of the timeline: *"Pull request successfully merged."*
+
+13. **Delete the branch.** The button is labelled `Delete Branch...`, and it is in
+    two places once the merge completes: next to *"Pull request successfully
+    merged."* at the bottom of the `#N` tab, and at the bottom of the left
+    sidebar under **Create New Pull Request...**. Either works.
+
+    The `...` means it asks which branches to remove. Choose **both** the local
+    and the remote one. The work is on `main` now, and deleting merged branches
+    keeps the branch list readable.
+
+> **You cannot approve your own pull request.** GitHub does not allow it, so on
+> your own repository the review box offers only **Comment**. Typing "Approved"
+> into that box and clicking **Comment** leaves a comment. It does not approve
+> anything, even though the timeline afterwards reads *"reviewed: Approved"*.
+>
+> That is fine here. You read your own diff and merged it. Reviewing someone
+> else's work, where **Approve** does appear, is what you did in Lab 2.
 
 If you would rather do it in the browser, the pull request page on GitHub has the
 same **Merge pull request** button.

@@ -440,6 +440,11 @@ VS Code now opens **two** editor tabs, and only one of them can merge:
 10. **Click the `#N` tab**, the one named after your pull request. Scroll to the
     bottom and click **Merge Pull Request**, then confirm.
 
+The status at the top changes to **Merged**. A `Delete Branch...` button appears
+next to *"Pull request successfully merged."* at the bottom of that tab, and also
+at the bottom of the left sidebar. Click it and choose both the local and remote
+branch.
+
 If you closed that tab, click the pull request again under **Pull Requests** in
 the **GitHub Pull Request** panel on the left. The GitHub web page has the same
 button if you prefer the browser.
