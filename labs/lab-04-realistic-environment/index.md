@@ -2,8 +2,8 @@
 
 ## Overview
 
-Three resources is a demo. A real ticket says "stand up the Orders dev
-environment," and that means networking, a machine, somewhere to put data, and
+Three resources is not a usable environment. A real request to "stand up the
+Orders dev environment" means networking, a machine, somewhere to put data, and
 consistent tags so finance and security can tell what it is.
 
 In this lab you grow Lab 3's foundation into an environment somebody could
@@ -333,10 +333,10 @@ $env:TF_VAR_vm_admin_password = "Summit-Lab-2026!"
 > habit, and a temporary one. The fix is to keep the password out of the variable
 > entirely and have Terraform read it from a secret store at apply time.
 
-> **`/32` matters.** It means "exactly this one address." A tired engineer types
-> `0.0.0.0/0` to make an SSH problem go away and opens the machine to the whole
-> internet. If your address changes (VPN, coffee shop, reconnected VM), rerun
-> the two commands above and `terraform apply` again.
+> **`/32` matters.** It means "exactly this one address." Using `0.0.0.0/0`
+> instead will make an SSH problem go away, and will also open the machine to
+> the entire internet. If your address changes (VPN, different network, restarted
+> VM), rerun the two commands above and `terraform apply` again.
 
 ## Part 4: Storage
 
@@ -382,8 +382,8 @@ variable rather than a literal.
 
 ## Part 5: Add an output
 
-You will want the VM's public IP address, and hunting for it in the portal every
-time is silly.
+You will need the VM's public IP address often. An output prints it after every
+apply, so you do not have to look it up in the portal.
 
 Create `outputs.tf` the same way you created `variables.tf`: **New File...** in
 the Explorer, at the top level of the repository.

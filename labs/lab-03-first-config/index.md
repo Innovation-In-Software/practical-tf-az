@@ -88,8 +88,8 @@ provider "azurerm" {
 Three things worth understanding before you move on.
 
 **`required_version = ">= 1.9"`** means Terraform refuses to run this
-configuration on anything older. That is a favor to your future teammate who
-installs an old CLI and cannot work out why `import` blocks are a syntax error.
+configuration on anything older. Without it, a teammate on an older CLI gets a
+syntax error on `import` blocks and no explanation of why.
 
 **`source = "hashicorp/azurerm"`** is the provider: the plugin that knows how to
 talk to the Azure Resource Manager API. Terraform itself knows nothing about
@@ -242,7 +242,8 @@ valid."**
 
 ### Break it on purpose
 
-Learning to read errors matters more than avoiding them.
+You will see plenty of errors this week. Reading them accurately is a skill, so
+practice on one you caused deliberately.
 
 1. In `main.tf`, change `address_prefixes` to `address_prefix` (drop the `es`).
 2. Run `terraform validate`.
@@ -378,8 +379,8 @@ id = "/subscriptions/<sub>/resourceGroups/rg-summit-orders-dev/providers/Microso
 
 That id is how Terraform addresses the resource in Azure.
 
-You can open `terraform.tfstate` in VS Code and read it. Do that once, so it
-stops being mysterious. Then note two rules:
+Open `terraform.tfstate` in VS Code and read it once, so you know what is in it.
+Then note two rules:
 
 - **Never edit it by hand.** Use `terraform state` commands.
 - **Never commit it.** It sits on your laptop right now, and it can contain

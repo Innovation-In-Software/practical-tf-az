@@ -19,10 +19,9 @@ This lab has two halves:
 Almost all of this happens with buttons in VS Code. The equivalent commands are
 shown alongside, because you will meet them in scripts and in error messages.
 
-> If you have never opened a pull request before, this is the most important
-> hour of the course. The Terraform is learnable in a day. Working as a team
-> through reviewed changes is the part that actually changes how Summit
-> operates.
+> If you have never opened a pull request before, spend the time on this lab.
+> Terraform syntax is quick to pick up. Getting changes reviewed before they
+> reach production is the harder change to make, and the one that matters more.
 
 ## Objectives
 
@@ -163,7 +162,7 @@ git commit -m "Add Jamie Rivera to the students directory"
 ```
 
 A good commit message says what the change does, in the present tense, in one
-line. "Update file" and "asdf" are how a history becomes useless.
+line. "Update file" and "asdf" tell the next reader nothing.
 
 > Your commit is still only on your machine. Nobody else can see it. That is the
 > next step.

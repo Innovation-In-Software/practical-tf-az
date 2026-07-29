@@ -6,12 +6,12 @@ You already know how to build things in the Azure portal. In this lab you will
 do exactly that, create a resource group and a storage account by clicking, and
 then open a Terraform file that describes the same result in code.
 
-The goal is not to learn Terraform syntax yet. The goal is to feel the
-difference between the two styles of work:
+The goal is not to learn Terraform syntax yet. It is to see the difference
+between the two styles of work:
 
 - In the portal you perform a **sequence of steps**. You click, you choose, you
-  click again. If someone asks "how do I rebuild this exactly?" the honest
-  answer is "click all of that again and hope you remember the defaults."
+  click again. To rebuild it exactly, someone has to repeat every click and
+  remember every default they accepted.
 - In Terraform you describe the **end state** you want. You do not list the
   steps. Terraform works out the steps for you, every time, the same way.
 
@@ -90,9 +90,9 @@ A **resource group (RG)** is the container Azure puts related resources in.
 6. When the deployment finishes, click **Go to resource** and look at the
    **Overview** page.
 
-Take a moment to appreciate what just happened: you made a series of choices
-across several screens, and most of them were defaults you did not think about.
-Nothing recorded those choices except the running resource itself.
+Note what just happened. You made a series of choices across several screens,
+and most of them were defaults you did not read. Nothing recorded those choices
+except the running resource itself.
 
 ## Part 2: Read the same result as Terraform
 
@@ -179,7 +179,7 @@ Read the output. Terraform will report something like **"Plan: 2 to add, 0 to
 change, 0 to destroy"** and show a `+` next to a resource group and a storage
 account.
 
-Sit with why that happens, because it surprises people. The resource group in
+This surprises people, so it is worth understanding. The resource group in
 this file is named `rg-summit-lab1`, which is **exactly** the one you created in
 the portal ten minutes ago. It is real. It exists. And Terraform still offers to
 create it.
@@ -200,8 +200,8 @@ anything. It read the end state you described and worked out the plan itself.
 > existing resources under Terraform is a real and common job, and it has its own
 > command. Do not run `apply` here.
 
-> This is the whole point of the lab. You described a result, and a tool produced
-> a repeatable plan to reach it.
+> You described a result, and Terraform produced a repeatable plan to reach it.
+> That is what the rest of the course builds on.
 
 ## Reflect
 

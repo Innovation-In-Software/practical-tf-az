@@ -318,9 +318,9 @@ so they get the squashed form plus your suffix:
 - `stsummitordersdev<suffix>` (storage account: lowercase and digits only, 3-24 characters)
 - `kv-summit-dev-<suffix>` (Key Vault: 3-24 characters)
 
-Consistency here is not cosmetic. A predictable name is what lets you generate
-names from a single pattern instead of typing them, and what lets you spot the
-resource somebody created by hand.
+Consistency here has two practical benefits. A predictable name can be generated
+from a single pattern instead of typed out, and a resource that does not follow
+the pattern is easy to spot as something created by hand.
 
 ## If something goes wrong
 
