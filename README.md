@@ -33,14 +33,22 @@ minutes and prevents most of the problems people hit later in the week.
 | [Lab 3: Your first Terraform configuration](labs/lab-03-first-config/index.md) | Resource group, virtual network, subnet, and the full `init` to `apply` lifecycle |
 | [Lab 4: A realistic environment](labs/lab-04-realistic-environment/index.md) | NSG, Linux VM, storage, consistent tags, and your first variable |
 
-## Day 2 and Day 3
+## Day 2: State, multi-environment repo, variables, modules, secrets
 
-Published at the end of each day. Day 2 covers remote state, a
-multi-environment repository, variables and expressions, shared modules, and
-Azure Key Vault. Day 3 covers importing existing infrastructure, CI/CD with
-GitHub Actions, troubleshooting and drift, and refactoring with `moved`.
+| Lab | What you build |
+|---|---|
+| [Lab 5: Remote state and a multi-environment repository](labs/lab-05-remote-state/index.md) | State in Azure Storage with locking, and separate `dev` and `prod` directories |
+| [Lab 6: Variables, locals, outputs, and expressions](labs/lab-06-variables/index.md) | One configuration driven by per-environment values, and `for_each` |
+| [Lab 7: Consuming modules across repositories](labs/lab-07-modules/index.md) | Production built entirely from Summit's shared, version-pinned modules |
+| [Lab 8: Secrets with Azure Key Vault](labs/lab-08-key-vault/index.md) | The VM password out of your shell and into a vault |
 
-**Pull this repository each morning** to pick them up:
+## Day 3
+
+Published at the end of the day. Day 3 covers importing existing infrastructure,
+CI/CD with GitHub Actions, troubleshooting and drift, and refactoring with
+`moved`.
+
+**Pull this repository each morning** to pick it up:
 
 > Source Control panel > the ellipses (three dots) next to **Changes** >
 > **Pull**.
@@ -58,8 +66,8 @@ GitHub Actions, troubleshooting and drift, and refactoring with `moved`.
 fall behind, or to compare against your own work afterwards. Replace `<suffix>`
 with yours before running anything from it.
 
-Solutions appear alongside their labs, so `solutions/` currently covers Day 1
-only.
+Solutions appear alongside their labs, so `solutions/` currently covers Days 1
+and 2.
 
 ## Conventions used in every lab
 
