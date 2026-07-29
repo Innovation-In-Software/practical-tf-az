@@ -484,8 +484,30 @@ While still in PowerShell, try a port the NSG does not allow:
 Test-NetConnection -ComputerName <the ip> -Port 80
 ```
 
-It fails. Nothing is listening on port 80, but more importantly the NSG would
-have dropped it anyway. Default-deny is the behavior you want.
+**Expect this to hang.** It will sit for twenty seconds or more before it
+reports `TcpTestSucceeded : False`. `PingSucceeded` comes back `False` too, for
+the same reason: your NSG has no rule allowing ICMP either.
+
+The delay is the interesting part, and it is not the command being slow.
+
+A deny rule in an NSG does not reject the connection. It **drops the packet and
+sends nothing back**. Your machine gets no answer, so it keeps waiting and
+retrying until it gives up.
+
+Compare that with a port that is reachable but has nothing listening on it.
+There, the VM itself answers with a TCP reset, and the failure comes back
+immediately.
+
+The two failures look different from the outside, and the difference tells you
+where the problem is:
+
+| What you see | What it means |
+|---|---|
+| Fails after a long wait | Something dropped the packet before it arrived: an NSG rule, a firewall, or the wrong address |
+| Fails instantly | The packet did arrive. Nothing is listening on that port |
+
+Remember that distinction. The next time you cannot reach something in Azure,
+how long the failure takes tells you which half of the problem to look at.
 
 ### Look at the whole environment
 
@@ -625,7 +647,8 @@ Talk these through:
 | `StorageAccountAlreadyTaken` | You left `<suffix>` in the name, or your suffix collides. Change it, `terraform apply` again. |
 | `The storage account named ... is invalid` | Uppercase letters or hyphens in the name. Lowercase and digits only, 3-24 characters. |
 | `no value for required variable` | `TF_VAR_vm_admin_password` or `TF_VAR_allowed_ssh_source` is not set in **this** terminal. |
-| SSH connection times out | Your public IP changed. Run the `ipify` command again, reset `TF_VAR_allowed_ssh_source`, and `terraform apply`. Then confirm the rule in the portal under the NSG's **Inbound security rules**. |
+| SSH hangs and then times out | The NSG is dropping your packets, which almost always means your public IP changed. Run the `ipify` command again, reset `TF_VAR_allowed_ssh_source`, and `terraform apply`. Then confirm the rule in the portal under the NSG's **Inbound security rules**. |
+| SSH fails **immediately** with `Connection refused` | The packet reached the VM, so the NSG rule is fine. The VM is deallocated, or `sshd` is not running. Start it with `az vm start -g rg-summit-orders-dev -n vm-summit-orders-dev`. |
 | SSH says `Permission denied` | The password is wrong, or it did not meet Azure complexity rules and the VM took a different one. Reset it in the portal under the VM's **Reset password**, or destroy and recreate the VM. |
 | `Password not complex enough` on apply | 12-72 characters, and three of: lowercase, uppercase, digit, symbol. |
 | `SkuNotAvailable` for the VM size | That size is not available to you in this region. Ask the instructor for an alternative. |
