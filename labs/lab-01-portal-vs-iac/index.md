@@ -167,11 +167,11 @@ subscription and tell you what it would do.
    export ARM_SUBSCRIPTION_ID="$(az account show --query id -o tsv)"
    ```
 3. Initialize the working directory. This downloads the Azure provider:
-   ```sh
+   ```powershell
    terraform init
    ```
 4. Ask Terraform what it would create:
-   ```sh
+   ```powershell
    terraform plan
    ```
 

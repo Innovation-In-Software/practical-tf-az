@@ -490,7 +490,7 @@ Add the variable to `environments/prod/variables.tf`:
 
 ```hcl
 variable "storage_replication_type" {
-  description = "Redundancy for the production storage account."
+  description = "Redundancy for the production storage account. Requires storage module v1.1.0 or later."
   type        = string
   default     = "LRS"
 }
@@ -517,6 +517,39 @@ Plan: 0 to add, 1 to change, 0 to destroy.
 ```
 
 Updated in place. Apply it.
+
+### Bring the other two modules up to date
+
+`network` and `linux-vm` are still pinned to `v1.0.0`. Leaving two modules on an
+old tag is how a repository drifts, so bump them as well:
+
+```hcl
+module "network" {
+  source = "git::https://github.com/Innovation-In-Software/az-tf-ops-modules.git//network?ref=v1.1.0"
+  ...
+}
+
+module "app_vm" {
+  source = "git::https://github.com/Innovation-In-Software/az-tf-ops-modules.git//linux-vm?ref=v1.1.0"
+  ...
+}
+```
+
+```powershell
+terraform init -upgrade
+terraform plan -var-file=prod.tfvars
+```
+
+```
+No changes. Your infrastructure matches the configuration.
+```
+
+**No changes, and that is the point.** `v1.1.0` only touched the `storage`
+module; `network` and `linux-vm` are identical at both tags. So this upgrade is a
+no-op, and the plan is how you find that out rather than assuming it.
+
+Two upgrades, two very different plans, from the same version bump. Read the plan
+every time: a tag number tells you nothing about what changed.
 
 > **Not every redundancy change is in place, and the plan is how you find out.**
 > `LRS` to `GRS` or `RAGRS` is an in-place update: Azure starts replicating to the

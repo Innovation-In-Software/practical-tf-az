@@ -67,7 +67,7 @@ variable "allowed_ssh_source" {
 }
 
 variable "storage_name_suffix" {
-  description = "Student suffix. Storage account names are globally unique."
+  description = "Your 4-character student suffix. Storage account names are globally unique."
   type        = string
 
   validation {

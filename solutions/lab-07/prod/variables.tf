@@ -46,7 +46,7 @@ variable "vm_size" {
 }
 
 variable "vm_admin_password" {
-  description = "Admin password for the production VM. Supplied at run time. Removed in Lab 8."
+  description = "Admin password for the production VM. Supplied at run time."
   type        = string
   sensitive   = true
 }
@@ -62,7 +62,7 @@ variable "allowed_ssh_source" {
 }
 
 variable "storage_name_suffix" {
-  description = "Student suffix, for global storage account uniqueness."
+  description = "Your 4-character student suffix, for global storage account uniqueness."
   type        = string
 }
 

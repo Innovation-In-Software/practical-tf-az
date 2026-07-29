@@ -57,7 +57,7 @@ variable "vm_admin_username" {
 }
 
 variable "vm_admin_password" {
-  description = "Admin password for the VM. Supplied at run time, never committed. Removed in Lab 8."
+  description = "Admin password for the VM. Supplied at run time, never committed."
   type        = string
   sensitive   = true
 }
@@ -73,7 +73,7 @@ variable "allowed_ssh_source" {
 }
 
 variable "storage_name_suffix" {
-  description = "Student suffix. Storage account names are globally unique."
+  description = "Your 4-character student suffix. Storage account names are globally unique."
   type        = string
 
   validation {

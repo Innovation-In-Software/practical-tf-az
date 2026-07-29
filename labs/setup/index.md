@@ -154,11 +154,15 @@ $env:ARM_SUBSCRIPTION_ID
 ```
 
 From here on, commands read your suffix from `$env:SUFFIX` rather than asking you
-to type it:
+to type it. Check that the substitution works by printing a name you will use in
+Lab 5:
 
 ```powershell
-az storage account show --name "stsummittfstate$env:SUFFIX"
+"stsummittfstate$env:SUFFIX"
 ```
+
+That should print `stsummittfstate` followed by your four characters. Nothing is
+created yet; you are only confirming the variable expands.
 
 > **This works in commands, not in files.** Where a lab shows `<suffix>` inside a
 > file you are editing, type your four characters. A `.tf` file cannot read your
