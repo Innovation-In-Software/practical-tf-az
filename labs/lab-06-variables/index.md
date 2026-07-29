@@ -299,16 +299,22 @@ it as "if the environment is prod, GRS, otherwise LRS."
 
 ### Play with expressions before you commit them
 
-`terraform console` gives you an interactive evaluator with your variables and
-state loaded. It is the fastest way to answer "what does this function actually
-return?"
+`terraform console` gives you an interactive evaluator. It is the fastest way to
+answer "what does this function actually return?"
 
 ```powershell
-terraform console -var-file=dev.tfvars
+terraform console
 ```
 
-(Create `dev.tfvars` first, in Part 4, if the console complains about missing
-variables. Or pass `-var` flags.)
+Everything below is a plain function call on literal values, so no variables are
+needed. Terraform only asks for a variable's value when you reference it, and
+`local.name_prefix` is the only thing here that would.
+
+> If you do want to evaluate `local.*` or `var.*`, the console needs values, and
+> those live in the `.tfvars` file you write in Part 4. Come back after that and
+> run `terraform console -var-file=dev.tfvars` to inspect your own locals. Doing
+> it now fails with `Given variables file dev.tfvars does not exist`, because you
+> have not written it yet.
 
 Try these:
 
