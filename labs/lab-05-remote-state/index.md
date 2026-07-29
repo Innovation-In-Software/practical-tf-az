@@ -39,11 +39,36 @@ By the end of this lab you can:
 - `ARM_SUBSCRIPTION_ID` set, and `az login` current
 - Your 4-character student suffix
 
+### Start clean
+
+Get onto `main`, pull, then branch. All of this is in VS Code.
+
+1. Open your repository in VS Code: **File > Open Recent**, then
+   `az-tf-ops-<your-username>`.
+2. Click the branch name in the bottom left status bar and choose `main`.
+3. Click the sync icon (the circular arrows) next to it to pull.
+4. Click the branch name again, choose **Create new branch...**, and name it:
+
+   ```
+   feature/lab05-remote-state
+   ```
+
+5. Confirm the status bar now shows `feature/lab05-remote-state`.
+
+The command line equivalent:
+
 ```powershell
 cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab05-remote-state
+```
+
+### Confirm the last lab is still good
+
+Terraform has no VS Code equivalent, so open a terminal with ``Ctrl+` ``:
+
+```powershell
 terraform plan
 ```
 
@@ -140,7 +165,35 @@ Each directory is its own **root module**: its own `terraform init`, its own
 backend, its own state, its own `plan` and `apply`. They share nothing except
 the modules they call.
 
-Move your existing configuration into `environments/dev`:
+Move your existing configuration into `environments/dev`. Do this in the VS Code
+**Explorer**:
+
+1. Hover over the repository name at the top of the Explorer and click the
+   **New Folder...** icon. Name it `environments`.
+2. Right-click `environments` and choose **New Folder...** twice, creating `dev`
+   and `prod` inside it.
+3. Select `main.tf`, `variables.tf`, and `outputs.tf` together: click the first,
+   then `Ctrl+click` the other two.
+4. **Drag them onto `environments/dev`.**
+5. Drag `.terraform.lock.hcl` in as well. If you cannot see it, it is hidden
+   behind the file filter: it is there, just below `outputs.tf`.
+
+Now check the **Source Control** panel. The three files should appear as
+**renames**, shown with an `R`, not as deletions plus additions. That is Git
+following the move, so the file history follows too.
+
+> Dragging in the Explorer is the same operation as `git mv`. VS Code tells Git
+> about the rename, which is why the history survives.
+
+State and the provider cache are not tracked by Git, so move them from a
+terminal:
+
+```powershell
+move terraform.tfstate environments\dev\terraform.tfstate
+Remove-Item -Recurse -Force .terraform
+```
+
+The command line equivalent of the drag-and-drop above:
 
 ```powershell
 mkdir environments\dev
@@ -151,17 +204,6 @@ git mv variables.tf environments\dev\variables.tf
 git mv outputs.tf environments\dev\outputs.tf
 git mv .terraform.lock.hcl environments\dev\.terraform.lock.hcl
 ```
-
-State and the provider cache are not tracked by Git, so move them with the
-shell:
-
-```powershell
-move terraform.tfstate environments\dev\terraform.tfstate
-Remove-Item -Recurse -Force .terraform
-```
-
-> `git mv` records this as a rename rather than a delete plus an add, so the
-> file history follows. Use it whenever you move tracked files.
 
 Now change into the dev directory. **Every Terraform command for the rest of the
 week runs from an environment directory, never from the repository root.**
@@ -534,27 +576,62 @@ importing it.
 
 ## Part 10: Commit
 
+Format first, from a terminal:
+
 ```powershell
-cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/dev fmt
 terraform -chdir=environments/prod fmt
-
-git add -A
-git status
 ```
 
-Read that status output carefully before committing. You should see the renames
-into `environments/dev/`, the new `backend.tf` files, and the new prod files. You
-should see **no** `.tfstate` files and no `.terraform/` directory. If you do,
-stop and tell the instructor.
+### Stage and commit
+
+1. Open the **Source Control** panel (the branching icon in the activity bar).
+2. Read the file list before you stage anything. You should see the renames into `environments/dev/`, the new `backend.tf` files,
+   and the new prod files.
+   There must be **no** `.tfstate` files and no `.terraform/` directory. If you
+   see either, stop and tell the instructor.
+3. Hover over **Changes** and click the **+** to stage everything.
+4. In the message box, write:
+
+   ```
+   Move state to Azure Storage backend and split dev/prod environments
+   ```
+
+5. Click the **Commit** checkmark, then **Publish Branch**.
+
+### Open the pull request and merge it
+
+6. Click the **GitHub** icon in the activity bar, then **Create Pull Request**.
+7. Confirm the base is **your own** repository's `main`.
+8. Title it the same as your commit and click **Create**.
+9. Open **Files Changed** and read your own diff.
+
+VS Code opens two tabs. The file diff has no buttons; the tab named after the
+pull request is the one with the merge button.
+
+10. **Click the `#N` tab**, scroll to the bottom, and click **Merge Pull
+    Request**, then confirm.
+11. Click `Delete Branch...` next to *"Pull request successfully merged."* and
+    choose both the local and remote branch.
+
+> You cannot approve your own pull request. GitHub does not allow it, so the
+> review box offers only **Comment**.
+
+### Get back onto main
+
+12. Click the branch name in the status bar, choose `main`, then click the sync
+    icon.
+
+The command line equivalent:
 
 ```powershell
+git add -A
 git commit -m "Move state to Azure Storage backend and split dev/prod environments"
 git push -u origin feature/lab05-remote-state
+# open and merge the pull request, then:
+git switch main
+git pull
 ```
-
-Open a pull request, review your own diff (it is a big structural change, the
-kind that deserves a careful read), merge, and pull `main`.
 
 ## How to verify
 

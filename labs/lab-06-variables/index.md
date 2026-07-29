@@ -43,12 +43,36 @@ By the end of this lab you can:
 - Your repository with Lab 5 merged, state in Azure Storage
 - The usual environment variables set:
 
+### Start clean
+
+Get onto `main`, pull, then branch. All of this is in VS Code.
+
+1. Open your repository in VS Code: **File > Open Recent**, then
+   `az-tf-ops-<your-username>`.
+2. Click the branch name in the bottom left status bar and choose `main`.
+3. Click the sync icon (the circular arrows) next to it to pull.
+4. Click the branch name again, choose **Create new branch...**, and name it:
+
+   ```
+   feature/lab06-variables
+   ```
+
+5. Confirm the status bar now shows `feature/lab06-variables`.
+
+The command line equivalent:
+
 ```powershell
 cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab06-variables
+```
 
+### Set your variables and check the plan
+
+Open a terminal with ``Ctrl+` `` for these:
+
+```powershell
 $env:TF_VAR_allowed_ssh_source = "$(Invoke-RestMethod https://api.ipify.org)/32"
 $env:TF_VAR_vm_admin_password = "Summit-Lab-2026!"
 
@@ -680,24 +704,54 @@ terraform plan -var-file=prod.tfvars
 
 ## Part 8: Commit
 
+Format first, from a terminal:
+
 ```powershell
-cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/dev fmt
 terraform -chdir=environments/prod fmt
-
-git add -A
-git status
 ```
 
-`dev.tfvars` and `prod.tfvars` **should** appear in the staged changes. They hold
-no secrets and they are the record of what each environment applies with.
+### Stage and commit
+
+1. Open the **Source Control** panel. Read the file list before staging.
+   `dev.tfvars` and `prod.tfvars` **should** be there. They hold no secrets and
+   they are the record of what each environment applies with.
+   There must be **no** `.tfstate` files and no `.terraform/` directory.
+2. Hover over **Changes** and click the **+** to stage everything.
+3. In the message box, write:
+
+   ```
+   Parameterize dev and prod with variables, locals, and tfvars
+   ```
+
+4. Click the **Commit** checkmark, then **Publish Branch**.
+
+### Open the pull request and merge it
+
+5. Click the **GitHub** icon in the activity bar, then **Create Pull Request**.
+6. Confirm the base is **your own** repository's `main`.
+7. Title it and describe it, then click **Create**.
+8. Open **Files Changed** and read your own diff.
+9. **Click the `#N` tab** (the file diff has no buttons), scroll to the bottom,
+   click **Merge Pull Request**, and confirm.
+10. Click `Delete Branch...` next to *"Pull request successfully merged."* and
+    choose both the local and remote branch.
+11. Click the branch name in the status bar, choose `main`, then click the sync
+    icon to pull the merge down.
+
+> You cannot approve your own pull request. GitHub does not allow it, so the
+> review box offers only **Comment**.
+
+The command line equivalent:
 
 ```powershell
+git add -A
 git commit -m "Parameterize dev and prod with variables, locals, and tfvars"
 git push -u origin feature/lab06-variables
+# open and merge the pull request, then:
+git switch main
+git pull
 ```
-
-Open a pull request, merge it, pull `main`.
 
 ## How to verify
 

@@ -43,12 +43,36 @@ By the end of this lab you can:
   [github.com/Innovation-In-Software/az-tf-ops-modules](https://github.com/Innovation-In-Software/az-tf-ops-modules)
 - Your suffix, and the usual environment variables
 
+### Start clean
+
+Get onto `main`, pull, then branch. All of this is in VS Code.
+
+1. Open your repository in VS Code: **File > Open Recent**, then
+   `az-tf-ops-<your-username>`.
+2. Click the branch name in the bottom left status bar and choose `main`.
+3. Click the sync icon (the circular arrows) next to it to pull.
+4. Click the branch name again, choose **Create new branch...**, and name it:
+
+   ```
+   feature/lab07-prod-from-modules
+   ```
+
+5. Confirm the status bar now shows `feature/lab07-prod-from-modules`.
+
+The command line equivalent:
+
 ```powershell
 cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 git switch main
 git pull
 git switch -c feature/lab07-prod-from-modules
+```
 
+### Set your variables
+
+Open a terminal with ``Ctrl+` ``:
+
+```powershell
 $env:TF_VAR_allowed_ssh_source = "$(Invoke-RestMethod https://api.ipify.org)/32"
 $env:TF_VAR_vm_admin_password = "Summit-Prod-2026!"
 ```
@@ -515,22 +539,53 @@ input would solve it.
 
 ## Part 9: Commit
 
-```powershell
-cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
-terraform -chdir=environments/prod fmt
+Format first, from a terminal:
 
-git add -A
-git status
-git commit -m "Build prod from shared modules, pin storage to v1.1.0"
-git push -u origin feature/lab07-prod-from-modules
+```powershell
+terraform -chdir=environments/prod fmt
 ```
 
-Note that `.terraform/modules/` is not in the commit: it is a cache, rebuilt by
-`init`.
+### Stage and commit
 
-Open a pull request. In the description, do what a real reviewer needs: say
-which module versions you pinned and paste the plan summary. Merge, then pull
-`main`.
+1. Open the **Source Control** panel. Read the file list before staging.
+   `.terraform/modules/` should **not** be there: it is a cache, rebuilt by `init`.
+   There must be **no** `.tfstate` files and no `.terraform/` directory.
+2. Hover over **Changes** and click the **+** to stage everything.
+3. In the message box, write:
+
+   ```
+   Build prod from shared modules, pin storage to v1.1.0
+   ```
+
+4. Click the **Commit** checkmark, then **Publish Branch**.
+
+### Open the pull request and merge it
+
+5. Click the **GitHub** icon in the activity bar, then **Create Pull Request**.
+6. Confirm the base is **your own** repository's `main`.
+7. Title it and describe it. In the description, say which module versions you pinned and paste the
+   plan summary, which is what a reviewer needs, then click **Create**.
+8. Open **Files Changed** and read your own diff.
+9. **Click the `#N` tab** (the file diff has no buttons), scroll to the bottom,
+   click **Merge Pull Request**, and confirm.
+10. Click `Delete Branch...` next to *"Pull request successfully merged."* and
+    choose both the local and remote branch.
+11. Click the branch name in the status bar, choose `main`, then click the sync
+    icon to pull the merge down.
+
+> You cannot approve your own pull request. GitHub does not allow it, so the
+> review box offers only **Comment**.
+
+The command line equivalent:
+
+```powershell
+git add -A
+git commit -m "Build prod from shared modules, pin storage to v1.1.0"
+git push -u origin feature/lab07-prod-from-modules
+# open and merge the pull request, then:
+git switch main
+git pull
+```
 
 ## How to verify
 
