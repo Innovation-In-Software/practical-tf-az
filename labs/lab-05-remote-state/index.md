@@ -117,7 +117,7 @@ az storage account blob-service-properties update `
 az storage container create `
   --name tfstate `
   --account-name "stsummittfstate$env:SUFFIX" `
-  --auth-mode login
+  --auth-mode key
 ```
 
 (The backtick is PowerShell's line continuation. On macOS or Linux use a
@@ -139,8 +139,19 @@ Three deliberate choices in there:
 Confirm it exists:
 
 ```powershell
-az storage container list --account-name "stsummittfstate$env:SUFFIX" --auth-mode login -o table
+az storage container list --account-name "stsummittfstate$env:SUFFIX" --auth-mode key -o table
 ```
+
+> **Why `--auth-mode key` and not `login`?** Azure separates permission to manage
+> a storage account from permission to read the data inside it. Being **Owner**
+> gives you the first and not the second, so `--auth-mode login` fails with
+> `You do not have the required permissions needed to perform this operation` and
+> a list of `Storage Blob Data ...` roles.
+>
+> `--auth-mode key` fetches the account key instead, which Owner *is* allowed to
+> do, and it prints a warning saying so. That is also how Terraform's `azurerm`
+> backend authenticates by default, which is why `terraform init` works in a
+> moment without you being granted anything.
 
 ## Part 2: Restructure the repository
 
@@ -292,7 +303,7 @@ things that exist.
 az storage blob list `
   --account-name "stsummittfstate$env:SUFFIX" `
   --container-name tfstate `
-  --auth-mode login `
+  --auth-mode key `
   -o table
 ```
 
@@ -424,7 +435,7 @@ One resource. Now look at your container again:
 az storage blob list `
   --account-name "stsummittfstate$env:SUFFIX" `
   --container-name tfstate `
-  --auth-mode login `
+  --auth-mode key `
   --query "[].name" -o tsv
 ```
 
@@ -652,6 +663,7 @@ git pull
 
 | Error | What it means and what to do |
 |---|---|
+| `You do not have the required permissions needed to perform this operation`, listing `Storage Blob Data ...` roles | You used `--auth-mode login` on an `az storage blob` or `az storage container` command. Being Owner does not include permission to read blob **data**. Use `--auth-mode key` instead, as the commands in this lab do. |
 | `Failed to get existing workspaces: containers.Client#ListBlobs: ... AuthorizationPermissionMismatch` | Your `az login` identity cannot read the container. Confirm `az account show` points at the subscription you own the storage account in. |
 | `Error: Backend configuration changed` | You edited `backend.tf` after initializing. Run `terraform init -reconfigure` (new empty state) or `terraform init -migrate-state` (carry the existing state over). Know which one you want. |
 | `state blob is already locked` and nothing is running | A crashed run left the lease. Get the ID from the error and run `terraform force-unlock <ID>`. Be certain first. |
