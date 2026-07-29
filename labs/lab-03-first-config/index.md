@@ -429,8 +429,20 @@ step below.
 7. Click the **GitHub** icon in the activity bar, then **Create Pull Request**.
 8. Confirm the base is **your own** repository's `main`.
 9. Title it the same as your commit and click **Create**.
-10. Merge it: click **Merge pull request** in the pull request view or on the
-    GitHub web page, then **Confirm merge**.
+
+VS Code now opens **two** editor tabs, and only one of them can merge:
+
+| Tab | What it is |
+|---|---|
+| `#N Add resource group, virtual network...` | The pull request: description, commits, and the merge button |
+| `Changes in Commit ...` or a file diff | Just the code. No buttons |
+
+10. **Click the `#N` tab**, the one named after your pull request. Scroll to the
+    bottom and click **Merge Pull Request**, then confirm.
+
+If you closed that tab, click the pull request again under **Pull Requests** in
+the **GitHub Pull Request** panel on the left. The GitHub web page has the same
+button if you prefer the browser.
 
 ### Get back onto main
 
@@ -453,8 +465,10 @@ git switch main
 git pull
 ```
 
-> You are approving your own pull request here, which is not how it works on a
-> real team. Later you will make that impossible in your repository.
+> **You cannot approve your own pull request.** GitHub rejects it: *"Can not
+> approve your own pull request."* You are merging it unreviewed, which is not
+> how it works on a real team, and it is only acceptable here because this
+> repository is yours alone. Later you will make even this impossible.
 
 ## How to verify
 

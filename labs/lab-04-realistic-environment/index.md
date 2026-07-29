@@ -579,11 +579,28 @@ Same as last time, and just as necessary: **the next lab starts from `main`.** I
 you stop after opening the pull request, your VM and storage stay on the feature
 branch and the next lab will not find them.
 
-11. Click **Merge pull request**, either in the VS Code pull request view or on
-    the GitHub web page.
-12. Click **Confirm merge**.
-13. Click **Delete branch** when GitHub offers. The work is on `main` now, and
+The merge button is not on the diff you have been reading. When you opened the
+pull request, VS Code gave you **two** editor tabs:
+
+| Tab | What it is |
+|---|---|
+| `#N Add NSG, Linux VM, and storage...` | The pull request itself: description, commits, reviewers, and the merge button |
+| `Changes in Commit ...` or a file diff | Just the code. No buttons |
+
+11. **Click the `#N` tab**, the one named after your pull request. If you closed
+    it, click the pull request again in the **GitHub Pull Request** panel on the
+    left.
+12. Scroll to the bottom of that tab. Click **Merge Pull Request**, then confirm.
+13. Click **Delete Branch** when it offers. The work is on `main` now, and
     deleting merged branches keeps the branch list short.
+
+> **You cannot approve your own pull request.** GitHub rejects it: *"Can not
+> approve your own pull request."* The **Approve** option is there because
+> normally somebody else is reviewing. On your own repository you read your own
+> diff and merge it. Reviewing someone else's is what you did in Lab 2.
+
+If you would rather do it in the browser, the pull request page on GitHub has the
+same **Merge pull request** button.
 
 ### Get back onto main
 
