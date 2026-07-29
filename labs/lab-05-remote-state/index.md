@@ -75,7 +75,8 @@ terraform plan
 **Stop if that plan is not clean.** Migrating state is the wrong time to
 discover you had pending changes.
 
-Set your two variables again if this is a new terminal:
+Set your three variables again if this is a new terminal. Use your own four
+characters in place of `jr42`:
 
 ```powershell
 $env:SUFFIX = "jr42"   # your four characters
@@ -90,8 +91,8 @@ keep state, and that somewhere cannot itself be managed by the state you have
 not created yet. Every team solves it the same way, by creating the backend once
 with a script and then leaving it alone.
 
-Run these four commands. They pick your suffix up from `$env:SUFFIX`, which you
-set in the setup guide. If `$env:SUFFIX` prints nothing, set it before going on.
+Run these four commands. They read your suffix from `$env:SUFFIX`, which you set
+just above.
 
 ```powershell
 az group create `
