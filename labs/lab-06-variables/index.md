@@ -2,12 +2,28 @@
 
 ## Overview
 
-Open `environments/dev/main.tf` and count the string literals. `"eastus"`
-appears in seven resources. `"summit-orders-dev"` is baked into eight names.
-`"Standard_F1als_v7"` and `"LRS"` are decisions somebody made once and nobody can
-change without a find-and-replace.
+Open `environments/dev/main.tf` and look at what is hardcoded.
 
-Now imagine building `prod` by copying that file and editing every literal.
+Some of it you already handled in Lab 3. `"eastus"` is written once, on the
+resource group, and six other resources reference
+`azurerm_resource_group.orders.location` rather than repeating it. Same with the
+tags. That is referencing working exactly as intended.
+
+The problem is what referencing cannot fix. **`summit-orders-dev` is typed into
+seven resource names**, once each:
+
+```
+rg-summit-orders-dev        pip-summit-orders-dev
+vnet-summit-orders-dev      nic-summit-orders-dev
+nsg-summit-orders-dev       vm-summit-orders-dev
+                            stsummitordersdev<suffix>
+```
+
+There is nothing to reference. Each name is its own literal. `"eastus"`,
+`"Standard_F1als_v7"`, `"LRS"`, and `"10.10.0.0/16"` have the same shape: written
+once, but written as a decision rather than as an input, so nothing can vary them.
+
+Now imagine building `prod` by copying that file and editing every one of those.
 That is how two environments quietly drift apart: someone fixes a typo in dev
 and nobody remembers to fix it in prod.
 
