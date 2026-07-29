@@ -497,7 +497,9 @@ Say the team decides `azurerm_storage_container.data` is too vague a name and it
 should be `orders_data`. In HCL that is a one-word edit. In Terraform's model it
 is a different resource entirely, because the address changed.
 
-Watch it happen. In `environments/dev/main.tf`, change:
+Watch it happen. **This part is `plan` only. Do not apply anything until Part 9.**
+
+In `environments/dev/main.tf`, change:
 
 ```hcl
 resource "azurerm_storage_container" "data" {
@@ -518,6 +520,15 @@ terraform plan
 ```
 Plan: 1 to add, 0 to change, 1 to destroy.
 ```
+
+> **Do not apply this plan.** You are looking at it to understand the problem,
+> and the next step fixes it without applying anything.
+>
+> If you apply it by accident, the container is deleted and the replacement fails
+> with `409 ContainerOperationFailure: The specified container is being deleted`,
+> because Azure locks a container name for about thirty seconds after a delete.
+> Nothing is lost, since the container is empty. Wait half a minute and run
+> `terraform apply` again to create it, then carry on from Part 9.
 
 Terraform wants to delete the container it knows as `.data` and build a new one
 called `.orders_data`. Same container in Azure, same name, same everything. Only
@@ -663,6 +674,7 @@ git pull
 
 | Error | What it means and what to do |
 |---|---|
+| `409 ContainerOperationFailure: The specified container is being deleted` | You applied the rename plan in Part 8 instead of only reading it. Azure locks a container name for about thirty seconds after deletion. Wait, then `terraform apply` again. The container was empty, so nothing is lost. |
 | `You do not have the required permissions needed to perform this operation`, listing `Storage Blob Data ...` roles | You used `--auth-mode login` on an `az storage blob` or `az storage container` command. Being Owner does not include permission to read blob **data**. Use `--auth-mode key` instead, as the commands in this lab do. |
 | `Failed to get existing workspaces: containers.Client#ListBlobs: ... AuthorizationPermissionMismatch` | Your `az login` identity cannot read the container. Confirm `az account show` points at the subscription you own the storage account in. |
 | `Error: Backend configuration changed` | You edited `backend.tf` after initializing. Run `terraform init -reconfigure` (new empty state) or `terraform init -migrate-state` (carry the existing state over). Know which one you want. |
