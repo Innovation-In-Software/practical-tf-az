@@ -329,6 +329,20 @@ case, upper case, a digit, a symbol.
 $env:TF_VAR_vm_admin_password = "Summit-Lab-2026!"
 ```
 
+While you are here, store your suffix too. You type it into a file in Part 4 of
+this lab, and later labs use it in commands. Setting it permanently means you
+only do this once:
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr42", "User")
+```
+
+Use your own four characters. Close and reopen the terminal, then check it:
+
+```powershell
+$env:SUFFIX
+```
+
 > Yes, that password is now in your shell history, and yes, that is also a bad
 > habit, and a temporary one. The fix is to keep the password out of the variable
 > entirely and have Terraform read it from a secret store at apply time.

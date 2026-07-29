@@ -56,6 +56,22 @@ git pull
 git switch -c feature/lab08-key-vault
 ```
 
+### Set your suffix
+
+Every command below that names a storage account or a Key Vault reads your suffix
+from `$env:SUFFIX`. Set it in this terminal, using your own four characters:
+
+```powershell
+$env:SUFFIX = "jr42"
+$env:SUFFIX
+```
+
+To set it permanently so no future lab asks again:
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr42", "User")
+```
+
 ## Part 1: Prove that Git remembers
 
 Three minutes, on a branch you throw away. Do it, because reading about it is

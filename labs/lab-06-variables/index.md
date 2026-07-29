@@ -73,6 +73,7 @@ git switch -c feature/lab06-variables
 Open a terminal with ``Ctrl+` `` for these:
 
 ```powershell
+$env:SUFFIX = "jr42"   # your four characters
 $env:TF_VAR_allowed_ssh_source = "$(Invoke-RestMethod https://api.ipify.org)/32"
 $env:TF_VAR_vm_admin_password = "Summit-Lab-2026!"
 
