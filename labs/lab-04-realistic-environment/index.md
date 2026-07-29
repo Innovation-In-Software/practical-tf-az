@@ -37,15 +37,9 @@ By the end of this lab you can:
 - `ARM_SUBSCRIPTION_ID` set
 - Your 4-character student suffix
 
-> **This lab drives VS Code rather than the command line wherever VS Code can do
-> the job:** branching, creating files, formatting, reading your own diff,
-> committing, and opening the pull request. The equivalent commands are shown
-> underneath each one, because pipelines and error messages speak in commands and
-> you need to recognize them.
->
-> Terraform itself has no buttons. `init`, `validate`, `plan`, and `apply` are
-> always typed into the integrated terminal, and so is anything setting an
-> environment variable.
+> Git work happens in VS Code, with the equivalent commands shown alongside so
+> you recognize them in scripts and error messages. Terraform has no buttons:
+> `init`, `validate`, `plan`, and `apply` are always typed into the terminal.
 
 ### Start clean
 
@@ -252,17 +246,6 @@ so the lab does not break when Canonical retires an image.
 
 **`Standard_F1als_v7`** is a small, inexpensive size: one vCPU and 2 GB of
 memory. Plenty for this.
-
-> Most Azure tutorials you find online use `Standard_B1s`, the burstable size
-> that used to be the default choice for a small VM. Your class subscription
-> does not offer the B series, so that size fails with `SkuNotAvailable`. This
-> is worth knowing beyond the classroom: **VM sizes are not uniformly available**.
-> What exists depends on the region and on your subscription's offer, and
-> checking is one command:
->
-> ```powershell
-> az vm list-skus --location eastus --resource-type virtualMachines --query "[?name=='Standard_F1als_v7']" -o table
-> ```
 
 ## Part 3: Declare the variables
 
@@ -637,7 +620,7 @@ Those three questions are the rest of Day 2.
 | SSH connection times out | Your public IP changed. Run the `ipify` command again, reset `TF_VAR_allowed_ssh_source`, and `terraform apply`. Then confirm the rule in the portal under the NSG's **Inbound security rules**. |
 | SSH says `Permission denied` | The password is wrong, or it did not meet Azure complexity rules and the VM took a different one. Reset it in the portal under the VM's **Reset password**, or destroy and recreate the VM. |
 | `Password not complex enough` on apply | 12-72 characters, and three of: lowercase, uppercase, digit, symbol. |
-| `SkuNotAvailable` for `Standard_F1als_v7` | Your subscription does not offer that size in this region. Confirm with `az vm list-skus --location eastus --resource-type virtualMachines --query "[?name=='Standard_F1als_v7']" -o table`. If it comes back empty, tell the instructor. `Standard_D2als_v7` is the fallback. Changing region rarely helps, because the restriction usually comes from the subscription rather than the region. |
+| `SkuNotAvailable` for the VM size | That size is not available to you in this region. Ask the instructor for an alternative. |
 | Plan wants to replace the VM you just built | You changed something immutable, such as the image or the admin username. Read the `# forces replacement` note in the plan. |
 
 ## Cleanup

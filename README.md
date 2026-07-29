@@ -45,11 +45,6 @@ GitHub Actions, troubleshooting and drift, and refactoring with `moved`.
 > Source Control panel > the ellipses (three dots) next to **Changes** >
 > **Pull**.
 
-The Day 1 labs refer forward to these by number, so you will see mentions of
-Lab 5 and Lab 12 before those labs exist. That is deliberate: it is the arc of
-the week, and each mention tells you which later lab fixes the problem you just
-met.
-
 ## Repositories you will use
 
 | Repository | What it is |

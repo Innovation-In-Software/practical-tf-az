@@ -59,12 +59,8 @@ If it says something else, click the **v** next to the **+** at the top right of
 the terminal panel, choose **Select Default Profile**, pick **PowerShell**, then
 close the terminal with the trash-can icon and open a new one.
 
-> **Use PowerShell all week, not Git Bash.** The terminal dropdown also offers
-> Git Bash, and it looks like a reasonable choice. It is not, for this course.
-> Several labs run PowerShell scripts (`scripts/*.ps1`) that Git Bash cannot
-> execute, and Lab 9 pastes Azure resource ids that begin with `/subscriptions/`,
-> which Git Bash silently rewrites into Windows paths. Both failures are
-> confusing and neither is your fault. Stay in PowerShell.
+> **Use PowerShell all week, not Git Bash.** Several labs run PowerShell scripts,
+> and Git Bash rewrites the Azure resource ids that Lab 9 depends on.
 
 ### Check your tools
 
