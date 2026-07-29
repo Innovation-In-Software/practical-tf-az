@@ -313,7 +313,7 @@ vm_size             = "Standard_D2als_v7"
 storage_name_suffix = "<suffix>"
 ```
 
-Replace `<suffix>`.
+Type your four characters in place of `<suffix>`.
 
 Prod uses `10.20.0.0/16` where dev uses `10.10.0.0/16`, so the two networks
 could be peered later without an address collision. Prod gets `Standard_D2als_v7`

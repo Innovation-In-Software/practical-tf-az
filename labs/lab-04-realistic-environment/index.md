@@ -362,7 +362,8 @@ resource "azurerm_storage_container" "data" {
 }
 ```
 
-Replace `<suffix>` with yours. If you skip this, you will get
+Type your four characters in place of `<suffix>`. This is a file, so it needs the
+literal value: `$env:SUFFIX` only works in commands. If you skip this you will get
 `StorageAccountAlreadyTaken` and now you know why.
 
 > **A faster way to do that replacement.** Press

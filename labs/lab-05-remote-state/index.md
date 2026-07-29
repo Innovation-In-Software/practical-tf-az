@@ -89,7 +89,8 @@ keep state, and that somewhere cannot itself be managed by the state you have
 not created yet. Every team solves it the same way, by creating the backend once
 with a script and then leaving it alone.
 
-Run these four commands. Replace `<suffix>` with yours.
+Run these four commands. They pick your suffix up from `$env:SUFFIX`, which you
+set in the setup guide. If `$env:SUFFIX` prints nothing, set it before going on.
 
 ```powershell
 az group create `
@@ -98,7 +99,7 @@ az group create `
   --tags solution=orders owner=ops-team managed_by=bootstrap
 
 az storage account create `
-  --name stsummittfstate<suffix> `
+  --name "stsummittfstate$env:SUFFIX" `
   --resource-group rg-summit-tfstate `
   --location eastus `
   --sku Standard_LRS `
@@ -107,13 +108,13 @@ az storage account create `
   --allow-blob-public-access false
 
 az storage account blob-service-properties update `
-  --account-name stsummittfstate<suffix> `
+  --account-name "stsummittfstate$env:SUFFIX" `
   --resource-group rg-summit-tfstate `
   --enable-versioning true
 
 az storage container create `
   --name tfstate `
-  --account-name stsummittfstate<suffix> `
+  --account-name "stsummittfstate$env:SUFFIX" `
   --auth-mode login
 ```
 
@@ -136,7 +137,7 @@ Three deliberate choices in there:
 Confirm it exists:
 
 ```powershell
-az storage container list --account-name stsummittfstate<suffix> --auth-mode login -o table
+az storage container list --account-name "stsummittfstate$env:SUFFIX" --auth-mode login -o table
 ```
 
 ## Part 2: Restructure the repository
@@ -227,7 +228,10 @@ terraform {
 }
 ```
 
-Replace `<suffix>`.
+Type your four characters in place of `<suffix>`. This is a file, not a command,
+so `$env:SUFFIX` will not work here, and neither will a Terraform variable: the
+backend is configured before Terraform knows what any variable means. There is
+more on that below.
 
 You can put the `backend` block inside the `terraform` block in `main.tf`
 instead. A separate file is clearer, because the backend is the one thing that
@@ -284,7 +288,7 @@ things that exist.
 
 ```powershell
 az storage blob list `
-  --account-name stsummittfstate<suffix> `
+  --account-name "stsummittfstate$env:SUFFIX" `
   --container-name tfstate `
   --auth-mode login `
   -o table
@@ -416,7 +420,7 @@ One resource. Now look at your container again:
 
 ```powershell
 az storage blob list `
-  --account-name stsummittfstate<suffix> `
+  --account-name "stsummittfstate$env:SUFFIX" `
   --container-name tfstate `
   --auth-mode login `
   --query "[].name" -o tsv

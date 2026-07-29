@@ -120,7 +120,7 @@ history is clean. That was deliberate. This lab removes the last place it lives.
 Run the seed script:
 
 ```powershell
-.\scripts\seed-key-vault.ps1 -Suffix <suffix>
+.\scripts\seed-key-vault.ps1 -Suffix $env:SUFFIX
 ```
 
 It creates a resource group `rg-summit-security` and two vaults,
@@ -149,13 +149,13 @@ Orders configuration cannot delete the credentials.
 
 ```powershell
 az keyvault list --resource-group rg-summit-security -o table
-az keyvault secret list --vault-name kv-summit-dev-<suffix> -o table
+az keyvault secret list --vault-name "kv-summit-dev-$env:SUFFIX" -o table
 ```
 
 Read the secret, just to confirm it exists:
 
 ```powershell
-az keyvault secret show --vault-name kv-summit-dev-<suffix> --name vm-admin-password --query value -o tsv
+az keyvault secret show --vault-name "kv-summit-dev-$env:SUFFIX" --name vm-admin-password --query value -o tsv
 ```
 
 That is the last time you need to look at it.
@@ -234,7 +234,7 @@ key_vault_name                = "kv-summit-dev-<suffix>"
 key_vault_resource_group_name = "rg-summit-security"
 ```
 
-Replace `<suffix>`.
+Type your four characters in place of `<suffix>`.
 
 > A vault **name** in a committed file is fine. It is not a secret; it is an
 > address. What matters is that reaching the contents requires an identity with
@@ -311,7 +311,7 @@ Verify you can still get in:
 
 ```powershell
 terraform output vm_ssh_command
-$pw = az keyvault secret show --vault-name kv-summit-dev-<suffix> --name vm-admin-password --query value -o tsv
+$pw = az keyvault secret show --vault-name "kv-summit-dev-$env:SUFFIX" --name vm-admin-password --query value -o tsv
 ssh azureuser@<the IP>
 ```
 
@@ -538,7 +538,7 @@ git pull
 | Error | What it means and what to do |
 |---|---|
 | `does not have secrets get permission` | Your identity lacks the data-plane role. Rerun the seed script, or `az role assignment create --assignee <you> --role "Key Vault Secrets User" --scope <vault id>`. Being Owner is not enough. |
-| `KeyVaultAlreadyExists` / `conflict` on create | A soft-deleted vault holds the name. `az keyvault purge --name kv-summit-dev-<suffix> --location eastus`, then rerun the script. |
+| `KeyVaultAlreadyExists` / `conflict` on create | A soft-deleted vault holds the name. `az keyvault purge --name "kv-summit-dev-$env:SUFFIX" --location eastus`, then rerun the script. |
 | `Key Vault not found` from the data source | Check `key_vault_name` and `key_vault_resource_group_name` in your tfvars against `az keyvault list -o table`. |
 | The role was granted but reads still fail | Propagation. Wait two minutes and try again. Role assignments are not instant. |
 | Plan wants to replace the VM and you did not expect it | Expected in Part 4. The vault password differs from the old one, and `admin_password` forces replacement. |

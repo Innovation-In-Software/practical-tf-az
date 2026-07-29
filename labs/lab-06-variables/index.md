@@ -491,7 +491,8 @@ vm_size             = "Standard_F1als_v7"
 storage_name_suffix = "<suffix>"
 ```
 
-Replace `<suffix>` with yours.
+Type your four characters in place of `<suffix>`. This is a file, so it needs the
+literal value.
 
 Notice what is **not** in here: no password. Secrets never go in a `.tfvars`
 file, because `.tfvars` files belong in the repository. `vm_admin_password` and

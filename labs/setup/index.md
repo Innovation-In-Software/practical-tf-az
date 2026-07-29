@@ -38,11 +38,11 @@ Choose a short suffix now and use the same one all week:
 - lowercase letters and numbers only
 - something tied to you, for example your initials plus two digits
 
-For the rest of the labs, wherever you see `<suffix>`, substitute yours.
-
 > Example: Jamie Rivera picks `jr42`. Their storage account in Lab 4 will be
-> `stsummitordersdevjr42`. Write your suffix on a sticky note. You will type it
-> a lot.
+> `stsummitordersdevjr42`.
+
+Write it down. You will store it in an environment variable in Step 3 so you do
+not have to retype it all week.
 
 ## Step 2: Open VS Code and a terminal
 
@@ -130,11 +130,39 @@ On macOS or Linux the equivalent is:
 
 ```sh
 export ARM_SUBSCRIPTION_ID="$(az account show --query id -o tsv)"
+export SUFFIX="jr42"
 ```
 
 > **This is the single most common cause of a failed `terraform plan` this
 > week.** If you ever see `subscription_id is a required provider property`, you
 > are in a terminal that does not have the variable set.
+
+### Store your suffix the same way
+
+You will need your suffix in dozens of commands. Set it once, using your own four
+characters in place of `jr42`:
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr42", "User")
+```
+
+Close and reopen your terminal, then check both variables:
+
+```powershell
+$env:SUFFIX
+$env:ARM_SUBSCRIPTION_ID
+```
+
+From here on, commands read your suffix from `$env:SUFFIX` rather than asking you
+to type it:
+
+```powershell
+az storage account show --name "stsummittfstate$env:SUFFIX"
+```
+
+> **This works in commands, not in files.** Where a lab shows `<suffix>` inside a
+> file you are editing, type your four characters. A `.tf` file cannot read your
+> environment.
 
 ### Confirm the resource providers are registered
 
