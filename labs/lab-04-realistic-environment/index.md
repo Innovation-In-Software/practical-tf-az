@@ -291,9 +291,21 @@ stops putting the secret in a variable at all.
 
 ### Supply the values
 
-The obvious move, writing them into a `.tfvars` file and committing it, is
-exactly the mistake this course exists to prevent. Use environment variables
-instead. Terraform reads any variable named `TF_VAR_<variable name>`.
+A variable with no `default` has to get its value from somewhere. Terraform will
+take one from several places, and two of them matter here.
+
+A **`.tfvars` file** is the normal choice for values that describe an
+environment: region, sizes, address ranges. You will build one in Lab 6, and it
+gets committed, because a teammate needs to see how dev is configured.
+
+A **password is not that kind of value.** It does not describe the environment,
+and it must never reach the repository. Supply it through an **environment
+variable** instead: Terraform reads any variable named `TF_VAR_<variable name>`,
+and nothing is written to disk.
+
+Your own IP address goes the same way, for a different reason. It is not secret,
+but it belongs to your machine today and will be wrong tomorrow, so it does not
+belong in a file either.
 
 First find your own public IP address, so the NSG rule lets you and only you in:
 
