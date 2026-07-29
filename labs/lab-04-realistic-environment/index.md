@@ -38,8 +38,9 @@ By the end of this lab you can:
 - Your 4-character student suffix
 
 > Git work happens in VS Code, with the equivalent commands shown alongside so
-> you recognize them in scripts and error messages. Terraform has no buttons:
-> `init`, `validate`, `plan`, and `apply` are always typed into the terminal.
+> you recognize them in scripts and error messages. Terraform itself has no VS
+> Code equivalent: `init`, `validate`, `plan`, and `apply` are always typed into
+> the terminal.
 
 ### Start clean
 
@@ -84,7 +85,7 @@ git switch -c feature/lab04-orders-dev-environment
 
 ### Confirm Lab 3 is still good
 
-Terraform has no VS Code buttons, so open a terminal for this one:
+There is no VS Code equivalent for this, so open a terminal:
 ``Ctrl+` ``, or right-click the repository folder in the Explorer and choose
 **Open in Integrated Terminal**.
 
@@ -303,8 +304,8 @@ and it must never reach the repository. Supply it through an **environment
 variable** instead: Terraform reads any variable named `TF_VAR_<variable name>`,
 and nothing is written to disk.
 
-Your own IP address goes the same way, for a different reason. It is not secret,
-but it belongs to your machine today and will be wrong tomorrow, so it does not
+Your own IP address is supplied the same way, for a different reason. It is not
+secret, but it changes when you connect from a different network, so it does not
 belong in a file either.
 
 First find your own public IP address, so the NSG rule lets you and only you in:
@@ -364,7 +365,7 @@ resource "azurerm_storage_container" "data" {
 Replace `<suffix>` with yours. If you skip this, you will get
 `StorageAccountAlreadyTaken` and now you know why.
 
-> **A faster way to do that replacement, and a habit worth forming.** Press
+> **A faster way to do that replacement.** Press
 > `Ctrl+H` to open Find and Replace in the current file. Put `<suffix>` in the
 > top box and your four characters in the bottom, then click **Replace All** (or
 > `Ctrl+Alt+Enter`). Use `Ctrl+Shift+H` to do the same across every file in the
@@ -519,9 +520,9 @@ panel (the branching icon in the activity bar).
 2. **Click `main.tf`.** VS Code opens a side-by-side diff: your original Lab 3
    file on the left, the new version on the right. Read it.
 
-This is the habit worth taking away from Lab 4. You are about to ask a colleague
-to review 60 lines that create a VM and open a firewall port. Read it yourself
-first, the way they will.
+Get in the habit of doing this. You are about to ask a colleague to review about
+60 lines that create a virtual machine and open a firewall port. Read it yourself
+before they do.
 
 While you are looking, confirm what is **not** listed: no `terraform.tfstate`, no
 `.terraform/`, no `.terraform.lock.hcl` changes you did not expect. If state
@@ -560,7 +561,7 @@ branch and the next lab will not find them.
     the GitHub web page.
 12. Click **Confirm merge**.
 13. Click **Delete branch** when GitHub offers. The work is on `main` now, and
-    leaving merged branches around makes the branch list useless by Friday.
+    deleting merged branches keeps the branch list short.
 
 ### Get back onto main
 

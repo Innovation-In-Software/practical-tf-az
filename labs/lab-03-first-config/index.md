@@ -402,9 +402,9 @@ the code.
 
 ## Part 10: Commit your work
 
-Your configuration currently exists **only on your branch**. The next lab starts
-from `main`, so this part is not optional bookkeeping: if you stop after pushing,
-the next lab will not work. Take it to the end.
+Your configuration currently exists only on your branch. The next lab starts from
+`main`. If you stop after pushing, the next lab will not work, so complete every
+step below.
 
 ### Stage and commit
 
