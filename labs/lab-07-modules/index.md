@@ -483,7 +483,7 @@ Now use the input v1.1.0 added. In `prod.tfvars`, production should not be
 storing orders on single-datacenter redundancy:
 
 ```hcl
-storage_replication_type = "ZRS"
+storage_replication_type = "GRS"
 ```
 
 Add the variable to `environments/prod/variables.tf`:
@@ -510,7 +510,31 @@ module "storage" {
 terraform plan -var-file=prod.tfvars
 ```
 
-`~ account_replication_type = "LRS" -> "ZRS"`, updated in place. Apply it.
+```
+~ account_replication_type = "LRS" -> "GRS"
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Updated in place. Apply it.
+
+> **Not every redundancy change is in place, and the plan is how you find out.**
+> `LRS` to `GRS` or `RAGRS` is an in-place update: Azure starts replicating to the
+> paired region and the account keeps its identity.
+>
+> `LRS` to `ZRS` or `GZRS` is **not**. Those change how the account is laid out
+> within the region, which Azure cannot do to an existing account, so the provider
+> marks it `# forces replacement`:
+>
+> ```
+> ~ account_replication_type = "LRS" -> "ZRS" # forces replacement
+>
+> Plan: 2 to add, 0 to change, 2 to destroy.
+> ```
+>
+> On a production account holding data, applying that would be an outage and a
+> restore. The word to look for is `forces replacement`, and it is the reason you
+> read the plan rather than the summary line.
 
 > That input **did not exist** in v1.0.0. If you try to pass it with the old pin
 > you get `An argument named "replication_type" is not expected here`. Module
@@ -597,7 +621,7 @@ git pull
 - [ ] `terraform plan -var-file=prod.tfvars` in prod reports **No changes**
 - [ ] `terraform state list` in prod shows addresses beginning `module.`
 - [ ] `rg-summit-orders-prod` in the portal has a VNet with two subnets, a VM, and a storage account
-- [ ] The prod storage account shows **Minimum TLS version: 1.2** and **Redundancy: ZRS**
+- [ ] The prod storage account shows **Minimum TLS version: 1.2** and **Redundancy: GRS**
 - [ ] Dev is untouched: `terraform plan -var-file=dev.tfvars` in dev still reports **No changes**
 - [ ] You opened an issue on the modules repository
 

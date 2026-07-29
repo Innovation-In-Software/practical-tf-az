@@ -28,7 +28,7 @@ locals {
     managed_by  = "terraform"
   }
 
-  storage_replication_type = var.environment == "prod" ? "ZRS" : "LRS"
+  storage_replication_type = var.environment == "prod" ? "GRS" : "LRS"
 }
 
 resource "azurerm_resource_group" "orders" {

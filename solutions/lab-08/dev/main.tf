@@ -29,7 +29,7 @@ locals {
     managed_by  = "terraform"
   }
 
-  storage_replication_type = var.environment == "prod" ? "ZRS" : "LRS"
+  storage_replication_type = var.environment == "prod" ? "GRS" : "LRS"
 }
 
 # Look up the vault. The security team manages it, not us.

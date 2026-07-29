@@ -388,7 +388,7 @@ literal value: `$env:SUFFIX` only works in commands. If you skip this you will g
 
 `account_replication_type = "LRS"` is locally redundant storage: three copies in
 one datacenter. It is the cheapest option and correct for a dev environment.
-Production would use `ZRS` or `GRS`, which is a good argument for making it a
+Production would use `GRS`, which is a good argument for making it a
 variable rather than a literal.
 
 > Note `storage_account_id` rather than `storage_account_name`. Version 4 of the

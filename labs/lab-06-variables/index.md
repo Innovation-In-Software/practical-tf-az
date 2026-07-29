@@ -265,7 +265,7 @@ locals {
   }
 
   # Dev gets the cheapest redundancy; anything else gets zone redundancy.
-  storage_replication_type = var.environment == "prod" ? "ZRS" : "LRS"
+  storage_replication_type = var.environment == "prod" ? "GRS" : "LRS"
 }
 ```
 
@@ -279,7 +279,7 @@ substitutes each expression into the string.
 another local.
 
 **A conditional expression.** `condition ? value_if_true : value_if_false`. Read
-it as "if the environment is prod, ZRS, otherwise LRS."
+it as "if the environment is prod, GRS, otherwise LRS."
 
 ### Play with expressions before you commit them
 
