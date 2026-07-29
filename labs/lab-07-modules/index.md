@@ -542,7 +542,11 @@ input would solve it.
 
 Format first, from a terminal:
 
+`-chdir` paths are relative to the folder you are standing in, and you have been
+working inside `environments\dev`. Go back to the repository root first:
+
 ```powershell
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
 terraform -chdir=environments/prod fmt
 ```
 
