@@ -312,7 +312,7 @@ needed. Terraform only asks for a variable's value when you reference it, and
 
 > If you do want to evaluate `local.*` or `var.*`, the console needs values, and
 > those live in the `.tfvars` file you write in Part 4. Come back after that and
-> run `terraform console -var-file=dev.tfvars` to inspect your own locals. Doing
+> run `terraform console -var-file dev.tfvars` to inspect your own locals. Doing
 > it now fails with `Given variables file dev.tfvars does not exist`, because you
 > have not written it yet.
 
@@ -718,7 +718,7 @@ one on this list:
 1. the `default` in the `variable` block
 2. `TF_VAR_<name>` environment variables
 3. `terraform.tfvars` and `*.auto.tfvars`, loaded automatically
-4. `-var-file=...` on the command line, in the order given
+4. `-var-file ...` on the command line, in the order given
 5. `-var=...` on the command line
 
 So a `-var` flag beats everything, and a `default` loses to everything. If a
@@ -727,7 +727,7 @@ value is not what you expect, walk that list from the bottom.
 > **Why `dev.tfvars` and not `terraform.tfvars`?** A file named
 > `terraform.tfvars` loads automatically, which is convenient and invisible. The
 > explicit form makes the command state which values were used:
-> `terraform plan -var-file=dev.tfvars`. When someone asks six months
+> `terraform plan -var-file dev.tfvars`. When someone asks six months
 > from now "what did prod actually apply with," the answer is in the command,
 > not in a filename convention.
 
@@ -778,11 +778,25 @@ has one item."
 
 ## Part 6: Plan and read it properly
 
+From `environments/dev`:
+
 ```powershell
 terraform fmt
 terraform validate
-terraform plan -var-file=dev.tfvars
+terraform plan -var-file dev.tfvars
 ```
+
+> **Note the space, not an equals sign.** Terraform's own documentation writes
+> this as `-var-file=dev.tfvars`, and that form breaks in PowerShell. PowerShell
+> parses the argument as a parameter name and stops at the `.`, so Terraform
+> receives `-var-file=dev` and `.tfvars` as two separate arguments and reports:
+>
+> ```
+> Error: Too many command line arguments
+> ```
+>
+> `-var-file dev.tfvars` passes as two clean arguments and works everywhere. The
+> `=` form is fine in bash, which is why the pipeline you build later uses it.
 
 Read the summary line. You should see something close to:
 
@@ -827,7 +841,7 @@ Successfully moved 1 object(s).
 Now plan again:
 
 ```powershell
-terraform plan -var-file=dev.tfvars
+terraform plan -var-file dev.tfvars
 ```
 
 The destroy is gone. What remains is **1 to add** for the new `orders-logs`
@@ -852,7 +866,7 @@ they compute to are identical. That silence is what a good refactor looks like.
 > reports and find the mismatch before applying.
 
 ```powershell
-terraform apply -var-file=dev.tfvars
+terraform apply -var-file dev.tfvars
 ```
 
 Because you moved the container in state rather than letting Terraform destroy it,
@@ -955,7 +969,7 @@ resource "azurerm_resource_group" "orders" {
 
 ```powershell
 cd ..\prod
-terraform plan -var-file=prod.tfvars
+terraform plan -var-file prod.tfvars
 ```
 
 **No changes.** Same resource, described in a portable way.
@@ -1022,8 +1036,8 @@ git pull
 
 ## How to verify
 
-- [ ] `terraform plan -var-file=dev.tfvars` in dev reports **No changes**
-- [ ] `terraform plan -var-file=prod.tfvars` in prod reports **No changes**
+- [ ] `terraform plan -var-file dev.tfvars` in dev reports **No changes**
+- [ ] `terraform plan -var-file prod.tfvars` in prod reports **No changes**
 - [ ] `terraform state list` in dev shows `azurerm_storage_container.this["orders-data"]` and `["orders-logs"]`
 - [ ] Passing an invalid `environment` produces a validation error, not an Azure error
 - [ ] `terraform output container_names` returns both container names
@@ -1048,10 +1062,10 @@ If you finish early:
 | Error | What it means and what to do |
 |---|---|
 | `a resource with the ID ".../containers/orders-data" already exists` | You applied the `for_each` plan without running `terraform state mv` first, so Terraform destroyed the container and could not immediately recreate it under the same name. Run `apply` again to finish, or see Part 5 for the `state mv` that avoids the destroy entirely. |
-| `No value for required variable` | You forgot `-var-file=dev.tfvars`, or the variable is one of the `TF_VAR_` ones and this terminal does not have it. |
+| `No value for required variable` | You forgot `-var-file dev.tfvars`, or the variable is one of the `TF_VAR_` ones and this terminal does not have it. |
 | `Invalid value for variable: environment must be one of...` | Your validation is working. Fix the value in `dev.tfvars`. |
 | `Invalid function argument` on `cidrsubnet` | `vnet_address_space` is missing or not a list. It must be `["10.10.0.0/16"]`, with brackets. |
-| Plan wants to replace the storage account | `local.storage_account_name` does not evaluate to the deployed name. Run `terraform console -var-file=dev.tfvars` and print `local.storage_account_name`. Compare it with `terraform state show azurerm_storage_account.orders`. |
+| Plan wants to replace the storage account | `local.storage_account_name` does not evaluate to the deployed name. Run `terraform console -var-file dev.tfvars` and print `local.storage_account_name`. Compare it with `terraform state show azurerm_storage_account.orders`. |
 | Plan wants to replace the VM or VNet | A computed name or the region changed. Same technique: print the local in the console and compare. Do not apply until it matches. |
 | `Reference to undeclared local value` | Locals live in a `locals { }` block, and you reference them as `local.x`, singular. The block is plural, the reference is not. |
 | `Error: Duplicate variable declaration` | You added the new `variables.tf` content without deleting the old declarations. |

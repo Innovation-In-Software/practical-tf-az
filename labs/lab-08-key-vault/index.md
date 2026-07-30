@@ -283,7 +283,7 @@ Then:
 
 ```powershell
 cd environments\dev
-terraform plan -var-file=dev.tfvars
+terraform plan -var-file dev.tfvars
 ```
 
 ### Expect a replacement, and understand why
@@ -313,7 +313,7 @@ tells you the cost before you pay it.
 Our dev VM is empty and disposable, so take the replacement:
 
 ```powershell
-terraform apply -var-file=dev.tfvars
+terraform apply -var-file dev.tfvars
 ```
 
 > **If you ever face this on a machine you cannot lose:** use
@@ -345,7 +345,7 @@ output "vm_admin_password" {
 ```
 
 ```powershell
-terraform plan -var-file=dev.tfvars
+terraform plan -var-file dev.tfvars
 ```
 
 ```
@@ -371,7 +371,7 @@ output "vm_admin_password" {
 ```
 
 ```powershell
-terraform apply -var-file=dev.tfvars
+terraform apply -var-file dev.tfvars
 terraform output
 ```
 
@@ -456,8 +456,8 @@ key_vault_resource_group_name = "rg-summit-security"
 
 ```powershell
 cd ..\prod
-terraform plan -var-file=prod.tfvars
-terraform apply -var-file=prod.tfvars
+terraform plan -var-file prod.tfvars
+terraform apply -var-file prod.tfvars
 ```
 
 Same VM replacement, same reason. Note the address in the plan is

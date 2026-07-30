@@ -355,7 +355,7 @@ Two consequences worth knowing:
 ## Part 5: Plan and apply
 
 ```powershell
-terraform plan -var-file=prod.tfvars
+terraform plan -var-file prod.tfvars
 ```
 
 Read the resource addresses. They now look like:
@@ -374,7 +374,7 @@ keeps two calls to the same module apart.
 You should see **12 to add**. Then:
 
 ```powershell
-terraform apply -var-file=prod.tfvars
+terraform apply -var-file prod.tfvars
 ```
 
 ## Part 6: Add outputs from module outputs
@@ -412,7 +412,7 @@ A module's outputs are not automatically your outputs. If you want to see a
 value at the top level, or feed it to a pipeline, you re-export it like this.
 
 ```powershell
-terraform apply -var-file=prod.tfvars
+terraform apply -var-file prod.tfvars
 terraform output
 ```
 
@@ -451,7 +451,7 @@ A new module version means a new `init`:
 
 ```powershell
 terraform init -upgrade
-terraform plan -var-file=prod.tfvars
+terraform plan -var-file prod.tfvars
 ```
 
 ```
@@ -476,7 +476,7 @@ account's security posture changed. That is why you pin a module version:
 This particular change is one you want. Take it:
 
 ```powershell
-terraform apply -var-file=prod.tfvars
+terraform apply -var-file prod.tfvars
 ```
 
 Now use the input v1.1.0 added. In `prod.tfvars`, production should not be
@@ -507,7 +507,7 @@ module "storage" {
 ```
 
 ```powershell
-terraform plan -var-file=prod.tfvars
+terraform plan -var-file prod.tfvars
 ```
 
 ```
@@ -537,7 +537,7 @@ module "app_vm" {
 
 ```powershell
 terraform init -upgrade
-terraform plan -var-file=prod.tfvars
+terraform plan -var-file prod.tfvars
 ```
 
 ```
@@ -651,11 +651,11 @@ git pull
 
 ## How to verify
 
-- [ ] `terraform plan -var-file=prod.tfvars` in prod reports **No changes**
+- [ ] `terraform plan -var-file prod.tfvars` in prod reports **No changes**
 - [ ] `terraform state list` in prod shows addresses beginning `module.`
 - [ ] `rg-summit-orders-prod` in the portal has a VNet with two subnets, a VM, and a storage account
 - [ ] The prod storage account shows **Minimum TLS version: 1.2** and **Redundancy: GRS**
-- [ ] Dev is untouched: `terraform plan -var-file=dev.tfvars` in dev still reports **No changes**
+- [ ] Dev is untouched: `terraform plan -var-file dev.tfvars` in dev still reports **No changes**
 - [ ] You opened an issue on the modules repository
 
 ## If you get stuck
