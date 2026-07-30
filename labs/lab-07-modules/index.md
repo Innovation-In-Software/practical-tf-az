@@ -371,8 +371,12 @@ duplicated resource definitions, and no shared state.
 
 ## Part 4: Init, and watch modules download
 
+In the Explorer, right-click the `environments/prod` folder and choose **Open in
+Integrated Terminal**. VS Code opens the terminal already inside that folder, so
+Terraform finds the configuration without you changing directory. Check that the
+prompt ends in `environments\prod` before you run anything.
+
 ```powershell
-cd environments\prod
 terraform init
 ```
 
@@ -647,7 +651,7 @@ input would solve it.
 Format first, from a terminal:
 
 `-chdir` paths are relative to the folder you are standing in, and you have been
-working inside `environments\dev`. Go back to the repository root first:
+working inside `environments\prod`. Go back to the repository root first:
 
 ```powershell
 cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
