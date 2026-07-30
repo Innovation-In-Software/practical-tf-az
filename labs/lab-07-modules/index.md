@@ -453,7 +453,8 @@ terraform apply -var-file prod.tfvars
 
 ## Part 6: Add outputs from module outputs
 
-Create `environments/prod/outputs.tf`:
+**Replace the whole contents of `environments/prod/outputs.tf`** with the block
+below. Create the file if you do not have one.
 
 ```hcl
 output "resource_group_name" {
@@ -484,6 +485,42 @@ output "storage_account_name" {
 
 A module's outputs are not automatically your outputs. If you want to see a
 value at the top level, or feed it to a pipeline, you re-export it like this.
+
+### If you already had a prod outputs.tf
+
+Some people scaffold prod by copying the dev folder. If that is what you did, your
+`environments/prod/outputs.tf` is dev's file, and you cannot merge the two. Replace
+it outright.
+
+The reason is that dev's outputs read resources directly, by their root-module
+addresses: `azurerm_public_ip.app`, `azurerm_storage_account.orders`,
+`azurerm_subnet.app`. None of those exist in prod any more. Prod's resources live
+inside modules now, so every one of those references fails:
+
+```
+Error: Reference to undeclared resource
+
+  on outputs.tf line 10, in output "vm_public_ip":
+  10:   value       = azurerm_public_ip.app.ip_address
+
+A managed resource "azurerm_public_ip" "app" has not been declared in the root
+module.
+```
+
+That is the same lesson as the addresses in Part 5, arriving from the other
+direction: moving a resource into a module changes how everything refers to it.
+
+Two of dev's outputs have no equivalent in the list above, and the difference
+between them is worth noticing:
+
+- **`container_names`** could come back. The storage module publishes it, so
+  `value = module.storage.container_names` would work. It is left out here only to
+  keep prod's outputs to the few values a pipeline needs. Add it if you want it.
+- **`subnet_address_prefix`** cannot come back. The `network` module returns
+  `subnet_ids` and `subnet_names`, and never the prefixes it computed with
+  `cidrsubnet()`. There is no way to re-export a value the module does not
+  publish, and that is a real limitation of consuming somebody else's module.
+  Hold on to it: Part 8 is where you do something about it.
 
 ```powershell
 terraform apply -var-file prod.tfvars
@@ -676,10 +713,14 @@ The reason forking is banned is not territorial. A forked module stops receiving
 security fixes like the v1.1.0 TLS change, and nobody notices for a year.
 
 **Practice it.** Open an issue on the modules repository asking for something the
-`network` module cannot do today. Read `network/variables.tf` again and find a
-real gap: per-subnet NSGs, outbound rules, service endpoints, delegation. Write
-two or three sentences: what you are trying to do, what you tried, and what
-input would solve it.
+`network` module cannot do today. Write two or three sentences: what you are
+trying to do, what you tried, and what input or output would solve it.
+
+You already have one to hand, from Part 6: the module never publishes the subnet
+address prefixes it computes, so `subnet_address_prefix` cannot be re-exported in
+prod the way it is in dev. That is a missing output, and a fair thing to ask for.
+If you would rather find your own, read `network/variables.tf` again and look for a
+real gap: per-subnet NSGs, outbound rules, service endpoints, delegation.
 
 ## Part 9: Commit
 
