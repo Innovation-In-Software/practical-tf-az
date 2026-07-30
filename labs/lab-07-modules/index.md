@@ -422,7 +422,30 @@ Read the resource addresses. They now look like:
 resource, the key. Module calls nest in the address, which is how Terraform
 keeps two calls to the same module apart.
 
-You should see **12 to add**. Then:
+You will also see `module.app_vm.azurerm_public_ip.this[0]`. The `[0]` is there
+because that resource uses `count` inside the module, so the address carries a
+number rather than a key. Nothing is wrong.
+
+The summary line should read:
+
+```
+Plan: 13 to add, 0 to change, 0 to destroy.
+```
+
+Thirteen, and you can account for every one. Three module calls produce them:
+
+- **`module.network`, 7.** The virtual network, two subnets, the network security
+  group, one inbound rule, and an NSG association for each of the two subnets.
+- **`module.app_vm`, 3.** The public IP, the network interface, and the VM.
+- **`module.storage`, 3.** The storage account and two containers.
+
+What is **not** in the add list is `azurerm_resource_group.orders`. You created it
+back in Lab 5 and it is already in prod state. You replaced the entire contents of
+`main.tf` just now, but the resource group it describes still computes to the same
+name, location and tags that are already deployed, so Terraform has nothing to do
+to it. That is what `0 to change` is telling you.
+
+Then:
 
 ```powershell
 terraform apply -var-file prod.tfvars
