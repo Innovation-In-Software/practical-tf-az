@@ -254,16 +254,63 @@ inside the organization.
 
 ### Wiring modules together
 
+One line in what you just wrote is doing more work than the rest. It is inside
+the `module "app_vm"` block:
+
 ```hcl
-subnet_id = module.network.subnet_ids["app"]
+module "app_vm" {
+  source = "git::.../linux-vm?ref=v1.0.0"
+
+  name_prefix         = local.name_prefix
+  resource_group_name = azurerm_resource_group.orders.name
+  location            = var.location
+  subnet_id           = module.network.subnet_ids["app"]   # <-- this one
+  ...
+}
 ```
 
-`module.<name>.<output>` reads an output from another module call. Because
-`subnet_ids` is a map keyed by subnet short name, `["app"]` picks one.
+**What it is for.** The `linux-vm` module does not just build a virtual machine.
+It also builds the network interface the machine needs, and a NIC has to be
+attached to a subnet. `subnet_id` is how you tell the module which one. Inside
+the module the value lands here:
 
-This single line also creates the dependency: Terraform knows the network must
-exist before the VM, because the VM's input reads the network's output. You did
-not declare an ordering, and you should not need to.
+```hcl
+ip_configuration {
+  name      = "internal"
+  subnet_id = var.subnet_id
+  ...
+}
+```
+
+Leave it out and the module has no idea where to put the machine, so
+`subnet_id` is a required input with no default.
+
+**Where the value comes from.** `module.<name>.<output>` reads an output from
+another module call. The `network` module exposes:
+
+```hcl
+output "subnet_ids" {
+  description = "Map of subnet short name to subnet resource ID."
+  value       = { for key, subnet in azurerm_subnet.this : key => subnet.id }
+}
+```
+
+That is a **map**, keyed by the short names you chose when you called the module:
+
+```hcl
+subnets = {
+  app  = { address_prefix = ... }   # <-- "app" is defined here
+  data = { address_prefix = ... }
+}
+```
+
+So `module.network.subnet_ids["app"]` means "the resource ID of the subnet I
+called `app`". Change that key to `data` and the VM lands in the other subnet,
+with nothing else in the file changing.
+
+**And it creates the ordering.** Terraform knows the network must exist before
+the VM, because the VM's input reads the network's output. You did not declare a
+dependency and you should not need to: passing a value is the dependency.
 
 ## Part 3: Add the prod variables
 
@@ -383,28 +430,28 @@ Create `environments/prod/outputs.tf`:
 
 ```hcl
 output "resource_group_name" {
-  value       = azurerm_resource_group.orders.name
   description = "Name of the production resource group."
+  value       = azurerm_resource_group.orders.name
 }
 
 output "vm_ssh_command" {
-  value       = module.app_vm.ssh_command
   description = "Ready-to-paste SSH command for the production VM."
+  value       = module.app_vm.ssh_command
 }
 
 output "vm_private_ip" {
-  value       = module.app_vm.private_ip_address
   description = "Private IP of the production VM."
+  value       = module.app_vm.private_ip_address
 }
 
 output "subnet_ids" {
-  value       = module.network.subnet_ids
   description = "Map of subnet short name to resource ID."
+  value       = module.network.subnet_ids
 }
 
 output "storage_account_name" {
-  value       = module.storage.storage_account_name
   description = "Name of the production storage account."
+  value       = module.storage.storage_account_name
 }
 ```
 
