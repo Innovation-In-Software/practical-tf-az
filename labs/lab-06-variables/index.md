@@ -804,34 +804,55 @@ Read the summary line. You should see something close to:
 Plan: 2 to add, 1 to change, 1 to destroy.
 ```
 
-Now work out where each of those comes from, which is the point of
-the lab.
+Four numbers, and you should be able to account for every one of them before you
+apply anything. Work through them in order.
 
-**1 to destroy, and 2 to add: the storage containers.** You renamed
-`azurerm_storage_container.orders_data` to
-`azurerm_storage_container.this["orders-data"]` and added
-`this["orders-logs"]`. Terraform sees the old address disappear and two new ones
-appear. It cannot tell that one of them is the same container under a new label.
+### The 1 destroy and 2 of the adds: the storage containers
 
-**Do not apply this yet.** Terraform would delete the container and immediately
-try to create one with the same name, and that fails:
+`for_each` changed the container's **address**. It used to be
+`azurerm_storage_container.orders_data`; it is now
+`azurerm_storage_container.this["orders-data"]`, and `this["orders-logs"]` is new.
+
+Terraform sees one address disappear and two appear. It has no way to know that
+one of the new ones is the same container you already have, so it proposes
+deleting the old and creating both new ones.
+
+### The 1 change: the VM tags
+
+You added `role = "app-server"` with `merge()`. Terraform shows this as `~ tags`
+with the extra key. Tags update in place, so nothing is replaced.
+
+### Everything else: silent
+
+Nine resources went from hardcoded literals to computed expressions, and the plan
+does not mention them at all, because the values they compute to are identical to
+what is deployed. That silence is what a good refactor looks like.
+
+> If your plan wants to destroy and recreate the VM, the VNet, or the storage
+> account, **stop**. Something in a computed name or region does not match what is
+> deployed. Compare the plan's proposed value with what `terraform state show`
+> reports and find the mismatch before applying.
+
+### Fix the container address before applying
+
+**Do not apply that plan.** The destroy is avoidable, and applying it fails
+anyway: Terraform deletes the container and immediately tries to create another
+with the same name, before the delete has propagated.
 
 ```
 Error: a resource with the ID ".../containers/orders-data" already exists - to be
 managed via Terraform this resource needs to be imported into the State.
 ```
 
-The delete has not finished propagating when the create runs. Running `apply` a
-second time succeeds, but there is no reason to destroy the container at all.
-
-Tell state about the move instead, exactly as you did in Lab 5:
+A second `apply` does succeed, but there is no reason to destroy the container at
+all. Tell state about the move instead, exactly as you did in Lab 5:
 
 ```powershell
 terraform state mv 'azurerm_storage_container.orders_data' 'azurerm_storage_container.this["orders-data"]'
 ```
 
 Note the single quotes. The new address contains double quotes, and single quotes
-stop PowerShell from touching them.
+stop PowerShell from interpreting them.
 
 ```
 Move "azurerm_storage_container.orders_data" to "azurerm_storage_container.this[\"orders-data\"]"
@@ -844,26 +865,19 @@ Now plan again:
 terraform plan -var-file dev.tfvars
 ```
 
-The destroy is gone. What remains is **1 to add** for the new `orders-logs`
-container, plus the tag change below. Nothing is destroyed, and the container that
-already existed is simply relabelled in state.
+```
+Plan: 1 to add, 1 to change, 0 to destroy.
+```
 
-> This is the same lesson as Lab 5, met in the wild: changing how you *address* a
-> resource is not the same as changing the resource. `for_each` changed the
-> address of a container you already had.
+The destroy is gone, and so is one of the adds. What remains is the genuinely new
+`orders-logs` container, plus the VM tag change. The container you already had is
+simply relabelled in state.
 
-**1 to change: the VM tags.** You added `role = "app-server"` with `merge()`.
-Terraform shows this as `~ tags` with the added key. Tags update in place; no
-replacement.
+> Same lesson as Lab 5, met in the wild: changing how you **address** a resource
+> is not the same as changing the resource. `for_each` changed the address of
+> something you already had.
 
-**Everything else: silent.** Nine resources went from hardcoded literals to
-computed expressions, and the plan does not mention them, because the values
-they compute to are identical. That silence is what a good refactor looks like.
-
-> If your plan wants to destroy and recreate the VM, the VNet, or the storage
-> account, **stop**. Something in the computed name or region does not match what
-> is deployed. Compare the plan's proposed value to what `terraform state show`
-> reports and find the mismatch before applying.
+### Now apply
 
 ```powershell
 terraform apply -var-file dev.tfvars
