@@ -199,14 +199,6 @@ following the move, so the file history follows too.
 > Dragging in the Explorer is the same operation as `git mv`. VS Code tells Git
 > about the rename, which is why the history survives.
 
-State and the provider cache are not tracked by Git, so move them from a
-terminal:
-
-```powershell
-move terraform.tfstate environments\dev\terraform.tfstate
-Remove-Item -Recurse -Force .terraform
-```
-
 The command line equivalent of the drag-and-drop above:
 
 ```powershell
@@ -217,6 +209,14 @@ git mv main.tf environments\dev\main.tf
 git mv variables.tf environments\dev\variables.tf
 git mv outputs.tf environments\dev\outputs.tf
 git mv .terraform.lock.hcl environments\dev\.terraform.lock.hcl
+```
+
+State and the provider cache are not tracked by Git, so whichever route you took
+above, move them from a terminal now:
+
+```powershell
+move terraform.tfstate environments\dev\terraform.tfstate
+Remove-Item -Recurse -Force .terraform
 ```
 
 Now change into the dev directory. **Every Terraform command for the rest of the
