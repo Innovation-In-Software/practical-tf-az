@@ -31,30 +31,6 @@ By the end of this lab you can:
 - Your repository with Lab 7 merged, both environments applied
 - `az login` current, `ARM_SUBSCRIPTION_ID` set, your suffix
 
-### Start clean
-
-Get onto `main`, pull, then branch. All of this is in VS Code.
-
-1. Open your repository in VS Code: **File > Open Recent**, then
-   `az-tf-ops-<your-username>`.
-2. Click the branch name in the bottom left status bar and choose `main`.
-3. Click the sync icon (the circular arrows) next to it to pull.
-4. Click the branch name again, choose **Create new branch...**, and name it:
-
-   ```
-   feature/lab08-key-vault
-   ```
-
-5. Confirm the status bar now shows `feature/lab08-key-vault`.
-
-The command line equivalent:
-
-```powershell
-cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
-git switch main
-git pull
-git switch -c feature/lab08-key-vault
-```
 
 ### Open a terminal at the repository root
 
@@ -75,48 +51,6 @@ scripts is disabled on this system`, run this once and try again:
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 ```
 
-### Get the current version of the scripts
-
-Your repository was created from a **template**, which takes a one-time copy. Fixes
-made to the template afterwards do not reach you on their own, and `git pull` will
-not find them either: your `origin` is your own repository, and a template leaves no
-link back to the original.
-
-So pull the current scripts in directly. From the repository root:
-
-```powershell
-git fetch https://github.com/Innovation-In-Software/az-tf-ops.git main
-git checkout FETCH_HEAD -- scripts/
-```
-
-The first command downloads the template's history without adding a permanent
-remote. The second takes only the `scripts/` folder out of it and writes it into
-your working tree.
-
-The scripts will show up as staged changes in Source Control. Commit them along
-with your work for this lab, or run `git restore --staged scripts/` if you would
-rather leave them unstaged. The files on disk are current either way. If nothing has
-changed since you created your repository you will see no changes at all, which is
-also a normal result.
-
-> This overwrites everything under `scripts/`. That is what you want here, but if
-> you have deliberately edited a script, copy your version somewhere else first.
-
-### Set your suffix
-
-Every command below that names a storage account or a Key Vault reads your suffix
-from `$env:SUFFIX`. Set it in this terminal, using your own four characters:
-
-```powershell
-$env:SUFFIX = "jr63"   # <-- CHANGE THIS to your own four characters
-$env:SUFFIX
-```
-
-To set it permanently so no future lab asks again:
-
-```powershell
-[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr63", "User")
-```
 
 ## Part 1: Prove that Git remembers
 
@@ -163,7 +97,7 @@ because you must assume it is compromised."**
 Throw the branch away:
 
 ```powershell
-git switch feature/lab08-key-vault
+git switch main
 git branch -D demo/leak
 ```
 
@@ -176,6 +110,76 @@ git log -p | Select-String "Summit-Lab-2026"
 Nothing. You have been passing that password through `TF_VAR_` environment
 variables since Lab 4 rather than putting it in a file, which is why your
 history is clean. That was deliberate. This lab removes the last place it lives.
+
+
+### Get the current version of the scripts
+
+Your repository was created from a **template**, which takes a one-time copy. Fixes
+made to the template afterwards do not reach you on their own, and `git pull` will
+not find them either: your `origin` is your own repository, and a template leaves no
+link back to the original.
+
+So pull the current scripts in directly. From the repository root:
+
+```powershell
+git fetch https://github.com/Innovation-In-Software/az-tf-ops.git main
+git checkout FETCH_HEAD -- scripts/
+```
+
+The first command downloads the template's history without adding a permanent
+remote. The second takes only the `scripts/` folder out of it and writes it into
+your working tree.
+
+The scripts will show up as staged changes in Source Control. Commit them along
+with your work for this lab, or run `git restore --staged scripts/` if you would
+rather leave them unstaged. The files on disk are current either way. If nothing has
+changed since you created your repository you will see no changes at all, which is
+also a normal result.
+
+> This overwrites everything under `scripts/`. That is what you want here, but if
+> you have deliberately edited a script, copy your version somewhere else first.
+
+### Start clean
+
+Get onto `main`, pull, then branch. All of this is in VS Code.
+
+1. Open your repository in VS Code: **File > Open Recent**, then
+   `az-tf-ops-<your-username>`.
+2. Click the branch name in the bottom left status bar and choose `main`.
+3. Click the sync icon (the circular arrows) next to it to pull.
+4. Click the branch name again, choose **Create new branch...**, and name it:
+
+   ```
+   feature/lab08-key-vault
+   ```
+
+5. Confirm the status bar now shows `feature/lab08-key-vault`.
+
+The command line equivalent:
+
+```powershell
+cd C:\Users\Administrator\Downloads\terraform\labs\az-tf-ops-<your-username>
+git switch main
+git pull
+git switch -c feature/lab08-key-vault
+```
+
+
+### Set your suffix
+
+Every command below that names a storage account or a Key Vault reads your suffix
+from `$env:SUFFIX`. Set it in this terminal, using your own four characters:
+
+```powershell
+$env:SUFFIX = "jr63"   # <-- CHANGE THIS to your own four characters
+$env:SUFFIX
+```
+
+To set it permanently so no future lab asks again:
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr63", "User")
+```
 
 ## Part 2: Create the vaults
 
