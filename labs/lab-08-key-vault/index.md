@@ -67,6 +67,14 @@ Check that the prompt ends in `az-tf-ops-<your-username>` before you run anythin
 The seed script you run shortly is written as `.\scripts\...`, a path relative to
 the repository root, so from any other folder PowerShell will not find it.
 
+Windows blocks PowerShell script files by default. You should have lifted that in
+the setup guide; if you have not, or if the script below fails with `running
+scripts is disabled on this system`, run this once and try again:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+```
+
 ### Set your suffix
 
 Every command below that names a storage account or a Key Vault reads your suffix

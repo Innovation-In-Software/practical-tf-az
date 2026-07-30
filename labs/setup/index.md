@@ -78,6 +78,30 @@ If any command is not recognized, close the terminal, open a new one so it picks
 up the PATH, and try again. If it still fails, tell the instructor now rather
 than in the middle of a lab.
 
+### Allow PowerShell to run scripts
+
+Windows refuses to run PowerShell script files by default. Several labs run a
+setup script from the repository, so lift that restriction for your own account
+now. This is a one-time change and does not need administrator rights:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+```
+
+Confirm it took effect:
+
+```powershell
+Get-ExecutionPolicy -List
+```
+
+`CurrentUser` should read `RemoteSigned`. `LocalMachine` may well still say
+`Restricted`, which is fine: the narrower scope wins.
+
+`RemoteSigned` allows script files that came from your own machine or a `git
+clone`, and still blocks anything downloaded from a browser unless you approve it
+deliberately. Skip this and the labs that run a script fail with `running scripts
+is disabled on this system`.
+
 ## Step 3: Sign in to Azure and set your subscription
 
 ```powershell
@@ -362,6 +386,7 @@ the pattern is easy to spot as something created by hand.
 | `building account: unable to obtain authorization token` | your `az login` session expired. Run `az login` again |
 | `StorageAccountAlreadyTaken` | someone else has that global name. Change your suffix |
 | `AuthorizationFailed` | you are pointed at the wrong subscription. Run `az account show` |
+| `running scripts is disabled on this system` | execution policy was never lifted. Rerun the `Set-ExecutionPolicy` command in Step 2 |
 | `terraform: command not found` | open a new terminal so it picks up the PATH |
 | VS Code shows no colors in a `.tf` file | the HashiCorp Terraform extension is not enabled |
 
