@@ -316,43 +316,105 @@ needed. Terraform only asks for a variable's value when you reference it, and
 > it now fails with `Given variables file dev.tfvars does not exist`, because you
 > have not written it yet.
 
-Try these:
+Try these one at a time. Type the expression, press Enter, and the console prints
+the result straight back.
+
+**Strip the hyphens out of a name.**
 
 ```
-> replace("summit-orders-dev", "-", "")
+replace("summit-orders-dev", "-", "")
+```
+
+```
 "summitordersdev"
+```
 
-> cidrsubnet("10.10.0.0/16", 8, 1)
+This is exactly how `local.storage_account_name` gets built. Storage account
+names allow no hyphens, so the name prefix is reused with them removed rather
+than keeping a second variable that could disagree with the first.
+
+**Carve a subnet out of a larger range.**
+
+```
+cidrsubnet("10.10.0.0/16", 8, 1)
+```
+
+```
 "10.10.1.0/24"
+```
 
-> merge({ a = 1, b = 2 }, { b = 99, c = 3 })
+Three arguments: the range to cut up, how many bits to add to the prefix, and
+which of the resulting blocks you want. Adding 8 bits to a `/16` gives `/24`
+subnets, and index `1` is the second one, `10.10.1.0/24`. That is where
+`snet-app` comes from, so changing `vnet_address_space` moves the subnet with it
+instead of leaving a hardcoded range behind.
+
+**Combine two maps.**
+
+```
+merge({ a = 1, b = 2 }, { b = 99, c = 3 })
+```
+
+```
 {
   "a" = 1
   "b" = 99
   "c" = 3
 }
+```
 
-> format("vm-%s-%02d", "app", 3)
+Note `b`: the right-hand map wins. That is what lets a single resource add or
+override one tag without redefining the whole standard set, as in
+`merge(local.tags, { role = "app-server" })`.
+
+**Build a string with placeholders.**
+
+```
+format("vm-%s-%02d", "app", 3)
+```
+
+```
 "vm-app-03"
+```
 
-> coalesce(null, "", "fallback")
+`%s` takes a string, `%02d` takes a number and pads it to two digits with a
+leading zero. Useful for numbered resources, where `vm-app-03` sorts correctly
+next to `vm-app-12` and `vm-app-3` does not.
+
+**Pick the first value that is actually set.**
+
+```
+coalesce(null, "", "fallback")
+```
+
+```
 "fallback"
+```
 
-> upper("dev") == "DEV"
+It skips `null` **and** the empty string, which is the behaviour you want for
+"use the override if someone supplied one, otherwise the default". A plain `!=
+null` check would have accepted the empty string.
+
+**Compare two values.**
+
+```
+upper("dev") == "DEV"
+```
+
+```
 true
 ```
 
-Type `exit` to leave.
+The result is a boolean, and that is the point: a variable `validation` block
+needs an expression that evaluates to `true` or `false`. You can test a condition
+here before committing it, rather than finding out during a plan.
 
-| Function | What it does | Where you use it here |
-|---|---|---|
-| `replace` | substring substitution | stripping hyphens from a storage name |
-| `cidrsubnet` | carve a subnet out of a larger range | deriving the app subnet from the VNet |
-| `merge` | combine maps, right side wins | adding a per-resource tag to the standard set |
-| `format` | printf-style strings | zero-padded names for numbered resources |
-| `coalesce` | first non-null, non-empty value | "use the override if set, otherwise the default" |
-| `contains` | is this value in that list | variable validation |
-| `can` | did this expression succeed | variable validation |
+Type `exit` to leave the console.
+
+> Two more functions appear in the validation blocks you wrote in Part 1, and you
+> can try them here the same way: `contains(["dev", "prod"], "dev")` asks whether
+> a value is in a list, and `can(regex("^[a-z]+$", "abc"))` returns whether an
+> expression succeeded rather than its value.
 
 ## Part 3: Rewrite the resources
 
