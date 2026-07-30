@@ -634,14 +634,26 @@ every time: a tag number tells you nothing about what changed.
 > marks it `# forces replacement`:
 >
 > ```
-> ~ account_replication_type = "LRS" -> "ZRS" # forces replacement
+> # module.storage.azurerm_storage_account.this must be replaced
+>       ~ account_replication_type = "LRS" -> "ZRS" # forces replacement
+> ```
 >
-> Plan: 2 to add, 0 to change, 2 to destroy.
+> And it does not stop at the account. Both containers live inside it, so when the
+> account is replaced their `storage_account_id` is unknown until the new one
+> exists, and they are replaced too:
+>
+> ```
+> # module.storage.azurerm_storage_container.this["orders-data"] must be replaced
+>       ~ storage_account_id = "/subscriptions/.../stsummitordersprod<suffix>" -> (known after apply) # forces replacement
+>
+> Plan: 3 to add, 0 to change, 3 to destroy.
 > ```
 >
 > On a production account holding data, applying that would be an outage and a
-> restore. The word to look for is `forces replacement`, and it is the reason you
-> read the plan rather than the summary line.
+> restore from backup. Note that one changed input took three resources with it:
+> replacement spreads to whatever depends on the thing being replaced. The words to
+> look for are `must be replaced` and `forces replacement`, and they are the reason
+> you read the plan rather than the summary line.
 
 > That input **did not exist** in v1.0.0. If you try to pass it with the old pin
 > you get `An argument named "replication_type" is not expected here`. Module
