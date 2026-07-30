@@ -609,6 +609,7 @@ git pull
 |---|---|
 | `does not have secrets get permission` | Your identity lacks the data-plane role. Rerun the seed script, or `az role assignment create --assignee <you> --role "Key Vault Secrets User" --scope <vault id>`. Being Owner is not enough. |
 | `KeyVaultAlreadyExists` / `conflict` on create | A soft-deleted vault holds the name. `az keyvault purge --name "kv-summit-dev-$env:SUFFIX" --location eastus`, then rerun the script. |
+| `KeyVault Secret "vm-admin-username" ... does not exist` | You have a second `data "azurerm_key_vault_secret"` block that this lab does not use. The vault holds one secret, `vm-admin-password`. The username is not a secret: it stays a variable, so `admin_username` reads `var.vm_admin_username`. Delete the extra data block. |
 | `Key Vault not found` from the data source | Check `key_vault_name` and `key_vault_resource_group_name` in your tfvars against `az keyvault list -o table`. |
 | The role was granted but reads still fail | Propagation. Wait two minutes and try again. Role assignments are not instant. |
 | Plan wants to replace the VM and you did not expect it | Expected in Part 4. The vault password differs from the old one, and `admin_password` forces replacement. |
