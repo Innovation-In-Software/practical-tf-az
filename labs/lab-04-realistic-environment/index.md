@@ -334,7 +334,7 @@ this lab, and later labs use it in commands. Setting it permanently means you
 only do this once:
 
 ```powershell
-[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr42", "User")
+[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr63", "User")
 ```
 
 Use your own four characters. Close and reopen the terminal, then check it:
@@ -472,7 +472,7 @@ Type `yes`. The VM takes a minute or two. At the end you get the outputs:
 ```
 Outputs:
 
-storage_account_name = "stsummitordersdevjr42"
+storage_account_name = "stsummitordersdevjr63"
 vm_public_ip = "20.121.44.7"
 vm_ssh_command = "ssh azureuser@20.121.44.7"
 ```

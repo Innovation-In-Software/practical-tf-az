@@ -76,10 +76,10 @@ terraform plan
 discover you had pending changes.
 
 Set your three variables again if this is a new terminal. Use your own four
-characters in place of `jr42`:
+characters in place of `jr63`:
 
 ```powershell
-$env:SUFFIX = "jr42"   # your four characters
+$env:SUFFIX = "jr63"   # <-- CHANGE THIS to your own four characters
 $env:TF_VAR_allowed_ssh_source = "$(Invoke-RestMethod https://api.ipify.org)/32"
 $env:TF_VAR_vm_admin_password = "Summit-Lab-2026!"
 ```

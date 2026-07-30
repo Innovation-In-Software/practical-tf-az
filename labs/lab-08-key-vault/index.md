@@ -62,14 +62,14 @@ Every command below that names a storage account or a Key Vault reads your suffi
 from `$env:SUFFIX`. Set it in this terminal, using your own four characters:
 
 ```powershell
-$env:SUFFIX = "jr42"
+$env:SUFFIX = "jr63"   # <-- CHANGE THIS to your own four characters
 $env:SUFFIX
 ```
 
 To set it permanently so no future lab asks again:
 
 ```powershell
-[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr42", "User")
+[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr63", "User")
 ```
 
 ## Part 1: Prove that Git remembers

@@ -38,8 +38,8 @@ Choose a short suffix now and use the same one all week:
 - lowercase letters and numbers only
 - something tied to you, for example your initials plus two digits
 
-> Example: Jamie Rivera picks `jr42`. Their storage account in Lab 4 will be
-> `stsummitordersdevjr42`.
+> Example: Jamie Rivera picks `jr63`. Their storage account in Lab 4 will be
+> `stsummitordersdevjr63`.
 
 Write it down. You will store it in an environment variable in Step 3 so you do
 not have to retype it all week.
@@ -130,7 +130,7 @@ On macOS or Linux the equivalent is:
 
 ```sh
 export ARM_SUBSCRIPTION_ID="$(az account show --query id -o tsv)"
-export SUFFIX="jr42"
+export SUFFIX="jr63"
 ```
 
 > **This is the single most common cause of a failed `terraform plan` this
@@ -140,10 +140,10 @@ export SUFFIX="jr42"
 ### Store your suffix the same way
 
 You will need your suffix in dozens of commands. Set it once, using your own four
-characters in place of `jr42`:
+characters in place of `jr63`:
 
 ```powershell
-[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr42", "User")
+[System.Environment]::SetEnvironmentVariable("SUFFIX", "jr63", "User")
 ```
 
 Close and reopen your terminal, then check both variables:

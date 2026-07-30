@@ -89,7 +89,7 @@ git switch -c feature/lab06-variables
 Open a terminal with ``Ctrl+` `` for these:
 
 ```powershell
-$env:SUFFIX = "jr42"   # your four characters
+$env:SUFFIX = "jr63"   # <-- CHANGE THIS to your own four characters
 $env:TF_VAR_allowed_ssh_source = "$(Invoke-RestMethod https://api.ipify.org)/32"
 $env:TF_VAR_vm_admin_password = "Summit-Lab-2026!"
 
@@ -418,9 +418,11 @@ Type `exit` to leave the console.
 
 ## Part 3: Rewrite the resources
 
-Now replace the literals. Every change is listed below, `-` for the line you
-remove and `+` for the line that replaces it. Work down the file resource by
-resource.
+Open `environments/dev/main.tf` and replace the literals in the resource blocks,
+leaving the `terraform`, `provider`, and `locals` blocks you just wrote alone.
+
+Every change is listed below, `-` for the line you remove and `+` for the line
+that replaces it. Work down the file resource by resource.
 
 **The resource group.** The tag map moves into `local.tags`, so four lines
 collapse into one:
