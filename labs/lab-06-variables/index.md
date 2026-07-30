@@ -418,8 +418,133 @@ Type `exit` to leave the console.
 
 ## Part 3: Rewrite the resources
 
-Now replace the literals. Here is the whole of `environments/dev/main.tf` after
-the `terraform`, `provider`, and `locals` blocks:
+Now replace the literals. Every change is listed below, `-` for the line you
+remove and `+` for the line that replaces it. Work down the file resource by
+resource.
+
+**The resource group.** The tag map moves into `local.tags`, so four lines
+collapse into one:
+
+```diff
+ resource "azurerm_resource_group" "orders" {
+-  name     = "rg-summit-orders-dev"
+-  location = "eastus"
+-
+-  tags = {
+-    environment = "dev"
+-    solution    = "orders"
+-    owner       = "ops-team"
+-    managed_by  = "terraform"
+-  }
++  name     = "rg-${local.name_prefix}"
++  location = var.location
++  tags     = local.tags
+ }
+```
+
+**The virtual network.** Note the tags line: every other resource referenced
+`azurerm_resource_group.orders.tags`, and they all now point at `local.tags`
+instead. That is the same value, sourced from the definition rather than from
+another resource.
+
+```diff
+ resource "azurerm_virtual_network" "orders" {
+-  name                = "vnet-summit-orders-dev"
++  name                = "vnet-${local.name_prefix}"
+   resource_group_name = azurerm_resource_group.orders.name
+   location            = azurerm_resource_group.orders.location
+-  address_space       = ["10.10.0.0/16"]
+-
+-  tags = azurerm_resource_group.orders.tags
++  address_space       = var.vnet_address_space
++  tags                = local.tags
+ }
+```
+
+**The subnet.** The hardcoded `/24` is derived from the VNet range, so the two
+can never disagree:
+
+```diff
+-  address_prefixes     = ["10.10.1.0/24"]
++  address_prefixes     = [cidrsubnet(var.vnet_address_space[0], 8, 1)]
+```
+
+**The NSG, public IP, and NIC.** All three take the same two changes, the name
+and the tags:
+
+```diff
+-  name                = "nsg-summit-orders-dev"
++  name                = "nsg-${local.name_prefix}"
+-  tags = azurerm_resource_group.orders.tags
++  tags                = local.tags
+
+-  name                = "pip-summit-orders-dev"
++  name                = "pip-${local.name_prefix}"
+-  tags = azurerm_resource_group.orders.tags
++  tags                = local.tags
+
+-  name                = "nic-summit-orders-dev"
++  name                = "nic-${local.name_prefix}"
+-  tags = azurerm_resource_group.orders.tags
++  tags                = local.tags
+```
+
+The NSG rule and the subnet association need no changes: they only reference
+other resources and hold no literals of their own.
+
+**The virtual machine.** The size and username become inputs, and the tags gain
+one extra key with `merge`:
+
+```diff
+-  name                = "vm-summit-orders-dev"
++  name                = "vm-${local.name_prefix}"
+-  size                = "Standard_F1als_v7"
++  size                = var.vm_size
+-  admin_username                  = "azureuser"
++  admin_username                  = var.vm_admin_username
+-  tags = azurerm_resource_group.orders.tags
++  tags = merge(local.tags, { role = "app-server" })
+```
+
+**The storage account.** The name and redundancy both come from `locals`, which
+is where the `prod ? GRS : LRS` decision lives:
+
+```diff
+-  name                     = "stsummitordersdev<suffix>"
++  name                     = local.storage_account_name
+-  account_replication_type = "LRS"
++  account_replication_type = local.storage_replication_type
+-
+-  tags = azurerm_resource_group.orders.tags
++  tags                     = local.tags
+```
+
+**The storage container.** This one changes shape rather than just values. One
+block with a hardcoded name becomes one block driven by a map, which is what
+lets you add a second container by editing a list:
+
+```diff
+-resource "azurerm_storage_container" "orders_data" {
+-  name                  = "orders-data"
++resource "azurerm_storage_container" "this" {
++  for_each = var.storage_containers
++
++  name                  = each.key
+   storage_account_id    = azurerm_storage_account.orders.id
+-  container_access_type = "private"
++  container_access_type = each.value.access_type
+ }
+```
+
+> The container's **address** changes here, from
+> `azurerm_storage_container.orders_data` to
+> `azurerm_storage_container.this["orders-data"]`. That matters, and Part 6 deals
+> with it before you apply anything.
+
+### The finished file
+
+For reference, here is the whole of `environments/dev/main.tf` after the
+`terraform`, `provider`, and `locals` blocks:
 
 ```hcl
 resource "azurerm_resource_group" "orders" {
