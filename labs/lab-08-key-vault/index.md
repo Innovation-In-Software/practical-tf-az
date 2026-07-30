@@ -373,15 +373,46 @@ terraform apply -var-file dev.tfvars
 > real value), and it should be a deliberate, documented decision. On new
 > builds, use SSH keys and avoid the problem.
 
-Verify you can still get in:
+### Clear the old host key first
+
+The VM is new, but its public IP is not. The public IP is a separate resource and
+Terraform did not replace it, so the address you connected to in Lab 4 now answers
+with a different machine.
+
+SSH treats that as exactly what it looks like from the outside, an impostor at a
+known address, and refuses to connect:
+
+```
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Host key verification failed.
+```
+
+It is not a false alarm, it is the check working. You know why the identity changed,
+so tell SSH to forget the old one. Use the IP from the output:
 
 ```powershell
 terraform output vm_ssh_command
+ssh-keygen -R <the IP>
+```
+
+That removes the stale entry from `C:\Users\Administrator\.ssh\known_hosts`.
+
+### Now get in
+
+```powershell
 $pw = az keyvault secret show --vault-name "kv-summit-dev-$env:SUFFIX" --name vm-admin-password --query value -o tsv
 ssh azureuser@<the IP>
 ```
 
-Paste `$pw` when prompted (`Write-Host $pw` if you need to see it).
+You will be asked to accept the new host key, the same as in Lab 4. Type `yes`,
+then paste `$pw` when prompted for the password (`Write-Host $pw` if you need to see
+it).
+
+Note that the password is the **new** one. The vault generated a fresh secret, which
+is what forced the replacement in the first place, so the password from Lab 4 will
+not work.
 
 ## Part 5: What `sensitive` actually does
 
@@ -613,6 +644,8 @@ git pull
 | `Key Vault not found` from the data source | Check `key_vault_name` and `key_vault_resource_group_name` in your tfvars against `az keyvault list -o table`. |
 | The role was granted but reads still fail | Propagation. Wait two minutes and try again. Role assignments are not instant. |
 | Plan wants to replace the VM and you did not expect it | Expected in Part 4. The vault password differs from the old one, and `admin_password` forces replacement. |
+| `REMOTE HOST IDENTIFICATION HAS CHANGED` or `Host key verification failed` | The VM was replaced but kept its public IP, so the host key no longer matches. Run `ssh-keygen -R <the IP>` and connect again. |
+| `Permission denied (publickey)` | The VM was built with password login disabled. Check that `disable_password_authentication = false` is still in your `azurerm_linux_virtual_machine` block, then `terraform apply` again. |
 | SSH rejects the password after the rebuild | You are using the old one. Fetch it from the vault with `az keyvault secret show`. |
 | `Output refers to sensitive values` | Working as designed. Add `sensitive = true`, or do not output it. |
 
