@@ -845,37 +845,48 @@ managed via Terraform this resource needs to be imported into the State.
 ```
 
 A second `apply` does succeed, but there is no reason to destroy the container at
-all. Tell state about the move instead, exactly as you did in Lab 5:
+all. Record the rename instead, with a **`moved` block**.
 
-```powershell
-terraform state mv 'azurerm_storage_container.orders_data' 'azurerm_storage_container.this["orders-data"]'
+Create `environments/dev/moved.tf`:
+
+```hcl
+moved {
+  from = azurerm_storage_container.orders_data
+  to   = azurerm_storage_container.this["orders-data"]
+}
 ```
 
-Note the single quotes. The new address contains double quotes, and single quotes
-stop PowerShell from interpreting them.
+That is the whole fix. It tells Terraform the thing at the old address now lives
+at the new one: same container in Azure, just relabelled in state.
 
-```
-Move "azurerm_storage_container.orders_data" to "azurerm_storage_container.this[\"orders-data\"]"
-Successfully moved 1 object(s).
-```
-
-Now plan again:
+Plan again:
 
 ```powershell
 terraform plan -var-file dev.tfvars
 ```
 
 ```
+  # azurerm_storage_container.orders_data has moved to azurerm_storage_container.this["orders-data"]
+
 Plan: 1 to add, 1 to change, 0 to destroy.
 ```
 
-The destroy is gone, and so is one of the adds. What remains is the genuinely new
-`orders-logs` container, plus the VM tag change. The container you already had is
-simply relabelled in state.
+`has moved to`, and **0 to destroy**. The destroy is gone and so is one of the
+adds. What remains is the genuinely new `orders-logs` container plus the VM tag
+change.
 
-> Same lesson as Lab 5, met in the wild: changing how you **address** a resource
-> is not the same as changing the resource. `for_each` changed the address of
-> something you already had.
+> **Why a `moved` block and not `terraform state mv`?** Lab 5 gave you the rule:
+> `state mv` is for interactive repair, `moved` is for a rename you are
+> committing. This one is going into the repository, so it belongs in code where a
+> reviewer can see it and where the pipeline will apply it for everyone.
+>
+> There is a practical reason too. The new address contains double quotes, and
+> getting those safely past PowerShell into a command argument is fiddly. In a
+> file there is no shell involved, so there is nothing to escape.
+
+`moved` blocks are safe to leave in place, and Terraform ignores them once the
+move has happened. Convention is to keep them for a release or two so teammates
+pulling your change also get the move, then remove them in a tidy-up commit.
 
 ### Now apply
 
@@ -1075,7 +1086,7 @@ If you finish early:
 
 | Error | What it means and what to do |
 |---|---|
-| `a resource with the ID ".../containers/orders-data" already exists` | You applied the `for_each` plan without running `terraform state mv` first, so Terraform destroyed the container and could not immediately recreate it under the same name. Run `apply` again to finish, or see Part 5 for the `state mv` that avoids the destroy entirely. |
+| `a resource with the ID ".../containers/orders-data" already exists` | You applied the `for_each` plan before adding the `moved` block, so Terraform destroyed the container and could not recreate it under the same name straight away. Run `apply` again to finish, then see Part 6 for the `moved` block that avoids the destroy entirely. |
 | `No value for required variable` | You forgot `-var-file dev.tfvars`, or the variable is one of the `TF_VAR_` ones and this terminal does not have it. |
 | `Invalid value for variable: environment must be one of...` | Your validation is working. Fix the value in `dev.tfvars`. |
 | `Invalid function argument` on `cidrsubnet` | `vnet_address_space` is missing or not a list. It must be `["10.10.0.0/16"]`, with brackets. |
