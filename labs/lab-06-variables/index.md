@@ -859,6 +859,27 @@ moved {
 That is the whole fix. It tells Terraform the thing at the old address now lives
 at the new one: same container in Azure, just relabelled in state.
 
+> **A `moved` block does not create anything.** It only re-labels a state entry.
+> The new address has to be something your configuration already produces, and
+> yours does: the `azurerm_storage_container.this` block you wrote in Part 3, with
+> `for_each` over `var.storage_containers`, is what produces
+> `this["orders-data"]` and `this["orders-logs"]`.
+>
+> So the two halves work together. Part 3 supplies the new address; `moved.tf`
+> connects the existing state to it.
+>
+> This is worth knowing because it fails quietly. If the `to` address does not
+> exist in your configuration, Terraform re-labels the state entry, finds it
+> orphaned, and plans to **destroy** it:
+>
+> ```
+> # azurerm_storage_container.this["orders-data"] will be destroyed
+> Plan: 0 to add, 0 to change, 1 to destroy.
+> ```
+>
+> No error, just a destroy. `0 to destroy` in the next plan is your confirmation
+> that both halves are in place.
+
 Plan again:
 
 ```powershell
