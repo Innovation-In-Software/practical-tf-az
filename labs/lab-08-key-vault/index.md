@@ -56,6 +56,17 @@ git pull
 git switch -c feature/lab08-key-vault
 ```
 
+### Open a terminal at the repository root
+
+Everything below runs from the top of your repository, not from inside
+`environments`. If you switched branches from the command line just now, you are
+already there. Otherwise, in the Explorer right-click the repository folder,
+`az-tf-ops-<your-username>`, and choose **Open in Integrated Terminal**.
+
+Check that the prompt ends in `az-tf-ops-<your-username>` before you run anything.
+The seed script you run shortly is written as `.\scripts\...`, a path relative to
+the repository root, so from any other folder PowerShell will not find it.
+
 ### Set your suffix
 
 Every command below that names a storage account or a Key Vault reads your suffix
