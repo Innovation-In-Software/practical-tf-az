@@ -437,12 +437,6 @@ ssh azureuser@<the IP>
 Accept the host key with `yes`, then paste the password you copied. Nothing appears
 on screen while you type or paste it, which is normal for a password prompt.
 
-> **Paste the password itself, not a variable name.** That prompt comes from `ssh`,
-> not from PowerShell. It reads raw characters from the terminal, so typing something
-> like `$pw` sends those three characters as the password rather than the value they
-> would stand for. PowerShell only expands a variable when PowerShell is the thing
-> reading the line.
-
 Note that the password is the **new** one. The vault generated a fresh secret, which
 is what forced the replacement in the first place, so the password from Lab 4 will
 not work.
