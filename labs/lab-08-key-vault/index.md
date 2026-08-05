@@ -289,9 +289,30 @@ variable "key_vault_resource_group_name" {
 }
 ```
 
-And **delete** the `vm_admin_password` variable from `variables.tf` completely.
-That is the point of the lab: not a better way to supply the variable, no
-variable at all.
+### Delete the password variable
+
+Now remove the variable the vault replaces. Open `environments/dev/variables.tf` and
+delete this block completely:
+
+```diff
+-variable "vm_admin_password" {
+-  description = "Admin password for the VM. Supplied at run time, never committed."
+-  type        = string
+-  sensitive   = true
+-}
+```
+
+That is the point of the lab: not a better way to supply the variable, no variable at
+all. Nothing reads it any more, because `main.tf` now takes the password from the
+vault, so leaving the declaration behind would only invite the next person to start
+setting it again.
+
+Delete the whole block, opening line to closing brace. If you leave a stray `}`
+Terraform reports `Argument or block definition required` and points at the line.
+
+You do **not** need to touch `dev.tfvars`, because the password was never in it. It
+came from `TF_VAR_vm_admin_password`, which you clear in a moment.
+
 
 Add to `environments/dev/dev.tfvars`:
 
@@ -526,7 +547,8 @@ module "app_vm" {
 ```
 
 `environments/prod/variables.tf`: add `key_vault_name` and
-`key_vault_resource_group_name`, delete `vm_admin_password`.
+`key_vault_resource_group_name`, and delete the `vm_admin_password` block the same
+way you did in dev.
 
 `environments/prod/prod.tfvars`:
 
