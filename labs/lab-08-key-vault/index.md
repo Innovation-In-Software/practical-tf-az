@@ -552,16 +552,41 @@ module "app_vm" {
 }
 ```
 
-`environments/prod/variables.tf`: add `key_vault_name` and
-`key_vault_resource_group_name`, and delete the `vm_admin_password` block the same
-way you did in dev.
+Add these two variables to `environments/prod/variables.tf`:
 
-`environments/prod/prod.tfvars`:
+```hcl
+variable "key_vault_name" {
+  description = "Name of the Key Vault holding this environment's secrets."
+  type        = string
+}
+
+variable "key_vault_resource_group_name" {
+  description = "Resource group containing the Key Vault. Owned by the security team."
+  type        = string
+  default     = "rg-summit-security"
+}
+```
+
+Then delete the password variable from the same file. Prod's description differs
+slightly from dev's:
+
+```diff
+-variable "vm_admin_password" {
+-  description = "Admin password for the production VM. Supplied at run time."
+-  type        = string
+-  sensitive   = true
+-}
+```
+
+Add two lines to `environments/prod/prod.tfvars`, keeping the six already there:
 
 ```hcl
 key_vault_name                = "kv-summit-prod-<suffix>"
 key_vault_resource_group_name = "rg-summit-security"
 ```
+
+Run `terraform fmt` afterwards: the new names are longer than the existing ones, so
+the `=` alignment shifts on every line.
 
 ```powershell
 cd ..\prod
