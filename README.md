@@ -42,13 +42,16 @@ minutes and prevents most of the problems people hit later in the week.
 | [Lab 7: Consuming modules across repositories](labs/lab-07-modules/index.md) | Production built entirely from Summit's shared, version-pinned modules |
 | [Lab 8: Secrets with Azure Key Vault](labs/lab-08-key-vault/index.md) | The VM password out of your shell and into a vault |
 
-## Day 3
+## Day 3: Brownfield, CI/CD, troubleshooting, refactoring
 
-Published at the end of the day. Day 3 covers importing existing infrastructure,
-CI/CD with GitHub Actions, troubleshooting and drift, and refactoring with
-`moved`.
+| Lab | What you build |
+|---|---|
+| [Lab 9: Importing existing Azure infrastructure](labs/lab-09-brownfield-import/index.md) | An environment nobody wrote code for, brought under Terraform as it is, with `import` blocks |
+| [Lab 10: CI/CD with GitHub Actions](labs/lab-10-github-actions/index.md) | Plan on every pull request, apply on merge, running as a service principal instead of you |
+| [Lab 11: Troubleshooting and drift](labs/lab-11-troubleshooting-drift/index.md) | Reading the errors and the drift you will actually meet on day two |
+| [Lab 12: Refactoring with `moved`](labs/lab-12-refactor-and-recap/index.md) | Dev rebuilt on the shared modules, with no resource destroyed |
 
-**Pull this repository each morning** to pick it up:
+**Pull this repository** to pick up anything added during the week:
 
 > Source Control panel > the ellipses (three dots) next to **Changes** >
 > **Pull**.
@@ -66,8 +69,7 @@ CI/CD with GitHub Actions, troubleshooting and drift, and refactoring with
 fall behind, or to compare against your own work afterwards. Replace `<suffix>`
 with yours before running anything from it.
 
-Solutions appear alongside their labs, so `solutions/` currently covers Days 1
-and 2.
+`solutions/` covers every lab, Days 1 through 3.
 
 ## Conventions used in every lab
 
