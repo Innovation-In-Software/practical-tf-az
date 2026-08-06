@@ -362,21 +362,33 @@ terraform plan -generate-config-out generated.tf
 ```
 
 ```
-Terraform will perform the following actions:
+Error: storage encryption scope name "$account-encryption-key" must be alphanumeric,
+and between 4 to 63 characters
 
-  # azurerm_resource_group.legacy will be imported
-  # azurerm_storage_account.reports will be imported
-  ...
+Error: expected flow_timeout_in_minutes to be in the range (4 - 30), got 0
 
-Plan: 5 to import, 0 to add, 0 to change, 0 to destroy.
+Error: parsing "": cannot parse an empty string
 
-Terraform has generated configuration and written it to generated.tf. Please
-review the configuration and edit it as necessary before adding it to version
-control.
+Error: Value for unconfigurable attribute
+
+Error: expected blob_properties.0.change_feed_retention_in_days to be in the range
+(1 - 146000), got 0
+
+Plan: 2 to import, 0 to add, 0 to change, 0 to destroy.
 ```
 
-Open `generated.tf`. It is long, it is ugly, and it is a starting point, not an
-answer.
+Five errors, and only two of the five resources import. Nothing is wrong with your
+`imports.tf`; this is what the command does here.
+
+`generated.tf` is still written, with all five resources in it. Open it. It is long,
+it is ugly, and it is a starting point, not an answer.
+
+The errors are all in the storage account, and they are all the same kind of thing:
+the provider has written out values it read back from Azure that it will not accept
+as input. An encryption scope name it generated itself, a timeout of `0` where the
+valid range starts at `4`, an empty string where it wants a value. Part 6 deletes
+every one of those lines, which is why they are listed here rather than treated as a
+problem to solve now.
 
 Read that warning literally. The generated file contains **every attribute the
 provider knows about**, including read-only ones, defaults, and computed values.
