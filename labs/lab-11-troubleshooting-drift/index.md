@@ -94,6 +94,8 @@ $env:TF_VAR_name_suffix = $env:SUFFIX
 terraform init
 ```
 
+`init` will fail here. That failure is Fault 1, and you fix it in a moment.
+
 > **You will never `apply` this configuration.** Everything in Part 1 is
 > `validate` and `plan`. There is nothing to clean up afterwards.
 
@@ -159,7 +161,10 @@ why "there is only one error" is never a safe conclusion after a syntax failure.
 > **`terraform fmt` catches this too, and faster.** A file that will not format
 > will not parse. Running `fmt` before `validate` is a cheap first check.
 
+Run `init` again before you validate. It stopped before installing the provider:
+
 ```powershell
+terraform init
 terraform validate
 ```
 
