@@ -154,7 +154,7 @@ spelling, `env` instead of `environment`. Summit's standard is
 matches, because there was no standard when this was built.
 
 Open `rg-legacy-reporting` in the portal too. Click through the storage account's
-**Configuration** blade and note **Minimum TLS version: Version 1.0** and
+**Configuration** blade and note **Blob public access: Enabled** and
 **Access tier: Cool**. Nobody chose those on purpose; they were defaults, or the
 defaults of the day.
 
@@ -430,7 +430,7 @@ resource "azurerm_storage_account" "reports" {
   access_tier              = "Cool"
 
   # Genuinely how it is configured today. Do not "fix" it here: see below.
-  min_tls_version = "TLS1_0"
+  allow_nested_items_to_be_public = true
 
   tags = {
     Owner = "dave.reporting"
@@ -476,7 +476,8 @@ Remove-Item generated.tf
 (It is gitignored anyway. Deleting it stops you confusing yourself later.)
 
 > **The single most important rule in this lab.** You just wrote
-> `min_tls_version = "TLS1_0"` into a configuration, knowing it is wrong. Do it
+> `allow_nested_items_to_be_public = true` into a configuration, knowing it is
+> wrong. Do it
 > anyway. Import means "describe what is there." If you improve things in the
 > same change, you cannot tell an import mistake from an intentional
 > improvement, and your first `apply` becomes a change to production you did not
@@ -542,7 +543,7 @@ an attribute the generator did not emit, or you tidied something on the way past
 
 | Plan says | Usually means | Do this |
 |---|---|---|
-| `~ min_tls_version = "TLS1_0" -> "TLS1_2"` | You "fixed" it while cleaning up | Put the real value back. Improve it in a later pull request |
+| `~ allow_nested_items_to_be_public = true -> false` | You "fixed" it while cleaning up | Put the real value back. Improve it in a later pull request |
 | `~ tags = { - Owner = "dave.reporting" }` | You dropped a tag you did not like | Put it back. Import describes what is |
 | `~ access_tier = "Cool" -> "Hot"` | You deleted a non-default argument, so the provider default applies | Add the real value back |
 | `-/+ must be replaced` | A name, region, or other immutable attribute does not match | **Stop.** Do not apply. Fix the configuration |
@@ -669,7 +670,7 @@ The environment is under management, so you can finally fix it the way you fix
 anything else: in code, in a pull request, with a plan a human reads.
 
 ```powershell
-git switch -c fix/legacy-reporting-tls-and-tags
+git switch -c fix/legacy-reporting-public-access-and-tags
 ```
 
 In `environments/legacy-reporting/main.tf`:
@@ -677,7 +678,7 @@ In `environments/legacy-reporting/main.tf`:
 ```hcl
 resource "azurerm_storage_account" "reports" {
   ...
-  min_tls_version = "TLS1_2"
+  allow_nested_items_to_be_public = false
   ...
   tags = {
     environment = "prod"
@@ -713,7 +714,7 @@ whole discipline of Brownfield work.
 
 - [ ] `terraform state list` in `environments/legacy-reporting` shows all 5 resources
 - [ ] `terraform plan` reports **No changes**
-- [ ] `az storage account show ... --query minimumTlsVersion` returns `TLS1_2`
+- [ ] `az storage account show ... --query allowBlobPublicAccess` returns `false`
 - [ ] The resource group carries Summit's four standard tags
 - [ ] Nothing in `rg-legacy-reporting` was recreated: check **Activity log** in
       the portal and confirm no delete operations
