@@ -2,9 +2,9 @@
 #
 # This is the FINAL state, after both pull requests:
 #   PR 1: import only, matching reality exactly, 0 changes
-#   PR 2: disable blob public access and adopt Summit's tag standard, 3 changes
+#   PR 2: raise TLS to 1.2 and adopt Summit's tag standard, 3 changes
 #
-# For the state after PR 1, set allow_nested_items_to_be_public back to true and restore
+# For the state after PR 1, set min_tls_version back to "TLS1_0" and restore
 # the original tags:
 #   resource group:   Owner = "dave.reporting", CostCentre = "FIN-2019", env = "Production"
 #   storage account:  Owner = "dave.reporting", env = "Production"
@@ -49,8 +49,8 @@ resource "azurerm_storage_account" "reports" {
   account_kind             = "StorageV2"
   access_tier              = "Cool"
 
-  # Was true at import. Disabled in the second pull request.
-  allow_nested_items_to_be_public = false
+  # Was TLS1_0 at import. Raised in the second pull request.
+  min_tls_version = "TLS1_2"
 
   tags = local.tags
 }
@@ -74,4 +74,8 @@ resource "azurerm_subnet" "default" {
   resource_group_name  = azurerm_resource_group.legacy.name
   virtual_network_name = azurerm_virtual_network.legacy.name
   address_prefixes     = ["172.16.10.0/24"]
+
+  # The subnet was created before this setting had a provider default of true.
+  # Leave it out and plan reports a change you did not ask for.
+  default_outbound_access_enabled = false
 }
