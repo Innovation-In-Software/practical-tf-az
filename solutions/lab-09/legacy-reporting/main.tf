@@ -52,6 +52,10 @@ resource "azurerm_storage_account" "reports" {
   # Was TLS1_0 at import. Raised in the second pull request.
   min_tls_version = "TLS1_2"
 
+  # The account has public blob access off, but the provider default is on. Leave
+  # it out and plan reports a change you did not ask for.
+  allow_nested_items_to_be_public = false
+
   tags = local.tags
 }
 

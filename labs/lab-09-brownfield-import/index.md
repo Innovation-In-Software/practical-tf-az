@@ -558,6 +558,7 @@ an attribute the generator did not emit, or you tidied something on the way past
 | `~ tags = { - Owner = "dave.reporting" }` | You dropped a tag you did not like | Put it back. Import describes what is |
 | `~ access_tier = "Cool" -> "Hot"` | You deleted a non-default argument, so the provider default applies | Add the real value back |
 | `~ default_outbound_access_enabled = false -> true` | Same thing on the subnet. The provider default is `true`, the subnet is `false` | Add `default_outbound_access_enabled = false` |
+| `~ allow_nested_items_to_be_public = false -> true` | Same again on the storage account. The provider default is `true`, the account is `false` | Add `allow_nested_items_to_be_public = false` |
 | `-/+ must be replaced` | A name, region, or other immutable attribute does not match | **Stop.** Do not apply. Fix the configuration |
 | `- will be destroyed` | You have an `import` block with no matching `resource` block, or an address typo | Match the addresses |
 | `+ will be created` | Same problem, the other way round: a `resource` block whose ID you did not import | Check the `import` block ID |
